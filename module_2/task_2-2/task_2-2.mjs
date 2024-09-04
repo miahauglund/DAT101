@@ -4,12 +4,31 @@ initPrintOut(document.getElementById("txtOut"));
 
 printOut("--- Part 1 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+let test= 2+(3*(2-4))*6 
+printOut(test.toString());
 printOut(newLine);
 
 printOut("--- Part 2 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+printOut("konverter 25m og 34 cm til inches ");
+const antallMeter= 25;
+const antallCM= 34;
+let meterIMillimeter= antallMeter*1000;
+printOut("Meter i MM "+meterIMillimeter);
+
+let CMInMillimeter= antallCM*10;
+printOut("CM i mm "+CMInMillimeter);
+
+let antallMM= meterIMillimeter+CMInMillimeter;
+printOut("Antall Inches "+antallMM);
+
+let MMtoinches= antallMM/25.4;
+printOut("Antall Inches "+MMtoinches.toFixed(2));
+printOut(newLine);
+
+
+printOut(antallMM.toString());
+printOut(MMtoinches.toString());
 printOut(newLine);
 
 printOut("--- Part 3 ----------------------------------------------------------------------------------------------");

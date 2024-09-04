@@ -27,7 +27,7 @@ printOut("Antall Inches "+MMtoinches.toFixed(2));
 printOut(newLine);
 
 
-printOut(antallMM.toString());
+printOut(antallMM.toString()); 
 printOut(MMtoinches.toString());
 printOut(newLine);
 

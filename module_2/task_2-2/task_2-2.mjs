@@ -33,8 +33,20 @@ printOut(newLine);
 
 printOut("--- Part 3 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
+// Antall dager, timer , minutter og sekunder
+
+const days= 3;
+const hours = 12;
+const minutes = 14;
+const seconds= 45;
+
+// Totalt antall minutter 
+const totalMinutes = (days * 24 * 60) + (hours *60) + minutes + (seconds / 60);
+printOut (" 3 days, 12 hours, 14 minutes and 45 seconds") 
+printOut(totalMinutes.toFixed(2));
+
+
+
 
 printOut("--- Part 4 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/

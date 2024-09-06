@@ -5,7 +5,7 @@ initPrintOut(document.getElementById("txtOut"));
 printOut("--- Part 1 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
 let test= 2+(3*(2-4))*6 
-printOut(test.toString());
+printOut(" 2+ (3*(2-4))*6 "+test.toString());
 printOut(newLine);
 
 printOut("--- Part 2 ----------------------------------------------------------------------------------------------");
@@ -19,8 +19,8 @@ printOut("Meter i MM "+meterIMillimeter);
 let CMInMillimeter= antallCM*10;
 printOut("CM i mm "+CMInMillimeter);
 
-let antallMM= meterIMillimeter+CMInMillimeter;
-printOut("Antall Inches "+antallMM);
+let antallMM= meterIMillimeter+ CMInMillimeter;
+printOut("Antall Inches "+ antallMM);
 
 let MMtoinches= antallMM/25.4;
 printOut("Antall Inches "+MMtoinches.toFixed(2));
@@ -42,8 +42,8 @@ const seconds= 45;
 
 // Totalt antall minutter 
 const totalMinutes = (days * 24 * 60) + (hours *60) + minutes + (seconds / 60);
-printOut (" 3 days, 12 hours, 14 minutes and 45 seconds") 
-printOut(totalMinutes.toFixed(2));
+printOut (" 3 days, 12 hours, 14 minutes, and 45 seconds = "+ totalMinutes.toFixed(2));
+//printOut(totalMinutes.toFixed(2));
 
 
 

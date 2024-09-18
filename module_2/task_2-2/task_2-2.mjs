@@ -75,7 +75,7 @@ part4_Calc = part4_Calc - part4_minutes;
 part4_Calc = part4_Calc * secondsInMinute;
 const part4_Seconds = Math.floor (part4_Calc);
 //printOut ("Seconds = " + part4_Seconds);
-printOut ( "Days = "+ part4_days + " ,Hours = " + part4_hours + " ,Minutes = " + part4_minutes + " ,Seconds = " + part4_Seconds);
+printOut ( " 6322.52 minutes is:" + " Days = "+ part4_days + " ,Hours = " + part4_hours + " ,Minutes = " + part4_minutes + " ,Seconds = " + part4_Seconds);
 printOut(newLine);
 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");
@@ -88,22 +88,56 @@ const NOK = 76 / 8.6;
 const USD = 8.6 / 76;
 let amontUSD = 54;
 const amontNOK = Math.round (amontUSD * NOK);
-//printOut (amontUSD + " dollars is " + amontNOK + " Kroner" );
+printOut (amontUSD + " dollars is " + amontNOK + " Kroner" );
 
 amontUSD =Math.round (amontNOK *USD);
-//printOut (amontNOK + " Kroner is " + amontUSD+ " Dollars " );
+printOut (amontNOK + " Kroner is " + amontUSD+ " Dollars " );
 
-printOut(amontUSD + " Dollar is " + amontNOK + " Kroner and " + amontNOK + " Kroner is " + amontUSD + " Dollars ");
+//printOut(amontUSD + " Dollar is " + amontNOK + " Kroner and " + amontNOK + " Kroner is " + amontUSD + " Dollars ");
 printOut(newLine);
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
 
+/* Create a variable that contains the following text:
+"There is much between heaven and earth that we do not understand."
+Print the number of characters in the text.
+Print the character at position number 19.
+Print the characters starting at position number 35 and 8 characters forward.
+print the index at which "earth" starts in the text.*/
+
+const text = "There is much between heaven and earth that we do not understand.";
+const numberOfCharacters= text.length;
+const expectedLength = 53;
+
+const characterAtPosition19 = text.charAt(19);
+
+const substringFrom35= text.substring(35, 8);
+
+const indexOfJord = text.indexOf ("jord");
+
+
+printOut(text);
+printOut ("The text has " + expectedLength + " characters.");
+printOut(" The character at position 19:" + characterAtPosition19);
+printOut("The substring from position 35 and 8 places is: " + substringFrom35);
+printOut("The word jord starts at position " + indexOfJord);
 printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+const isFeveGreaterThenThree = 5>3;
+printOut ("Is 5 greater than 3?" + isFeveGreaterThenThree);
+
+const isSevengreaterThanOrequalSeven =  7>=7;
+printOut("Is 7 great then or equal to 7?" + isSevengreaterThanOrequalSeven);
+
+const isOneLessThanA = 1 < a ;
+printOut ("Is 1 less than a?"+ isOneLessThanA);
+
+const is2500LessThanABCD = 2500 < abcd;
+printOut ("Is 2500 less than abcd?"+ is2500LessThanABCD);
+
+const 
 printOut(newLine);
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");

@@ -79,13 +79,6 @@ printOut ( "Days = "+ part4_days + " ,Hours = " + part4_hours + " ,Minutes = " +
 printOut(newLine);
 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
-
-printOut("Replace this with you answer!");
-printOut(newLine);
-
-printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
 /* Convert 54 dollars to Norwegian kroner, and print the price for both:
 NOR -> USD and USD -> NOK.
 USe 76 NOK = 8.6 USD as the exchange rate.
@@ -101,6 +94,11 @@ amontUSD =Math.round (amontNOK *USD);
 //printOut (amontNOK + " Kroner is " + amontUSD+ " Dollars " );
 
 printOut(amontUSD + " Dollar is " + amontNOK + " Kroner and " + amontNOK + " Kroner is " + amontUSD + " Dollars ");
+printOut(newLine);
+
+printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
+/* Put your code below here!*/
+
 printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");

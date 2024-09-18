@@ -49,8 +49,33 @@ printOut (" 3 days, 12 hours, 14 minutes, and 45 seconds = "+ totalMinutes.toFix
 
 
 printOut("--- Part 4 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
-printOut("Replace this with you answer!");
+/*  Convert 6,322.52 minutes to days, hours, minutes and seconds
+*/
+const nummerOfMinutes = 6322.52;
+
+const hoursInDay = 24;
+const minutesInHour = 60;
+const secondsInMinute = 60; 
+
+let part4_Calc = nummerOfMinutes / (minutesInHour * hoursInDay);
+const part4_days = Math.floor ( part4_Calc);
+//printOut ("Days = " + part4_days );
+
+part4_Calc = part4_Calc - part4_days;
+part4_Calc = part4_Calc * hoursInDay;
+const part4_hours = Math.floor (part4_Calc);
+//printOut ("Hours =" + part4_hours);
+
+part4_Calc = part4_Calc - part4_hours;
+part4_Calc = part4_Calc * minutesInHour;
+const part4_minutes = Math.floor (part4_Calc);
+//printOut ("Minutes = " + part4_minutes);
+
+part4_Calc = part4_Calc - part4_minutes;
+part4_Calc = part4_Calc * secondsInMinute;
+const part4_Seconds = Math.floor (part4_Calc);
+//printOut ("Seconds = " + part4_Seconds);
+printOut ( "Days = "+ part4_days + " ,Hours = " + part4_hours + " ,Minutes = " + part4_minutes + " ,Seconds = " + part4_Seconds);
 printOut(newLine);
 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");

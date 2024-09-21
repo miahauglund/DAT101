@@ -143,8 +143,17 @@ printOut(newLine);
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
+
+const num1 = parseFloat("254");
+const num2= parseFloat ("57.23");
+let text2 = "25 kroner";
+const num3 = parseFloat(text2);
+
+printOut (" ´254`: "+ num1);
+printOut (" ´57.23` :" + num2);
+printOut (" ´25 kroner`:" + num3);
+
+
 
 printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/

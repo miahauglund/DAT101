@@ -106,38 +106,39 @@ Print the characters starting at position number 35 and 8 characters forward.
 print the index at which "earth" starts in the text.*/
 
 const text = "There is much between heaven and earth that we do not understand.";
+printOut(text);
+
 const numberOfCharacters= text.length;
 const expectedLength = 53;
+printOut ("The text has " + expectedLength + " characters.");
 
 const characterAtPosition19 = text.charAt(19);
+printOut(" The character at position 19:" + characterAtPosition19);
 
 const substringFrom35= text.substring(35, 8);
-
-const indexOfJord = text.indexOf ("jord");
-
-
-printOut(text);
-printOut ("The text has " + expectedLength + " characters.");
-printOut(" The character at position 19:" + characterAtPosition19);
 printOut("The substring from position 35 and 8 places is: " + substringFrom35);
+const indexOfJord = text.indexOf ("jord");
 printOut("The word jord starts at position " + indexOfJord);
+
 printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-const isFeveGreaterThenThree = 5>3;
-printOut ("Is 5 greater than 3?" + isFeveGreaterThenThree);
+printOut ("5 > 3 =" + (5>3));
 
-const isSevengreaterThanOrequalSeven =  7>=7;
-printOut("Is 7 great then or equal to 7?" + isSevengreaterThanOrequalSeven);
+printOut (" 7 > 7 =" + (7 > 7));
 
-const isOneLessThanA = 1 < a ;
-printOut ("Is 1 less than a?"+ isOneLessThanA);
+printOut ("\"a\" > \"b\ = " + ("a" > "b"));
 
-const is2500LessThanABCD = 2500 < abcd;
-printOut ("Is 2500 less than abcd?"+ is2500LessThanABCD);
+printOut (" 1 < \"a\" =" + (1 < "a"));
 
-const 
+printOut ("\"2500\" < \"abcd\" = " + ( "2500" < "abcd"));
+
+printOut ("\"arne\" !== \"thomas\" = " + ("arne" !== "thomas"));
+
+printOut (" 2=== 5 =" + (2 === 5));
+
+printOut (" \"abcd\" > \" bcd\" =" + ("abcd" > "bcd"));
 printOut(newLine);
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");

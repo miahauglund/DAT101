@@ -151,17 +151,21 @@ const num3 = parseFloat(text2);
 
 printOut (" ´254`: "+ num1);
 printOut (" ´57.23` :" + num2);
-printOut (" ´25 kroner`:" + num3);
+printOut ("´25 kroner`:" + num3);
 
 
 
 printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
 printOut(newLine);
 
 /* Task 10*/
 printOut("--- Part 10 ---------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+//Use modulus (%) to calculate how many weeks and days are in 131 days.
+let totalDays = 131;
+let weeks = Math.floor(totalDays/ 7);
+let justDays = totalDays % 7 ;
+
+printOut(totalDays+ " Days is " + weeks + " weeks and " + justDays + " days " );
 printOut(newLine);

@@ -149,9 +149,9 @@ const num2= parseFloat ("57.23");
 let text2 = "25 kroner";
 const num3 = parseFloat(text2);
 
-printOut (" ´254`: "+ num1);
-printOut (" ´57,23` :" + num2);
-printOut ("25 kroner:" + num3);
+printOut (" 254 = "+ num1);
+printOut (" 57,23 = " + num2);
+printOut (" 25 kroner = " + num3);
 
 
 
@@ -160,7 +160,7 @@ printOut("--- Part 9 -----------------------------------------------------------
 //Create a variable "r" and randomly generate a number from 1 to 360 (1 >= r <= 360)
 
 let r = Math.floor((Math.random()* 360) + 1);
-printOut (r.toString());
+printOut (" Randomly generate number = "+ r.toString());
 printOut(newLine);
 
 /* Task 10*/

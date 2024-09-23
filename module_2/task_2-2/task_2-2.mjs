@@ -75,7 +75,8 @@ part4_Calc = part4_Calc - part4_minutes;
 part4_Calc = part4_Calc * secondsInMinute;
 const part4_Seconds = Math.floor (part4_Calc);
 //printOut ("Seconds = " + part4_Seconds);
-printOut ( " 6322.52 minutes is:" + " Days = "+ part4_days + " ,Hours = " + part4_hours + " ,Minutes = " + part4_minutes + " ,Seconds = " + part4_Seconds);
+printOut ( " 6322.52 minutes is:" + " Days = "+ part4_days.toString() + " ,Hours = " + part4_hours.toString() + " ,Minutes = " + part4_minutes.toString() + " ,Seconds = " 
++ part4_Seconds.toString());
 printOut(newLine);
 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");
@@ -91,7 +92,7 @@ const amontNOK = Math.round (amontUSD * NOK);
 printOut (amontUSD + " dollars is " + amontNOK + " Kroner" );
 
 amontUSD =Math.round (amontNOK *USD);
-printOut (amontNOK + " Kroner is " + amontUSD+ " Dollars " );
+printOut (amontNOK + " Kroner is " + amontUSD + " Dollars " );
 
 //printOut(amontUSD + " Dollar is " + amontNOK + " Kroner and " + amontNOK + " Kroner is " + amontUSD + " Dollars ");
 printOut(newLine);

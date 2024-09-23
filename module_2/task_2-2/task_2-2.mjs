@@ -14,21 +14,21 @@ printOut("konverter 25m og 34 cm til inches ");
 const antallMeter= 25;
 const antallCM= 34;
 let meterIMillimeter= antallMeter*1000;
-printOut("Meter i MM "+meterIMillimeter);
+//printOut("Meter i MM "+meterIMillimeter);
 
 let CMInMillimeter= antallCM*10;
-printOut("CM i mm "+CMInMillimeter);
+//printOut("CM i mm "+CMInMillimeter);
 
 let antallMM= meterIMillimeter+ CMInMillimeter;
-printOut("Antall Inches "+ antallMM);
+//printOut("Antall Inches "+ antallMM);
 
 let MMtoinches= antallMM/25.4;
-printOut("Antall Inches "+MMtoinches.toFixed(2));
+//printOut("Antall Inches "+MMtoinches.toFixed(2));
 printOut(newLine);
 
-
-printOut(antallMM.toString()); 
-printOut(MMtoinches.toString());
+printOut(" 25 meters and  34 cenitermeters = " + MMtoinches.toFixed(2));
+//printOut(antallMM.toString()); 
+//printOut(MMtoinches.toString());
 printOut(newLine);
 
 printOut("--- Part 3 ----------------------------------------------------------------------------------------------");
@@ -150,13 +150,17 @@ let text2 = "25 kroner";
 const num3 = parseFloat(text2);
 
 printOut (" ´254`: "+ num1);
-printOut (" ´57.23` :" + num2);
-printOut ("´25 kroner`:" + num3);
+printOut (" ´57,23` :" + num2);
+printOut ("25 kroner:" + num3);
 
 
 
 printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
+//Create a variable "r" and randomly generate a number from 1 to 360 (1 >= r <= 360)
+
+let r = Math.floor((Math.random()* 360) + 1);
+printOut (r.toString());
 printOut(newLine);
 
 /* Task 10*/
@@ -167,5 +171,5 @@ let totalDays = 131;
 let weeks = Math.floor(totalDays/ 7);
 let justDays = totalDays % 7 ;
 
-printOut(totalDays+ " Days is " + weeks + " weeks and " + justDays + " days " );
+printOut(totalDays+ " Days is " + weeks + " weeks and " + justDays + " days ");
 printOut(newLine);

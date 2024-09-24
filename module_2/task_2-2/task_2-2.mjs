@@ -173,4 +173,4 @@ let weeks = Math.floor(totalDays/ 7);
 let justDays = totalDays % 7 ;
 
 printOut(totalDays.toString() + " days is " + weeks.toString() + " weeks and " + justDays.toString() + " days ");
-printOut(newLine); 
+printOut(newLine);

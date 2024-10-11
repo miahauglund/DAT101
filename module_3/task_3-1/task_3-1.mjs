@@ -5,8 +5,8 @@ initPrintOut(document.getElementById("txtOut"));
 printOut("--- Part 1, 2, 3 ----------------------------------------------------------------------------------------");
 /* Put your code below here!*/
 printOut("Task 1, 2 and 3");
-/*let wakeUpTime = 6 ;
-//if (wakeUpTime === 8 ) {
+let wakeUpTime = 2 ;
+if (wakeUpTime === 8 ) {
   printOut("I can catch the bus to school.");
 
 } else {
@@ -19,7 +19,7 @@ if (wakeUpTime1 === 8 ) {
 
 } else {
  printOut(" I cannot catch the bus to school.");
-} */
+} 
 
 let wakeUpTime2 = 8 ;
 if (wakeUpTime2 === 8 ) {
@@ -28,14 +28,14 @@ if (wakeUpTime2 === 8 ) {
 } else {
  printOut(" I cannot catch the bus to school.");
 } 
-let wakeUpTime3 = 8;
+let wakeUpTime3 = 6;
 if (wakeUpTime3 === 7){
   printOut("I can take the bus to school.")
 
-} else if (wakeUpTime3 === 8){
+} else if (wakeUpTime3 === 7){
   printOut(" I can take the train to school.")
 
-}else {
+}else { (wakeUpTime3 === 8)
   printOut(" I have to take the car to school")
 } 
 printOut("--- Part 4, 5 --------------------------------------------------------------------------------------------");

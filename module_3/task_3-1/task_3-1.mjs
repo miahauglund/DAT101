@@ -28,8 +28,8 @@ if (wakeUpTime2 === 8 ) {
 } else {
  printOut(" I cannot catch the bus to school.");
 } 
-let wakeUpTime3 = 6;
-if (wakeUpTime3 === 7){
+let wakeUpTime3 = 7;
+if (wakeUpTime3 === 8){
   printOut("I can take the bus to school.")
 
 } else if (wakeUpTime3 === 7){

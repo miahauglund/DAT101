@@ -38,10 +38,29 @@ if (wakeUpTime3 === 7){
 }else { (wakeUpTime3 === 8)
   printOut(" I have to take the car to school")
 } 
-printOut("--- Part 4, 5 --------------------------------------------------------------------------------------------");
+printOut("--- Part 4,5 --------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
+printOut ("Oppgave 4 og 5");
+let test = 5; 
+if (test > 0){
+  printOut("Value is positive");
+} else if (test < 0){
+  printOut("Value is negative");
+
+} else {
+  printOut("Value is zero");
+} 
+
+let test2 = -1;
+if (test2 > 0){
+  printOut ("Value is positive");
+} else if (test2 < 0){
+  printOut ("Value is negative")
+}  else {
+  printOut ("Value is zero"); 
+} 
+printOut("Oppgave 4 value =" +test2);
+printOut
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/

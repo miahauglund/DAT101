@@ -41,7 +41,8 @@ if (wakeUpTime3 === 7){
 printOut("--- Part 4,5 --------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
 printOut ("Oppgave 4 og 5");
-let test = 5; 
+printOut ("Oppgave 4 value = -1")
+/*let test = 5; 
 if (test > 0){
   printOut("Value is positive");
 } else if (test < 0){
@@ -49,7 +50,7 @@ if (test > 0){
 
 } else {
   printOut("Value is zero");
-} 
+}*/ 
 
 let test2 = -1;
 if (test2 > 0){
@@ -59,7 +60,7 @@ if (test2 > 0){
 }  else {
   printOut ("Value is zero"); 
 } 
-printOut("Oppgave 4 value =" +test2);
+//printOut("Oppgave 4 value =" + test2);
 printOut
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");

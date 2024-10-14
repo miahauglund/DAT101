@@ -5,7 +5,16 @@ initPrintOut(document.getElementById("txtOut"));
 printOut("--- Part 1, 2, 3 ----------------------------------------------------------------------------------------");
 /* Put your code below here!*/
 printOut("Task 1, 2 and 3");
-let wakeUpTime = 2 ;
+let wakeupTime4 = 8;
+if (wakeupTime4 = 8 ){
+ /*printOut(" I can catch the bus to school.");*/
+
+} else {
+  /*printOut("I cannnot catch the bus to school");*/
+
+}
+printOut("Wake up time = " + wakeupTime4);
+/*let wakeUpTime = 2 ;
 if (wakeUpTime === 8 ) {
   printOut("I can catch the bus to school.");
 
@@ -19,15 +28,16 @@ if (wakeUpTime1 === 8 ) {
 
 } else {
  printOut(" I cannot catch the bus to school.");
-} 
+} */
 
-let wakeUpTime2 = 8 ;
+/*let wakeUpTime2 = 8 ;
 if (wakeUpTime2 === 8 ) {
   printOut("I can catch the bus to school.");
 
 } else {
  printOut(" I cannot catch the bus to school.");
 } 
+*/
 let wakeUpTime3 = 7;
 if (wakeUpTime3 === 8){
   printOut("I can take the bus to school.")
@@ -65,7 +75,19 @@ printOut
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+
+
+
+/*let size = 3;
+if (size > 8);{
+  printOut (" Thank you");
+
+} else if (size < 1);{
+  printOut ("The image is too small");
+ 
+}*/
+
+
 printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");

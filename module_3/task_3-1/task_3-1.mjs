@@ -123,6 +123,34 @@ printOut(newLine);
 
 printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
+const montList1 = [
+  {name: "Januar", days: 31},
+  {name: "Februar", days: 28}, // Tok ikke med skuddåret
+  {name: "Mars", days: 31},
+  {name: "April", days: 30},
+  {name: "Mai", days: 31},
+  {name: "Juni", days: 30},
+  {name: "Juli", days: 31}, 
+  {name: "August", days: 31},
+  {name: "September", days: 30},
+  {name: "Oktober", days: 31}, 
+  {name: "November", days:30},
+  {name: "Desember", days: 31}
+];
+
+const noOfMonth = montList1.length;
+const randomIndex = Math.floor(Math.random() * noOfMonth);
+const month = montList1 [randomIndex];
+const monthName1 = month.name;
+const daysInMonth1 = month.days;
+
+printOut ( "It is " + daysInMonth1 + " days in " + monthName1);
+
+
+
+/* Task 10*/
+printOut("--- Part 10 ---------------------------------------------------------------------------------------------");
+/* Put your code below here!*/
 const montList2 = [
   {name: "Januar", days: 31},
   {name: "Februar", days: 28}, // Tok ikke med skuddåret
@@ -138,20 +166,20 @@ const montList2 = [
   {name: "Desember", days: 31}
 ];
 
-const noOfMonth = montList2.length;
-const randomIndex = Math.floor(Math.random() * noOfMonth);
-const month = montList2 [randomIndex];
-const monthName1 = month.name;
-const daysInMonth1 = month.days;
-
-printOut ( "It is " + daysInMonth1 + " days in " + monthName1);
+const noOfMonth2 = montList2.length;
+const randomIndex2 = Math.floor(Math.random() * noOfMonth);
+const month2 = montList2 [randomIndex2];
+const monthName2 = month.name;
 
 
+if (monthName2 === "Mars", monthName2 === "Mai" ) {
+  printOut (" In " + monthName2 + " the art gallery is closed for refurbishment. ");
 
-/* Task 10*/
-printOut("--- Part 10 ---------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
+} else if (monthName2 === "April") {
+printOut ("In " + monthName2 + " the Art gallery have temporary premises in the building next door." );
 
+} else {
+  printOut ("The Art gallery is open in " + monthName2 + ", Welcome! ");
+}
 
-printOut("Replace this with you answer!");
 printOut(newLine);

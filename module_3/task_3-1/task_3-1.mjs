@@ -92,7 +92,18 @@ printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+let randomSize2 = Math.floor( Math.random ()* 8)+ 1;
+let imageSize2 = randomSize2 * 0.5;
+printOut (" Uploaded image size " + imageSize2 + " MP ");
+
+if (imageSize2 >= 6 ){
+  printOut (" Image is too large");
+} else if (imageSize2 >= 4){
+  printOut ("Thank you");
+
+} else {
+  printOut(" The image is too small");
+}
 printOut(newLine);
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");

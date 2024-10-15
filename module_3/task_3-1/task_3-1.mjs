@@ -85,19 +85,17 @@ if (imageSize >= 4){
   printOut ("The image is too small");
 }   
 
-
-
-
 printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
 let randomSize2 = Math.floor( Math.random ()* 8)+ 1;
-let imageSize2 = randomSize2 * 0.5;
+let imageSize2 = randomSize2 * 1;
 printOut (" Uploaded image size " + imageSize2 + " MP ");
 
 if (imageSize2 >= 6 ){
   printOut (" Image is too large");
+
 } else if (imageSize2 >= 4){
   printOut ("Thank you");
 

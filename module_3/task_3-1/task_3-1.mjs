@@ -82,7 +82,7 @@ printOut("Uploaded image size " + imageSize + " MP");
 if (imageSize >= 4){
   printOut("Thank you");
 } else  {
-  printOut ("The image is too small");
+  printOut ("The image size is too small");
 }   
 
 printOut(newLine);
@@ -94,28 +94,64 @@ let imageSize2 = randomSize2 * 1;
 printOut (" Uploaded image size " + imageSize2 + " MP ");
 
 if (imageSize2 >= 6 ){
-  printOut (" Image is too large");
+  printOut (" Image size is too large");
 
 } else if (imageSize2 >= 4){
   printOut ("Thank you");
 
 } else {
-  printOut(" The image is too small");
+  printOut(" The image size is too small");
 }
 printOut(newLine);
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+const montList = [ "Januar", "Februar", "Mars", "April", "Mai", 
+  "Juni", "Juli", "August", "September", " November", "Desember"];
+  
+const nofMonth = montList.length;
+const monthName = montList[ Math.floor(Math.random()* nofMonth)];
+
+if (monthName.includes("r")) {
+  printOut("Month is = " + monthName);
+  printOut (" You must take vitamin D");
+} else {
+  printOut ("Month is = " + monthName);
+  printOut(" You do not need to take vitamin D");
+}
 printOut(newLine);
 
 printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
+const montList2 = [
+  {name: "Januar", days: 31},
+  {name: "Februar", days: 28}, // Tok ikke med skuddåret
+  {name: "Mars", days: 31},
+  {name: "April", days: 30},
+  {name: "Mai", days: 31},
+  {name: "Juni", days: 30},
+  {name: "Juli", days: 31}, 
+  {name: "August", days: 31},
+  {name: "September", days: 30},
+  {name: "Oktober", days: 31}, 
+  {name: "November", days:30},
+  {name: "Desember", days: 31}
+];
+
+const noOfMonth = montList2.length;
+const randomIndex = Math.floor(Math.random() * noOfMonth);
+const month = montList2 [randomIndex];
+const monthName1 = month.name;
+const daysInMonth1 = month.days;
+
+printOut ( "It is " + daysInMonth1 + " days in " + monthName1);
+
+
 
 /* Task 10*/
 printOut("--- Part 10 ---------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
+
+
 printOut("Replace this with you answer!");
 printOut(newLine);

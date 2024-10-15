@@ -75,17 +75,17 @@ printOut
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
+let randomSize = Math.floor(Math.random()* 8) + 1;
+let imageSize = randomSize * 0.5;
+printOut("Uploaded image size " + imageSize + " MP");
 
-
-
-/*let size = 3;
-if (size > 8);{
-  printOut (" Thank you");
-
-} else if (size < 1);{
+if (imageSize >= 4){
+  printOut("Thank you");
+} else  {
   printOut ("The image is too small");
- 
-}*/
+}   
+
+
 
 
 printOut(newLine);

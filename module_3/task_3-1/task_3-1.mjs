@@ -32,19 +32,23 @@ if (wakeUpTime3 === 7){
 printOut("--- Part 4,5 --------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
 printOut ("Oppgave 4 og 5");
-printOut ("Oppgave 4 value = -1")
+let value1 = Math.floor(Math.random() * 21)- 10;
 
-/*let test = 5; 
-if (test > 0){
+if (value1 > 0){
   printOut("Value is positive");
-} else if (test < 0){
+} else{
   printOut("Value is negative");
 
-} else {
-  printOut("Value is zero");
-}*/ 
+} 
+  printOut ("Oppgave 4 value = " + value1)
 
-let test2 = -1;
+
+
+
+
+
+let test2 = Math.floor( Math.random() * 21)- 10;
+
 if (test2 > 0){
   printOut ("Value is positive");
 } else if (test2 < 0){
@@ -52,8 +56,7 @@ if (test2 > 0){
 }  else {
   printOut ("Value is zero"); 
 } 
-//printOut("Oppgave 4 value =" + test2);
-printOut
+
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/

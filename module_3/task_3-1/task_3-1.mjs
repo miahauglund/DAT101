@@ -35,9 +35,9 @@ printOut ("Oppgave 4 og 5");
 let value1 = Math.floor(Math.random() * 21)- 10;
 
 if (value1 > 0){
-  printOut("Value is positive");
+  /*printOut("Value is positive");
 } else{
-  printOut("Value is negative");
+  printOut("Value is negative");*/
 
 } 
   printOut ("Oppgave 4 value = " + value1)

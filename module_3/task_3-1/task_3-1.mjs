@@ -14,6 +14,7 @@ if (wakeupTime4 = 8 ){
 
 }
 printOut("Wake up time = " + wakeupTime4);
+
 /*let wakeUpTime = 2 ;
 if (wakeUpTime === 8 ) {
   printOut("I can catch the bus to school.");
@@ -52,6 +53,7 @@ printOut("--- Part 4,5 ---------------------------------------------------------
 /* Put your code below here!*/
 printOut ("Oppgave 4 og 5");
 printOut ("Oppgave 4 value = -1")
+
 /*let test = 5; 
 if (test > 0){
   printOut("Value is positive");

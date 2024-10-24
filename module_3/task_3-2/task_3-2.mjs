@@ -57,9 +57,32 @@ printOut(newLine);
 
 printOut("--- Part 4 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+function isPrime(num){
+    if (num < 2) return false;
+    for (let i = 2; i<= Math.sqrt(num); i++){
+        if(num % i === 0)return false;
+    }    
+    return true;
+}
+const primesFor = [];
+for (let i = 2; i < 200; i++){
+    if (isPrime(i)){
+        primesFor.push(i);
+    }
+}
+printOut(" Primtall med for-løkke: " + primesFor);
 printOut(newLine);
 
+
+const primesWhile = [];
+let i = 2;
+while (i < 200){
+    if (isPrime(i)){
+        primesWhile.push(i);
+    }
+    i++;
+}
+printOut (" Primtall med while-løkke: " + primesWhile); 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
 printOut("Replace this with you answer!");

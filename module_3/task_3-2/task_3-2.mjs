@@ -4,17 +4,31 @@ initPrintOut(document.getElementById("txtOut"));
 
 printOut("--- Part 1 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-class
-printOut("Replace this with you answer!");
-printOut(newLine);
 
 printOut("--- Part 2 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+const answerNumber = 45;
+let guessNumber = 0;
+while (answerNumber !== guessNumber){
+    guessNumber = Math.ceil(Math.random() * 60);
+}
+printOut ("Guess Number = " + guessNumber.toString());
+printOut(" ");   
+
 printOut(newLine);
 
 printOut("--- Part 3 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
+guessNumber = 0;
+let guessCount = 0;
+const startTime = Date.now();
+while (answerNumber !== guessNumber){
+    guessCount++;
+    guessNumber = Math.ceil(Math.random() * 1000000);
+}
+const endTime = Date.now();
+const timeUsed = endTime - startTime;
+printOut ( " Antall gjetninger " + guessCount.toString()+ " tok " + timeUsed.toString() + " ms ") ;  
 printOut("Replace this with you answer!");
 printOut(newLine);
 

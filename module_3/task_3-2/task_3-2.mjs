@@ -217,21 +217,12 @@ function simulateTower(){
         if (hasTower){
             achieved = true;
             printOut (diceThrow);
-            printOut (Tårn)
+            printOut ("Tårn")
             printOut( "På " + rolls + " kast!");
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
+simulateTower();
 
 
 

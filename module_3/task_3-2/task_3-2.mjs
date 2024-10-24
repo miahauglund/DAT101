@@ -49,9 +49,8 @@ printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut (" Dice Rolling extravaganza");
 
-const d1 = Math.ceil(Math.random() * 6);
+/*const d1 = Math.ceil(Math.random() * 6);
 const d2 = Math.ceil(Math.random() * 6);
 const d3 = Math.ceil(Math.random() * 6);
 const d4 = Math.ceil(Math.random() * 6);
@@ -80,34 +79,167 @@ diceCount += count1.toString() + ",";
 diceCount += count2.toString() + ",";
 diceCount += count3.toString() + ",";
 diceCount += count4.toString() + ",";
-diceCount += count5.tostring() + ",";
+diceCount += count5.toString() + ",";
 diceCount += count6.toString();
 printOut ("Dicecount : " + diceCount)
 
 const equals1 = (diceCount.match (/1/g) || "").length;
 const equals6 = (diceCount.match(/6/g) || "").length;
-printOut ("Equals1: " + equals1.toString());
-printOut ("Equals6 : " + equals6.toString ());
+printOut ("Full straight: " + equals1.toString());
+printOut (" Yatzy : " + equals6.toString ());
 
 if (equals1 === 6){
     printOut ("Full straight");
 } else if (equals6 === 1 ){
     printOut("Yatzy!!");
+}*/
+
+function rollDice() {
+    return [
+        Math.ceil(Math.random() * 6),
+        Math.ceil(Math.random() * 6),
+        Math.ceil(Math.random() * 6),
+        Math.ceil(Math.random() * 6),
+        Math.ceil(Math.random() * 6),
+        Math.ceil(Math.random() * 6)
+    ];
 }
-printOut(newLine);
 
-printOut("--- Part 8 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
+function countOccurrences(roll) {
+    const counts = Array(7).fill(0);
+    roll.forEach(num => counts[num]++);
+    return counts;
+}
 
-printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
+function checkThreePairs(counts) {
+    return counts.filter(count => count === 2).length === 3;
+}
+
+function checkFullHouse(counts) {
+    return counts.includes(3) && counts.includes(2);
+}
+
+function checkTower(counts) {
+    return counts.includes(4) && counts.includes(2);
+}
+
+function checkYahtzee(counts) {
+    return counts.some(count => count === 6);
+}
+
+function simulateThreePairs() {
+    let rolls = 0;
+    let achieved = false;
+
+    while (!achieved) {
+        const rollResult = rollDice();
+        const counts = countOccurrences(rollResult);
+        rolls++;
+
+        const diceThrow = rollResult.join(", ");
+        const hasThreePairs = checkThreePairs(counts);
+        
+        if (hasThreePairs) {
+            achieved = true;
+            printOut(diceThrow);
+            printOut("3 par "); 
+            printOut( "På " + rolls + " kast!");
+        }
+    }
+}
+
+
+
+// Start the simulations
+simulateThreePairs();
+
+
+printOut("");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
+function simulateFullHouse() {
+    let rolls = 0;
+    let achieved = false;
+
+    while (!achieved) {
+        const rollResult = rollDice();
+        const counts = countOccurrences(rollResult);
+        rolls++;
+
+        const diceThrow = rollResult.join(", ");
+        const hasFullHouse = checkFullHouse(counts);
+        
+        if (hasFullHouse) {
+            achieved = true;
+            printOut(diceThrow);
+            printOut(" Full straight ")
+            printOut ("På " + rolls + " kast!");
+        }
+    }
+}
+
+
+simulateFullHouse();
+printOut (" ");
+
+function simulateTower(){
+    let rolls = 0;
+    let achieved = false;
+
+    while (!achieved){ 
+        const rollResult = rollDice();
+        const counts = countOccurrences (rollResult);
+        rolls++;
+
+        const diceThrow = rollResult.join(",");
+        const hasTower = checkTower(counts);
+
+        if (hasTower){
+            achieved = true;
+            printOut (diceThrow);
+            printOut (Tårn)
+            printOut( "På " + rolls + " kast!");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+printOut("");
+/* Put your code below here!*/
+
+function simulateYahtzee() {
+    let rolls = 0;
+    let achieved = false;
+
+    while (!achieved) {
+        const rollResult = rollDice();
+        const counts = countOccurrences(rollResult);
+        rolls++;
+
+        const diceThrow = rollResult.join(", ");
+        const hasYahtzee = checkYahtzee(counts);
+        
+        if (hasYahtzee) {
+            achieved = true;
+            printOut(diceThrow);
+            printOut("Yatzy");
+            printOut(" På " + rolls + " kast! "); 
+        }
+    }
+}
+simulateYahtzee();
+
 
 /* Task 10*/
-printOut("--- Part 10 ---------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
+printOut("");
+

@@ -85,8 +85,17 @@ while (i < 200){
 printOut (" Primtall med while-løkke: " + primesWhile); 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
+
+for (let row = 1; row <= 7; row++){
+    let linje = "";
+    for( let col =1; col <= 9; col++){
+        linje += "K" + col + "R" + row + "";
+ 
+    }
+    printOut(linje.trim());
+}
+
+
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/

@@ -44,8 +44,29 @@ printOut(newLine);
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
+function getGrade(points) {
+    const percentage = (points / 236)*100;
+    
+    if (percentage >= 89) return " A ";
+    if (percentage >= 77) return " B ";
+    if (percentage >= 65) return " C ";
+    if (percentage >= 53) return " D";
+    if (percentage >= 41) return " E ";
+    return "F ";
+}
+
+function simulateSingleGrades(){
+    let grades = "";
+
+        const points = Math.floor(Math.random ()* 236)+ 1;
+        const percentage = (points / 236) * 100;
+        const grade = getGrade (points);
+        printOut (" Kandidaten fikk " + points + " poeng. Som er " + percentage.toFixed(2) + " % og som gir karakter" + grade + " . ");
+    }
+
+ simulateSingleGrades();
+printOut("");
+
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/

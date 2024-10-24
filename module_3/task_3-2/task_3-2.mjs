@@ -4,6 +4,17 @@ initPrintOut(document.getElementById("txtOut"));
 
 printOut("--- Part 1 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
+let line1 = " ";
+let line2 = " ";
+
+for (let i= 1; i <= 10; i++){
+    line1 += i + " ";
+}
+for (let i = 10; i >= 1; i--){
+    line2 += i + " ";
+}   
+printOut (line1);
+printOut(line2);
 
 printOut("--- Part 2 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
@@ -12,7 +23,7 @@ let guessNumber = 0;
 while (answerNumber !== guessNumber){
     guessNumber = Math.ceil(Math.random() * 60);
 }
-printOut ("Guess Number = " + guessNumber.toString());
+printOut (" Tallet er " + guessNumber);
 printOut(" ");   
 
 printOut(newLine);

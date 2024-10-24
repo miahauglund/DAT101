@@ -18,29 +18,41 @@ printOut(line2);
 
 printOut("--- Part 2 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-const answerNumber = 45;
-let guessNumber = 0;
-while (answerNumber !== guessNumber){
-    guessNumber = Math.ceil(Math.random() * 60);
-}
-printOut (" Tallet er " + guessNumber);
-printOut(" ");   
 
-printOut(newLine);
+const answerNumber = 45;
+let guessNumber;
+do {
+   guessNumber = Math.ceil(Math.random() * 60) + 1;
+} 
+while (answerNumber !== answerNumber);
+
+
+printOut (" Tallet er " + guessNumber);
+printOut("");
+ 
+
+
 
 printOut("--- Part 3 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-guessNumber = 0;
+const targeNumber = 123456;
+let guessedNumber;
 let guessCount = 0;
+
 const startTime = Date.now();
-while (answerNumber !== guessNumber){
+
+do{ 
+    guessNumber = Math.floor(Math.random() * 1000000) + 1;
     guessCount++;
-    guessNumber = Math.ceil(Math.random() * 1000000);
-}
+} while (guessNumber !== targeNumber);
+
 const endTime = Date.now();
-const timeUsed = endTime - startTime;
-printOut ( " Antall gjetninger " + guessCount.toString()+ " tok " + timeUsed.toString() + " ms ") ;  
-printOut("Replace this with you answer!");
+const timeTaken = endTime -startTime;
+ 
+printOut(" Tallet er " + guessNumber);
+printOut(" Datamaskinen brukte " + guessCount + " runder");
+printOut(" og det tok " + timeTaken + " millisek.");
+
 printOut(newLine);
 
 printOut("--- Part 4 ----------------------------------------------------------------------------------------------");

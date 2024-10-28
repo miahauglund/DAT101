@@ -100,7 +100,7 @@ for (let row = 1; row <= 7; row++){
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
 function getGrade(points) {
-    const percentage = (points / 236)*100;
+    const percentage = (points / 236)* 100;
     
     if (percentage >= 89) return " A ";
     if (percentage >= 77) return " B ";
@@ -116,14 +116,14 @@ function simulateSingleGrades(){
         const points = Math.floor(Math.random ()* 236)+ 1;
         const percentage = (points / 236) * 100;
         const grade = getGrade (points);
-        printOut (" Kandidaten fikk " + points + " poeng. Som er " + percentage.toFixed(2) + " % og som gir karakter" + grade + " . ");
+        printOut (" Kandidaten fikk " + points + " poeng. Som er " + percentage.toFixed() + " % og som gir karakter " + grade );
     }
 
  simulateSingleGrades();
 printOut("");
 
 
-printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
+printOut("--- Part 7 Dice rolling extravaganza ---------------------------------------------------------------------");
 /* Put your code below here!*/
 
 /*const d1 = Math.ceil(Math.random() * 6);

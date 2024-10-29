@@ -89,7 +89,7 @@ printOut("--- Part 5 -----------------------------------------------------------
 for (let row = 1; row <= 7; row++){
     let linje = "";
     for( let col =1; col <= 9; col++){
-        linje += "K" + col + "R" + row + "";
+        linje +=" K" + col + "R" + row + "";
  
     }
     printOut(linje.trim());

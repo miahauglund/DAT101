@@ -82,7 +82,7 @@ while (i < 200){
     }
     i++;
 }
-printOut (" Primtall med while-løkke: " + primesWhile); 
+/*printOut (" Primtall med while-løkke: " + primesWhile);*/ 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
 

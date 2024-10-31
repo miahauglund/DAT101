@@ -19,7 +19,39 @@ printOut(norwegianDate);
 printTodaysDate();
 printOut("--- Part 2 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+function printTodaysDate2(){
+    const today = new Date ();
+    const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+};
+
+const norwegianDate = today.toLocaleDateString('no-No', options).replace(',', '');
+printOut(`I dag er det: ${norwegianDate}`);
+return today; 
+
+}
+function calculateDaysUntilRelease (releaseDate){
+    const today = new Date();
+    const timeDiff = releaseDate - today;
+    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    return daysLeft;
+}
+
+function revealReleaseCountdown(){ 
+    const releaseDate = new Date("2025-05-14");
+    const daysLeft = calculateDaysUntilRelease(releaseDate);
+    printOut (`Kun ${daysLeft} dager igjen til den episke lanseringen av 2xko!`);
+}
+function main(){
+    printTodaysDate2();
+    revealReleaseCountdown();    
+    
+}
+main();
+
 printOut(newLine);
 
 printOut("--- Part 3 ----------------------------------------------------------------------------------------------");

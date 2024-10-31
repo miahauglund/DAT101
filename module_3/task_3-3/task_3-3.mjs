@@ -4,9 +4,19 @@ initPrintOut(document.getElementById("txtOut"));
 
 printOut("--- Part 1 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
+function printTodaysDate(){
+    const today = new Date();
+    const options = {
+    weekday: 'long' ,
+    year: 'numeric' ,
+    month: 'long' ,
+    day: 'numeric'
 
+};
+const norwegianDate = today.toLocaleDateString('no-No', options).replace(',' ,'');
+printOut(norwegianDate);
+}
+printTodaysDate();
 printOut("--- Part 2 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
 printOut("Replace this with you answer!");

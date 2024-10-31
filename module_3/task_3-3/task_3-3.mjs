@@ -56,7 +56,17 @@ printOut(newLine);
 
 printOut("--- Part 3 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+function circelProperties (radius){
+    const diameter = 2 * radius;
+    const circumference = 2 * Math.PI *radius;
+    const area = Math.PI * Math.pow (radius, 2);
+    
+    printOut (`Diameter: ${diameter}`);
+    printOut(`Cirumference: ${circumference.toFixed(2)}`);
+    printOut (`Area: ${area.toFixed(2)}`);
+}
+circelProperties(5);
+
 printOut(newLine);
 
 printOut("--- Part 4 ----------------------------------------------------------------------------------------------");

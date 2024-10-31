@@ -43,7 +43,7 @@ function calculateDaysUntilRelease (releaseDate){
 function revealReleaseCountdown(){ 
     const releaseDate = new Date("2025-05-14");
     const daysLeft = calculateDaysUntilRelease(releaseDate);
-    printOut (`Kun ${daysLeft} dager igjen til den episke lanseringen av 2xko!`);
+    printOut ("Kun" + daysLeft + "dager igjen til den episke lanseringen av 2xko!");
 }
 function main(){
     printTodaysDate2();
@@ -61,9 +61,9 @@ function circelProperties (radius){
     const circumference = 2 * Math.PI *radius;
     const area = Math.PI * Math.pow (radius, 2);
     
-    printOut (`Diameter: ${diameter}`);
-    printOut(`Cirumference: ${circumference.toFixed(2)}`);
-    printOut (`Area: ${area.toFixed(2)}`);
+    printOut ("Diameter: "+ diameter);
+    printOut("Cirumference: " + circumference.toFixed(2));
+    printOut ("Area:" + area.toFixed(2));
 }
 circelProperties(5);
 
@@ -71,7 +71,22 @@ printOut(newLine);
 
 printOut("--- Part 4 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+function calculateRectangleProperties(rectangle){
+    const width= rectangle.width;
+    const height= rectangle.height;
+
+    const circumference = 2 * (width + height);
+    const area = width * height;
+
+    printOut ( "width " + width + " height " + height);
+
+    printOut ("circumference:" + circumference.toFixed(2));
+    printOut (" Arena: "+ area.toFixed(2));
+}
+const rectangle = { width: 4, height: 3 };
+calculateRectangleProperties(rectangle);
+
+
 printOut(newLine);
 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");

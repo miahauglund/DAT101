@@ -80,7 +80,7 @@ function calculateRectangleProperties(rectangle){
 
     printOut ( "width " + width + " height " + height);
 
-    printOut ("circumference:" + circumference.toFixed(2));
+    printOut ("circumference: " + circumference.toFixed(2));
     printOut (" Arena: "+ area.toFixed(2));
 }
 const rectangle = { width: 4, height: 3 };
@@ -129,10 +129,10 @@ printOut(newLine);
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
 
-
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+
+
 printOut(newLine);
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");
@@ -148,5 +148,17 @@ printOut(newLine);
 /* Task 10*/
 printOut("--- Part 10 ---------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+function factorial(n){
+    if (n === 0 || n=== 1){
+        return 1;
+    } else{
+        return n * factorial(n - 1);
+    }
+}
+let number = 9;
+let result = factorial(number);
+printOut("factorial (" +  number+ ") is " + result);
+
+
+
 printOut(newLine);

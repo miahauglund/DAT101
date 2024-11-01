@@ -103,12 +103,12 @@ function convertTemperature (value, type) {
     } else if (type.toLowerCase() === "fahrenheit") {
         fahrenheit = value;
         celsius = Math.round((fahrenheit - 32) * 5/9);
-        kelvin = Math.round(celsius +273.15);
+        kelvin = Math.round(celsius + 273.15);
     
-    }  else if (type.toLowerCase()=== "kelvin") {
+    }  else if (type.toLowerCase() === "kelvin") {
         kelvin= value;
         celsius = Math.round(kelvin - 273.15);
-        fahrenheit= Math.round((celsius * 9 / 5)+ 32);
+        fahrenheit= Math.floor((celsius * 9 / 5)+ 32);
     } 
     
     printOut( "Convert " + value + " " + type);
@@ -124,15 +124,11 @@ convertTemperature(47,"Celsius");
 convertTemperature(100 ,"Fahrenheit");
 convertTemperature(300 ,"Kelvin");
 
-
-
-
-
-
 printOut(newLine);
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
+
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/

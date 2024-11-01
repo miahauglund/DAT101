@@ -91,13 +91,48 @@ printOut(newLine);
 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+
+function convertTemperature (value, type) {
+    let celsius, fahrenheit, kelvin;
+
+    if (type.toLowerCase() === "celsius") {
+        celsius = value;
+        fahrenheit= Math.round((celsius * 9/ 5)+ 32);
+        kelvin= Math.round(celsius + 273.15);
+    
+    } else if (type.toLowerCase() === "fahrenheit") {
+        fahrenheit = value;
+        celsius = Math.round((fahrenheit - 32) * 5/9);
+        kelvin = Math.round(celsius +273.15);
+    
+    }  else if (type.toLowerCase()=== "kelvin") {
+        kelvin= value;
+        celsius = Math.round(kelvin - 273.15);
+        fahrenheit= Math.round((celsius * 9 / 5)+ 32);
+    } 
+    
+    printOut( "Convert " + value + " " + type);
+    printOut ("Celsius = " + celsius);
+    printOut("fahrenheit = " + fahrenheit);
+    printOut ("kelvin = " + kelvin);   
+
+   printOut("");
+}
+  
+
+convertTemperature(47,"Celsius");
+convertTemperature(100 ,"Fahrenheit");
+convertTemperature(300 ,"Kelvin");
+
+
+
+
+
+
 printOut(newLine);
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/

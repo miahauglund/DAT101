@@ -129,21 +129,115 @@ printOut(newLine);
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
 
+function calculateNetPrice(gross, vatGroup){
+
+const vatRates ={
+    normal: 25,
+    food: 15,
+    hotel: 10,
+    transport: 10,
+    cinema: 10
+};
+
+vatGroup = vatGroup.toLowerCase();
+
+if (vatGroup in vatRates){
+    const vat = vatRates[vatGroup];
+    const netPrice = (100 * gross ) / (vat + 100);
+    return netPrice.toFixed(2);
+
+} else {
+    /*printOut("Unkown VAT group!");*/
+    return NaN;
+    }
+}
+let netPrice;
+
+netPrice= calculateNetPrice(100, "normal");
+printOut(" 100 is " + netPrice +" without tax");
+
+netPrice = calculateNetPrice( 150, "food");
+printOut( " 150 is "+ netPrice + " without tax" );
+
+netPrice = calculateNetPrice(50, "hotel");
+printOut(" 50 is " + netPrice + " without tax");
+
+netPrice= calculateNetPrice(100, "textile");
+if (isNaN(netPrice)){
+    printOut( "Textile is unknown tax-group");
+}   
+
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
 
 
-printOut(newLine);
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+
+            
 printOut(newLine);
 
 printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
+/*unction sumRange(start, count){
+    let sum = 0;
+    for(let i= 0; i< count; i++){
+        sum += start + i;
+    }
+    return sum;
+}
+function testMathExpressions(lines) {
+    let currentNumber = 1;
+    for(let i = 2; i < lines; i++){
+        const leftCount = i;
+        const rightCount= i;
+        
+        const leftSum = sumRange(currentNumber, leftCount);
+        currentNumber += leftCount;
+        const rightSum = sumRange(currentNumber, rightCount);
+        currentNumber += rightCount;
+
+        const leftExpression =[];
+        for(let j = 0; j< leftCount; j++){
+            leftExpression.push(currentNumber- rightCount - leftCount +j);
+        }
+        const rightExpression = [];
+        for(let j= 0; j<rightCount; j++){
+            rightExpression.push(currentNumber -rightCount + j);
+        }   
+        const leftStr = leftExpression.join ("  ");
+        const rightStr= rightExpression.join( "  ");
+        const result = leftSum;
+
+        const spacingLeft = " ".repeat(60 - leftStr.length);
+        const spacingEqual = " ".repeat(5);
+        const spacingRight= " ".repeat(60 - rightStr.length);
+
+        
+        printOut(leftStr + spacingLeft+ spacingEqual + result + spacingRight + rightStr);
+
+        if (leftSum - rightSum){
+            printOut 
+       
+        
+
+        }
+    }
+    printOut ("Maths fun!");
+}
+testMathExpressions(200); */
+
+/*public class MathExpressions1{ 
+    public static void main (String[] args){
+        int numLines = 200;
+        int curentNumber = 1;
+
+        for (int line = 1; line <= numLines; line++){
+            Stringbuilder 
+
+
+printOut(newLine);*/
 
 /* Task 10*/
 printOut("--- Part 10 ---------------------------------------------------------------------------------------------");
@@ -158,7 +252,5 @@ function factorial(n){
 let number = 9;
 let result = factorial(number);
 printOut("factorial (" +  number+ ") is " + result);
-
-
 
 printOut(newLine);

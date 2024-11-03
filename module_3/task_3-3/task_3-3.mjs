@@ -168,7 +168,7 @@ if (isNaN(netPrice)){
 }   
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
+/* NESTEN FERDIG, MANGLER Å FÅ INN 50 KM*/
 function calculate( speed, distance, time){
     let missingCount= 0;
 
@@ -219,6 +219,25 @@ printOut("")
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
+ function modifyString (text, maxSize, char, insertBefore){
+    while (text.length < maxSize){
+        if (insertBefore){
+            text = char + text;
+        
+        }else {
+            text = text + char;
+        }
+    }
+    return text;
+}
+
+let test1 = modifyString( "This is a text ", 40,' ', false );
+printOut(`«${test1}»`);
+
+let test2 = modifyString("This is a text", 40, ' ', true); // Én mellomrom
+printOut(`«${test1}»`);
+ 
+
 
             
 printOut(newLine);

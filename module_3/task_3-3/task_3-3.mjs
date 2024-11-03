@@ -169,8 +169,53 @@ if (isNaN(netPrice)){
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
+function calculate( speed, distance, time){
+    let missingCount= 0;
 
+    if (speed === undefined){
+        missingCount++;
+    }
+    if (distance === undefined){
+        missingCount++;
+    }
+    if (time === undefined){
+        missingCount++;
+    }
+    if (missingCount > 1){
+        return { speed: undefined, distance: undefined, time: NaN};
+    }
+    
+    if (speed === undefined && distance !== undefined && time !== undefined){
+        speed = distance / time;
+        } else if (distance === undefined && speed !== undefined && time !== undefined){
+            distance = speed * time;
+        } else if (time === undefined && speed !== undefined && distance !== undefined){
+            time= distance/ speed;
+        
+        }   
+        return { speed, distance, time};
+    
+    }
+    let result1 = calculate(75,120,2);
+    printOut("Speed = " + result1.speed + " km/h");
+    printOut("Distance = " + result1.distance + " km");
+    printOut("Time = " + result1.time.toFixed(2) + " h");
+    
+printOut("")
+    let result2 = calculate(70, undefined,1.5);
+    printOut("Speed = " + result2.speed + " km/h");
+    printOut("Distance = " + result2.distance + " km");
+    printOut("Time = " + result2.time.toFixed(2) + " h");
 
+    printOut(" ")
+    let result3 = calculate(undefined, 50, undefined);
+    printOut("Speed = " + (result3.speed !== undefined ? result3.speed : "undefined")+ " km/h");
+    printOut("Distance = " + result3.distance + "km");
+
+    if (isNaN(result3.time)){
+        printOut( "Time = " + result3.time.toFixed(2) + " h");
+    }
+    
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/

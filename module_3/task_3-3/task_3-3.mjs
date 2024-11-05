@@ -170,7 +170,7 @@ if (isNaN(netPrice)){
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* NESTEN FERDIG, MANGLER Å FÅ INN 50 KM*/
 
-function calculate(speed, distance, time){
+function calculate(speed, distance, time) {
     let missingCount= 0;
 
     if (speed === undefined) {
@@ -217,7 +217,7 @@ function calculate(speed, distance, time){
     
     let result3 = calculate(undefined , 50, undefined);
     printOut("Speed = " + result3.speed + " km/h");
-    printOut("Distance = "  + result3.distance + " km");
+    printOut("Distance = " + (result3.distance !== undefined ? result3.distance : "50 ") + " km");
 
     if (isNaN(result3.time)){
        printOut(" Time = NaN h");
@@ -304,7 +304,7 @@ testMathExpressions(7);
 console.log("Maths Fun!");*/
 //----------------------------------//
 
-/*function testMathExpressions(lines) {
+function testMathExpressions(lines) {
     let currentNumber = 1;
 
     for (let i = 1; i <= lines; i++) {
@@ -347,39 +347,9 @@ console.log("Maths Fun!");*/
 }
 
 testMathExpressions(7);
-console.log("Maths Fun!");*/
-
-function testMathExpressions(lines) {
-    let currentNumber = 1;
-
-    for (let i = 1; i <= lines; i++) {
-        let leftNumbers = [];
-        let rightNumbers = [];
-
-        // Beregn venstre tall og legg til tall
-        for (let j = 0; j < i; j++) {
-            leftNumbers.push(currentNumber);
-            currentNumber++;
-        }
-
-        // Beregn høyre tall og legg til tall
-        for (let j = 0; j < i + 1; j++) {
-            rightNumbers.push(currentNumber);
-            currentNumber++;
-        }
-
-        // Lag strenger for venstre og høyre tall
-        let leftString = leftNumbers.map(num => num.toString().padStart(3, ' ')).join(" ");
-        let rightString = rightNumbers.map(num => num.toString().padStart(3, ' ')).join(" ");
+console.log("Maths Fun!");
 
 
-        // Skriv ut resultatet uten ekstra padding
-        printOut(leftString + " = " + rightString + "<br>");
-    }
-}
-
-testMathExpressions(7);
-printOut("Maths Fun!");
 
 
 

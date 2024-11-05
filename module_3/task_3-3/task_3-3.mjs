@@ -113,7 +113,7 @@ function convertTemperature (value, type) {
     
     printOut( "Convert " + value + " " + type);
     printOut ("Celsius = " + celsius);
-    printOut("fahrenheit = " + fahrenheit);
+    printOut("Fahrenheit = " + fahrenheit);
     printOut ("kelvin = " + kelvin);   
 
    printOut("");
@@ -168,7 +168,7 @@ if (isNaN(netPrice)){
 }   
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
-/* NESTEN FERDIG, MANGLER Å FÅ INN 50 KM*/
+
 
 function calculate(speed, distance, time) {
     let missingCount= 0;
@@ -224,9 +224,7 @@ function calculate(speed, distance, time) {
     } else {
         printOut( "Time = " + result3.time.toFixed(2) + " h"); 
     }
-
-
-    
+ 
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
@@ -260,96 +258,63 @@ printOut(newLine);
 
 printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-/*function testMathExpressions(lines) {
+
+function printMatheExpressions(lines){
     let currentNumber = 1;
 
-    for (let i = 1; i <= lines; i++) {
-        let leftSum = 0;
-        let rightSum = 0;
-        let leftNumbers = [];
-        let rightNumbers = [];
+    let totalLength = 110;
 
-        // Beregn venstre sum og legg til tall
-        for (let j = 0; j < i; j++) {
+    for(let i= 1; i <= lines; i++){
+        let leftNumbers = [];
+        let rightNumbers= [];
+
+        for (let j=0; j< i + 1; j++){
             leftNumbers.push(currentNumber);
-            leftSum += currentNumber; // Bruk += for å summere tallene
             currentNumber++;
         }
 
-        // Beregn høyre sum og legg til tall
-        for (let j = 0; j < i + 1; j++) {
+        for (let j= 0; j < i; j++){
             rightNumbers.push(currentNumber);
-            rightSum += currentNumber; // Bruk += for å summere tallene
             currentNumber++;
         }
 
         let leftString = leftNumbers.join(" ");
-        let rightString = rightNumbers.join(" ");
+        let rightString= rightNumbers.join(" ");
         
-        let totalLength = 20;
-        let leftPadded = leftString.padEnd(totalLength);
-        let rightPadded = rightString;
+        const equalSignPosition = Math.floor(totalLength / 2); // Center position for "="
+        
+        // Determine left and right padding
+        let leftPadded = leftString.padEnd(equalSignPosition - 2, " "); // Pad left side to the center
+        let rightPadded = rightString.padStart(totalLength - equalSignPosition - 2, " "); // Pad right side to align with right edge
 
-        // Skriv ut resultatet
-        console.log(leftPadded + " = " + rightPadded);
+        // Combine the left, middle, and right sections
+        let resultString = leftPadded + "= " + rightPadded;
 
-        // Sjekk om summene er like (bruk == for sammenligning)
-        if (leftSum === rightSum) {
-            console("The sums are equal: " + leftSum);
-        }
+
+        /*const midPoint = Math.floor(totalLength / 2);
+        const leftPadding = midPoint - Math.floor(leftString.length / 2) - 1;
+        const rightPadding = totalLength - leftPadding - leftString.length - 2;
+
+        
+        let resultString = " ".repeat(leftPadding) + leftString + " = " + " ".repeat(rightPadding) + rightString;*/
+
+        printOut(resultString.replace(/ /g, "\u00A0"))
+        
+
     }
+    printOut( "Mathematics is fun!")
 }
-
-testMathExpressions(7);
-console.log("Maths Fun!");*/
-//----------------------------------//
-
-function testMathExpressions(lines) {
-    let currentNumber = 1;
-
-    for (let i = 1; i <= lines; i++) {
-        let leftSum = 0;
-        let rightSum = 0;
-        let leftNumbers = [];
-        let rightNumbers = [];
-
-        // Beregn venstre sum og legg til tall
-        for (let j = 0; j < i; j++) {
-            leftNumbers.push(currentNumber);
-            leftSum += currentNumber; // Bruk += for å summere tallene
-            currentNumber++;
-        }
-
-        // Beregn høyre sum og legg til tall
-        for (let j = 0; j < i + 1; j++) {
-            rightNumbers.push(currentNumber);
-            rightSum += currentNumber; // Bruk += for å summere tallene
-            currentNumber++;
-        }
-
-        // Lag strenger for venstre og høyre tall
-        let leftString = leftNumbers.join(" ");
-        let rightString = rightNumbers.join(" ");
-
-        // Sette padding på venstre og høyre side for justering
-        let totalLength = 20; // Totalt ønsket lengde for venstre side
-        let leftPadded = leftString.padEnd(totalLength);
-        let rightPadded = rightString.padEnd(totalLength);
-
-        // Skriv ut resultatet
-        printOut(leftPadded + " = " + rightPadded);
-
-        // Sjekk om summene er like og skriv ut melding hvis de er det
-        if (leftSum === rightSum) {
-            printOut("The sums are equal: " + leftSum);
-        }
-    }
-}
-
-testMathExpressions(7);
-console.log("Maths Fun!");
+printMatheExpressions(7);
 
 
+
+
+/*let spacesNeeded = totalLength -leftString.length - 2;
+        let leftPadded = leftString + " ".repeat(spacesNeeded)+ "= ";
+
+        let resultString = leftPadded + rightString;
+
+        printOut(resultString.replace(/ /g, "\u00A0"));*/
 
 
 

@@ -281,23 +281,14 @@ function printMatheExpressions(lines){
         let leftString = leftNumbers.join(" ");
         let rightString= rightNumbers.join(" ");
         
-        const equalSignPosition = Math.floor(totalLength / 2); // Center position for "="
+        const equalSignPosition = Math.floor(totalLength / 2); 
         
-        // Determine left and right padding
-        let leftPadded = leftString.padEnd(equalSignPosition - 2, " "); // Pad left side to the center
-        let rightPadded = rightString.padStart(totalLength - equalSignPosition - 2, " "); // Pad right side to align with right edge
+        
+        let leftPadded = leftString.padEnd(equalSignPosition - 2, " "); 
+        let rightPadded = rightString.padStart(totalLength - equalSignPosition - 2, " "); 
 
-        // Combine the left, middle, and right sections
+        
         let resultString = leftPadded + "= " + rightPadded;
-
-
-        /*const midPoint = Math.floor(totalLength / 2);
-        const leftPadding = midPoint - Math.floor(leftString.length / 2) - 1;
-        const rightPadding = totalLength - leftPadding - leftString.length - 2;
-
-        
-        let resultString = " ".repeat(leftPadding) + leftString + " = " + " ".repeat(rightPadding) + rightString;*/
-
         printOut(resultString.replace(/ /g, "\u00A0"))
         
 
@@ -305,18 +296,6 @@ function printMatheExpressions(lines){
     printOut( "Mathematics is fun!")
 }
 printMatheExpressions(7);
-
-
-
-
-/*let spacesNeeded = totalLength -leftString.length - 2;
-        let leftPadded = leftString + " ".repeat(spacesNeeded)+ "= ";
-
-        let resultString = leftPadded + rightString;
-
-        printOut(resultString.replace(/ /g, "\u00A0"));*/
-
-
 
 printOut("--- Part 10 ---------------------------------------------------------------------------------------------");
 /* Put your code below here!*/

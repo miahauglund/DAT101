@@ -147,7 +147,6 @@ if (vatGroup in vatRates){
     return netPrice.toFixed(2);
 
 } else {
-    /*printOut("Unkown VAT group!");*/
     return NaN;
     }
 }

@@ -169,28 +169,33 @@ if (isNaN(netPrice)){
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* NESTEN FERDIG, MANGLER Å FÅ INN 50 KM*/
-function calculate( speed, distance, time){
+
+function calculate(speed, distance, time){
     let missingCount= 0;
 
-    if (speed === undefined){
+    if (speed === undefined) {
         missingCount++;
     }
-    if (distance === undefined){
+    if (distance === undefined) {
         missingCount++;
     }
-    if (time === undefined){
+    if (time === undefined || isNaN(Number(time))) {
         missingCount++;
     }
-    if (missingCount > 1){
-        return { speed: undefined, distance: undefined, time: NaN};
+    if (missingCount > 1) {
+        return { speed: undefined, distance: undefined, time: NaN };
     }
-    
+    if ( typeof time === "string"){
+        time = Number(time);
+    }
     if (speed === undefined && distance !== undefined && time !== undefined){
         speed = distance / time;
-        } else if (distance === undefined && speed !== undefined && time !== undefined){
-            distance = speed * time;
-        } else if (time === undefined && speed !== undefined && distance !== undefined){
-            time= distance/ speed;
+       
+    } else if (distance === undefined && speed !== undefined && time !== undefined){
+        distance = speed * time;
+        
+    } else if (time === undefined && speed !== undefined && distance !== undefined){
+        time= distance/ speed;
         
         }   
         return { speed, distance, time};
@@ -201,109 +206,183 @@ function calculate( speed, distance, time){
     printOut("Distance = " + result1.distance + " km");
     printOut("Time = " + result1.time.toFixed(2) + " h");
     
-printOut("")
+    printOut("")
+
     let result2 = calculate(70, undefined,1.5);
     printOut("Speed = " + result2.speed + " km/h");
     printOut("Distance = " + result2.distance + " km");
     printOut("Time = " + result2.time.toFixed(2) + " h");
 
     printOut(" ")
-    let result3 = calculate(undefined, 50, undefined);
-    printOut("Speed = " + (result3.speed !== undefined ? result3.speed : "undefined")+ " km/h");
-    printOut("Distance = " + result3.distance + "km");
+    
+    let result3 = calculate(undefined , 50, undefined);
+    printOut("Speed = " + result3.speed + " km/h");
+    printOut("Distance = "  + result3.distance + " km");
 
     if (isNaN(result3.time)){
-        printOut( "Time = " + result3.time.toFixed(2) + " h");
+       printOut(" Time = NaN h");
+    } else {
+        printOut( "Time = " + result3.time.toFixed(2) + " h"); 
     }
+
+
     
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
- function modifyString (text, maxSize, char, insertBefore){
+
+function adjustText(text, maxSize, char, insertBefore){
     while (text.length < maxSize){
         if (insertBefore){
-            text = char + text;
-        
-        }else {
-            text = text + char;
+            text= char+text;
+        } else {
+            text= text + char;
         }
     }
-    return text;
+    return text.slice(0,maxSize);
+    
 }
 
-let test1 = modifyString( "This is a text ", 40,' ', false );
-printOut(`«${test1}»`);
+let tekst = "This is a text";
+let maxLengde = 560;
+let tegn = "&nbsp;";
+let legtilforan = false;
 
-let test2 = modifyString("This is a text", 40, ' ', true); // Én mellomrom
-printOut(`«${test1}»`);
- 
+let venstrejustert = adjustText(tekst,maxLengde,tegn,legtilforan);
+printOut("« " + venstrejustert + " » " );
 
+let høyreJustert = adjustText(tekst, maxLengde, tegn, true);
+printOut("« " + høyreJustert + " »" );
+  
 
             
 printOut(newLine);
 
 printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-/*unction sumRange(start, count){
-    let sum = 0;
-    for(let i= 0; i< count; i++){
-        sum += start + i;
+/*function testMathExpressions(lines) {
+    let currentNumber = 1;
+
+    for (let i = 1; i <= lines; i++) {
+        let leftSum = 0;
+        let rightSum = 0;
+        let leftNumbers = [];
+        let rightNumbers = [];
+
+        // Beregn venstre sum og legg til tall
+        for (let j = 0; j < i; j++) {
+            leftNumbers.push(currentNumber);
+            leftSum += currentNumber; // Bruk += for å summere tallene
+            currentNumber++;
+        }
+
+        // Beregn høyre sum og legg til tall
+        for (let j = 0; j < i + 1; j++) {
+            rightNumbers.push(currentNumber);
+            rightSum += currentNumber; // Bruk += for å summere tallene
+            currentNumber++;
+        }
+
+        let leftString = leftNumbers.join(" ");
+        let rightString = rightNumbers.join(" ");
+        
+        let totalLength = 20;
+        let leftPadded = leftString.padEnd(totalLength);
+        let rightPadded = rightString;
+
+        // Skriv ut resultatet
+        console.log(leftPadded + " = " + rightPadded);
+
+        // Sjekk om summene er like (bruk == for sammenligning)
+        if (leftSum === rightSum) {
+            console("The sums are equal: " + leftSum);
+        }
     }
-    return sum;
 }
+
+testMathExpressions(7);
+console.log("Maths Fun!");*/
+//----------------------------------//
+
+/*function testMathExpressions(lines) {
+    let currentNumber = 1;
+
+    for (let i = 1; i <= lines; i++) {
+        let leftSum = 0;
+        let rightSum = 0;
+        let leftNumbers = [];
+        let rightNumbers = [];
+
+        // Beregn venstre sum og legg til tall
+        for (let j = 0; j < i; j++) {
+            leftNumbers.push(currentNumber);
+            leftSum += currentNumber; // Bruk += for å summere tallene
+            currentNumber++;
+        }
+
+        // Beregn høyre sum og legg til tall
+        for (let j = 0; j < i + 1; j++) {
+            rightNumbers.push(currentNumber);
+            rightSum += currentNumber; // Bruk += for å summere tallene
+            currentNumber++;
+        }
+
+        // Lag strenger for venstre og høyre tall
+        let leftString = leftNumbers.join(" ");
+        let rightString = rightNumbers.join(" ");
+
+        // Sette padding på venstre og høyre side for justering
+        let totalLength = 20; // Totalt ønsket lengde for venstre side
+        let leftPadded = leftString.padEnd(totalLength);
+        let rightPadded = rightString.padEnd(totalLength);
+
+        // Skriv ut resultatet
+        printOut(leftPadded + " = " + rightPadded);
+
+        // Sjekk om summene er like og skriv ut melding hvis de er det
+        if (leftSum === rightSum) {
+            printOut("The sums are equal: " + leftSum);
+        }
+    }
+}
+
+testMathExpressions(7);
+console.log("Maths Fun!");*/
+
 function testMathExpressions(lines) {
     let currentNumber = 1;
-    for(let i = 2; i < lines; i++){
-        const leftCount = i;
-        const rightCount= i;
-        
-        const leftSum = sumRange(currentNumber, leftCount);
-        currentNumber += leftCount;
-        const rightSum = sumRange(currentNumber, rightCount);
-        currentNumber += rightCount;
 
-        const leftExpression =[];
-        for(let j = 0; j< leftCount; j++){
-            leftExpression.push(currentNumber- rightCount - leftCount +j);
+    for (let i = 1; i <= lines; i++) {
+        let leftNumbers = [];
+        let rightNumbers = [];
+
+        // Beregn venstre tall og legg til tall
+        for (let j = 0; j < i; j++) {
+            leftNumbers.push(currentNumber);
+            currentNumber++;
         }
-        const rightExpression = [];
-        for(let j= 0; j<rightCount; j++){
-            rightExpression.push(currentNumber -rightCount + j);
-        }   
-        const leftStr = leftExpression.join ("  ");
-        const rightStr= rightExpression.join( "  ");
-        const result = leftSum;
 
-        const spacingLeft = " ".repeat(60 - leftStr.length);
-        const spacingEqual = " ".repeat(5);
-        const spacingRight= " ".repeat(60 - rightStr.length);
-
-        
-        printOut(leftStr + spacingLeft+ spacingEqual + result + spacingRight + rightStr);
-
-        if (leftSum - rightSum){
-            printOut 
-       
-        
-
+        // Beregn høyre tall og legg til tall
+        for (let j = 0; j < i + 1; j++) {
+            rightNumbers.push(currentNumber);
+            currentNumber++;
         }
+
+        // Lag strenger for venstre og høyre tall
+        let leftString = leftNumbers.map(num => num.toString().padStart(3, ' ')).join(" ");
+        let rightString = rightNumbers.map(num => num.toString().padStart(3, ' ')).join(" ");
+
+
+        // Skriv ut resultatet uten ekstra padding
+        printOut(leftString + " = " + rightString + "<br>");
     }
-    printOut ("Maths fun!");
 }
-testMathExpressions(200); */
 
-/*public class MathExpressions1{ 
-    public static void main (String[] args){
-        int numLines = 200;
-        int curentNumber = 1;
-
-        for (int line = 1; line <= numLines; line++){
-            Stringbuilder 
+testMathExpressions(7);
+printOut("Maths Fun!");
 
 
-printOut(newLine);*/
 
-/* Task 10*/
 printOut("--- Part 10 ---------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
 function factorial(n){

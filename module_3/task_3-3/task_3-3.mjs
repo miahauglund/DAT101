@@ -167,7 +167,7 @@ if (isNaN(netPrice)){
 }   
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
-
+/* Put your code below here!*/
 
 function calculate(speed, distance, time) {
     let missingCount= 0;

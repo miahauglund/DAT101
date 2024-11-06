@@ -11,15 +11,33 @@ const acconutTypes = {
     Pension: "Pensionskonto"
 };
 printOut(acconutTypes.Normal + ", "+ acconutTypes.Saving + ", "+ acconutTypes.Credit 
-    +"," + acconutTypes.Pension);
+    +", " + acconutTypes.Pension);
     
     
 printOut(newLine);
 
 printOut("--- Part 2 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
+class BankAccount {
+    constructor(type){
+        this.type = type;
+    }
+    toString()  {
+        return this.type;
+    }
+    
+    setType(newType){
+        printOut("Account is changed form " + this.type + " to " + newType);
+        this.type = newType;
+    }
+}
+
+const myAccount = new BankAccount(" Brukskonto");
+printOut("myAcconst =" + myAccount.toString());
+
+myAccount.setType(" Sparekonto");
+
+printOut("myAccount =" + myAccount.toString());
 
 printOut("--- Part 3 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/

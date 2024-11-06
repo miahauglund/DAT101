@@ -4,7 +4,16 @@ initPrintOut(document.getElementById("txtOut"));
 
 printOut("--- Part 1 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+const acconutTypes = {
+    Normal: "Brukskonto",
+    Saving: "Sparekonsto",
+    Credit: "kreditkonto",
+    Pension: "Pensionskonto"
+};
+printOut(acconutTypes.Normal + ", "+ acconutTypes.Saving + ", "+ acconutTypes.Credit 
+    +"," + acconutTypes.Pension);
+    
+    
 printOut(newLine);
 
 printOut("--- Part 2 ----------------------------------------------------------------------------------------------");

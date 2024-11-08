@@ -41,11 +41,53 @@ printOut("myAccount =" + myAccount.toString());
 
 printOut("--- Part 3 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+/*class BankAccount {
+    constructor(type, balance = 0){
+        this.type = type;
+        this.balance= balance;
+    }
+    toString() {
+        return this.type;
+    }
+    getBalance() {
+        return this.balance;
+    }
+    
+    deposit(amount){
+        if (amount > 0){
+            this.balance += amount;
+            printOut ("Deposit of" + amount+ ", new balance is " + this.balance);
+        } else {
+            printOut ("Deposit amount must be positive.");
+        }
+    }
+    withdraw(amount){
+        if (amount > 0 && amount <= this.balance){
+            this.balance -= amount;
+            printOut(" Withdrawal of " + amount + ", new balance is " + this.balance.toFixed(2));  
+        } else if (amount > this.balance) {
+            printOut(" Insufficient founds for withdrawal.")
+        } else {
+            printOut(" Withdrawal amount must be positive.");      
+        }
+    }
+}
+
+let myAccount1 = new BankAccount("Checking", 100);
+
+myAccount1.deposit(100);
+
+myAccount1.withdraw(25);
+printOut("My account balance is " + myAccount1.getBalance().toFixed(2));*/
+
+
+
+
 printOut(newLine);
 
 printOut("--- Part 4 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
+
 printOut("Replace this with you answer!");
 printOut(newLine);
 

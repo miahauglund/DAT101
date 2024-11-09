@@ -81,15 +81,74 @@ myAccount1.withdraw(25);
 printOut("My account balance is " + myAccount1.getBalance().toFixed(2));
 
 
-
-
-printOut(newLine);
-
 printOut("--- Part 4 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
+class BankAccount2 {
+    constructor(type = "Sparekonto", balance = 0){
+        this.type = type;
+        this.balance = balance;
+        this.withdrawalCount = 0;
+    }
+    setType(newType) {
+        this.type = newType;
+        this.withdrawalCount = 0;
+        printOut( "Account is changed form Sparekonto to Pensionskonto.");
+    }
+    getBalance (){
+        return this.balance;
+    }
+    deposit(amount){
+        if(amount > 0){
+            this.balance += amount;
+            this.withdrawalCount = 0;
+            printOut("Deposit of " + amount + ", new balance is " + this.balance);
+        } else  {   
+            printOut("Deposit amount must be positive");
+        }
+    }
+    
+    withdraw(amount) {
+    if (amount <= 0){
+        printOut("Withdrawal amount must be positive.");
+        return;
+    }
+    switch (this.type)  {
+        case "Sparekonto":
+            if (this.withdrawalCount >= 3){
+                printOut( "You can`t withdraw form a Sparekonto more than tree times");
+                this.setType("PensionsKonto");
 
-printOut("Replace this with you answer!");
-printOut(newLine);
+            } else if (amount > this.balance){
+                printOut(" Insufficient founds for withdrawal.");
+            } else  {
+                this.balance -= amount;
+                this.withdrawalCount++;
+                printOut( "Withdrawal of " + amount + ", new balance is " + this. balance.toFixed());
+            }
+                break;
+
+                case "PensionsKonto": 
+                printOut("You can't withdraw from a Pensionskonto!");
+
+                break;
+
+                default: 
+                printOut("Unknown account type.");
+            
+        }
+    }
+}  
+    let myAccount2 = new BankAccount2("Sparekonto",75);
+    myAccount2.deposit(25);
+    myAccount2.withdraw(30);
+    myAccount2.withdraw(30);
+    myAccount2.withdraw(30);
+    myAccount2.withdraw(50);
+    myAccount2.withdraw(10);
+    myAccount2.withdraw(10);
+
+    
+
 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/

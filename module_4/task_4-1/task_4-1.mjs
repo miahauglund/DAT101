@@ -41,10 +41,10 @@ printOut("myAccount =" + myAccount.toString());
 
 printOut("--- Part 3 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-/*class BankAccount {
-    constructor(type, balance = 0){
+class BankAccount1 {
+    constructor(type, balance = 1){
         this.type = type;
-        this.balance= balance;
+        this.balance = balance;
     }
     toString() {
         return this.type;
@@ -56,7 +56,7 @@ printOut("--- Part 3 -----------------------------------------------------------
     deposit(amount){
         if (amount > 0){
             this.balance += amount;
-            printOut ("Deposit of" + amount+ ", new balance is " + this.balance);
+            printOut ("Deposit of " + amount + ", new balance is " + this.balance);
         } else {
             printOut ("Deposit amount must be positive.");
         }
@@ -73,12 +73,12 @@ printOut("--- Part 3 -----------------------------------------------------------
     }
 }
 
-let myAccount1 = new BankAccount("Checking", 100);
+let myAccount1 = new BankAccount1("Checking", 100);
 
 myAccount1.deposit(100);
 
 myAccount1.withdraw(25);
-printOut("My account balance is " + myAccount1.getBalance().toFixed(2));*/
+printOut("My account balance is " + myAccount1.getBalance().toFixed(2));
 
 
 

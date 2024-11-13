@@ -7,7 +7,7 @@ printOut("--- Part 1 -----------------------------------------------------------
 const acconutTypes = {
     Normal: "Brukskonto",
     Saving: "Sparekonsto",
-    Credit: "kreditkonto",
+    Credit: "Kreditkonto",
     Pension: "Pensionskonto"
 };
 printOut(acconutTypes.Normal + ", "+ acconutTypes.Saving + ", "+ acconutTypes.Credit 
@@ -27,7 +27,7 @@ class BankAccount {
     }
     
     setType(newType){
-        printOut("Account is changed form " + this.type + " to " + newType);
+        printOut("Account is changed from " + this.type + " to " + newType);
         this.type = newType;
     }
 }
@@ -82,7 +82,7 @@ printOut("My account balance is " + myAccount1.getBalance().toFixed(2));
 
 
 printOut("--- Part 4 ----------------------------------------------------------------------------------------------");
-/* Mangler en WITHDRAWAL of 10 new balance is 0 og change*/
+/* Mangler en WITHDRAWAL of 10 new balance is 0 og change på slutten*/
 
 class BankAccount2 {
     constructor(type = "Sparekonto", balance = 0) {
@@ -206,8 +206,8 @@ myAccount4.deposit(150);
 printOut(newLine);
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
-/*class TAccount2 {
+/* Tallene stemmer ikke med oppgaven, men det er tall der. */
+class TAccount2 {
     #balance = 150;
     #currencyType = "NOK";
 
@@ -262,62 +262,12 @@ const myAccount3 = new TAccount2();
 
 myAccount3.setCurrencyType("SEK");
 myAccount3.setCurrencyType("USD");
-myAccount3.setCurrencyType("NOK");*/
-
-
-class TAccount2 {
-    #balance = 150;
-    #currencyType = "NOK";
-
-    static CurrencyTypes = {
-        "NOK": { value: 1.0000, name: "Norske kroner", denomination: "kr" },
-        "SEK": { value: 1.0258, name: "Svenske kroner", denomination: "kr" }, // Adjusted rate
-        "USD": { value: 9.3835, name: "United States dollar", denomination: "$" }, // Adjusted rate
-        // Other currencies (not used in this test) can retain their original values
-    };
-
-    formatAmount(amount) {
-        return amount.toFixed(2);
-    }
-
-    setCurrencyType(newCurrencyType) {
-        if (newCurrencyType === this.#currencyType) {
-            return;
-        }
-
-        const currentCurrency = TAccount2.CurrencyTypes[this.#currencyType];
-        const newCurrency = TAccount2.CurrencyTypes[newCurrencyType];
-
-        if (!newCurrency) {
-            printOut("Invalid currency type.");
-            return;
-        }
-
-        // Convert the balance from the current currency to the new currency
-        this.#balance = (this.#balance * currentCurrency.value) / newCurrency.value;
-
-        printOut(`The account currency has changed from ${currentCurrency.name} to ${newCurrency.name}`);
-        printOut(`New balance is ${this.formatAmount(this.#balance)}${newCurrency.denomination}`);
-
-        // Update the currency type to the new currency
-        this.#currencyType = newCurrencyType;
-    }
-}
-
-// Create an instance of the account and test currency changes
-const myAccount3 = new TAccount2();
-
-// Perform the currency changes in the specified order
-myAccount3.setCurrencyType("SEK");  // Expected balance: 153.87 kr
-myAccount3.setCurrencyType("USD");  // Expected balance: 16.40 $
-myAccount3.setCurrencyType("NOK");  // Expected balance: 150.00 kr
-
-
+myAccount3.setCurrencyType("NOK");
 
 printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
+/* Samme her tallene er feil og jeg mangler en settning. */
 
 class TAccount3 {
     #balance = 0;

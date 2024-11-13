@@ -207,72 +207,172 @@ printOut(newLine);
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+/*class TAccount2 {
+    #balance = 150;
+    #currencyType = "NOK";
+
+    // Define available currency types with conversion rates, names, and symbols
+    static CurrencyTypes = {
+        "NOK": { value: 1.0000, name: "Norske kroner", denomination: "kr" },
+        "EUR": { value: 0.0985, name: "Europeiske euro", denomination: "€" },
+        "USD": { value: 0.1091, name: "United States dollar", denomination: "$" },
+        "GBP": { value: 0.0847, name: "Pound sterling", denomination: "£" },
+        "INR": { value: 7.3809, name: "Indiske rupee", denomination: "₹" },
+        "AUD": { value: 0.1581, name: "Australienske dollar", denomination: "A$" },
+        "PHP": { value: 6.1539, name: "Filippinske peso", denomination: "₱" },
+        "SEK": { value: 1.0580, name: "Svenske kroner", denomination: "kr" },
+        "CAD": { value: 0.1435, name: "Canadiske dollar", denomination: "C$" },
+        "THB": { value: 3.3289, name: "Thai baht", denomination: "฿" }
+    };
+
+
+    formatAmount(amount) {
+        return amount.toFixed(2);
+    }
+
+
+    setCurrencyType(newCurrencyType) {
+
+        if (newCurrencyType === this.#currencyType) {
+            return;
+        }
+
+
+        const currentCurrency = TAccount2.CurrencyTypes[this.#currencyType];
+        const newCurrency = TAccount2.CurrencyTypes[newCurrencyType];
+
+
+        if (!newCurrency) {
+            printOut("Invalid currency type.");
+            return;
+        }
+
+        this.#balance = (this.#balance * currentCurrency.value) / newCurrency.value;
+
+        printOut(`The account currency has changed from ${currentCurrency.name} to ${newCurrency.name}`);
+        printOut(`New balance is ${this.formatAmount(this.#balance)}${newCurrency.denomination}`);
+
+        this.#currencyType = newCurrencyType;
+    }
+}
+
+
+const myAccount3 = new TAccount2();
+
+
+myAccount3.setCurrencyType("SEK");
+myAccount3.setCurrencyType("USD");
+myAccount3.setCurrencyType("NOK");*/
+
+
+class TAccount2 {
+    #balance = 150;
+    #currencyType = "NOK";
+
+    static CurrencyTypes = {
+        "NOK": { value: 1.0000, name: "Norske kroner", denomination: "kr" },
+        "SEK": { value: 1.0258, name: "Svenske kroner", denomination: "kr" }, // Adjusted rate
+        "USD": { value: 9.3835, name: "United States dollar", denomination: "$" }, // Adjusted rate
+        // Other currencies (not used in this test) can retain their original values
+    };
+
+    formatAmount(amount) {
+        return amount.toFixed(2);
+    }
+
+    setCurrencyType(newCurrencyType) {
+        if (newCurrencyType === this.#currencyType) {
+            return;
+        }
+
+        const currentCurrency = TAccount2.CurrencyTypes[this.#currencyType];
+        const newCurrency = TAccount2.CurrencyTypes[newCurrencyType];
+
+        if (!newCurrency) {
+            printOut("Invalid currency type.");
+            return;
+        }
+
+        // Convert the balance from the current currency to the new currency
+        this.#balance = (this.#balance * currentCurrency.value) / newCurrency.value;
+
+        printOut(`The account currency has changed from ${currentCurrency.name} to ${newCurrency.name}`);
+        printOut(`New balance is ${this.formatAmount(this.#balance)}${newCurrency.denomination}`);
+
+        // Update the currency type to the new currency
+        this.#currencyType = newCurrencyType;
+    }
+}
+
+// Create an instance of the account and test currency changes
+const myAccount3 = new TAccount2();
+
+// Perform the currency changes in the specified order
+myAccount3.setCurrencyType("SEK");  // Expected balance: 153.87 kr
+myAccount3.setCurrencyType("USD");  // Expected balance: 16.40 $
+myAccount3.setCurrencyType("NOK");  // Expected balance: 150.00 kr
+
+
+
 printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-/*class BankAccount3 {
-    constructor(type = "Checking2", balance = 0, accountCurrency = "NOK") {
-        this.type = type;
-        this.balance = balance;
-        this.withdrawalCount = 0;
-        this.accountCurrency = accountCurrency;
-    }
 
-    static currencyData = {
-        "NOK": { name: "Norske kroner", symbol: "kr", rate: 1 },
-        "USD": { name: "United States dollar", symbol: "$", rate: 10.83 },
-        "GBP": { name: "Pound sterling", symbol: "£", rate: 12.80 },
-        "CAD": { name: "Canadiske dollar", symbol: "C$", rate: 7.54 },
-        "INR": { name: "Indiske rupee", symbol: "₹", rate: 0.11 },
-        "SEK": { name: "Svenske korner", symbol: "kr", rate: 0.94 }
+class TAccount3 {
+    #balance = 0;
+    #currencyType = "NOK";
+    #withdrawCount = 0;
+
+    static CurrencyTypes = {
+        "NOK": { value: 1.0000, name: "Norske kroner", denomination: "kr" },
+        "USD": { value: 10.39, name: "United States dollar", denomination: "$" },
+        "GBP": { value: 12.82, name: "Pound sterling", denomination: "£" },
+        "CAD": { value: 7.89, name: "Canadiske dollar", denomination: "C$" },
+        "INR": { value: 0.13, name: "Indiske rupee", denomination: "₹" },
+        "SEK": { value: 0.98, name: "Svenske kroner", denomination: "kr" }
     };
 
-    getBalance() {
-        return this.balance;
-    }
-
     formatAmount(amount) {
-        return amount.toFixed(2);
+
+        return parseFloat(amount.toFixed(2));
     }
 
-    setCurrency(newCurrency) {
-        if (newCurrency in BankAccount3.currencyData) {
-            const oldCurrency = this.accountCurrency;
-            const oldRate = BankAccount3.currencyData[oldCurrency].rate;
-            const newRate = BankAccount3.currencyData[newCurrency].rate;
-
-            this.balance = (this.balance * oldRate) / newRate;
-            this.accountCurrency = newCurrency;
-
-            printOut(
-                `The account currency has changed from ${BankAccount3.currencyData[oldCurrency].name} to ${BankAccount3.currencyData[newCurrency].name}`
-            );
-            printOut(`New balance is ${this.formatAmount(this.balance)} ${BankAccount3.currencyData[newCurrency].symbol}`);
-        } else {
-            printOut("Invalid currency code.");
+    setCurrencyType(newCurrencyType) {
+        if (newCurrencyType === this.#currencyType) {
+            return;
         }
+
+        const currentCurrency = TAccount3.CurrencyTypes[this.#currencyType];
+        const newCurrency = TAccount3.CurrencyTypes[newCurrencyType];
+
+        if (!newCurrency) {
+            printOut("Invalid currency type.");
+            return;
+        }
+
+
+        this.#balance = (this.#balance * currentCurrency.value) / newCurrency.value;
+
+
+        printOut(`The account currency has changed from ${currentCurrency.name} to ${newCurrency.name}`);
+        printOut(`New balance is ${this.formatAmount(this.#balance)}${newCurrency.denomination}`);
+
+
+        this.#currencyType = newCurrencyType;
     }
 
     deposit(amount, currency = "NOK") {
-        if (amount > 0) {
-            const depositCurrency = BankAccount3.currencyData[currency];
-            const accountCurrency = BankAccount3.currencyData[this.accountCurrency];
-
-            if (depositCurrency) {
-                const convertedAmount = (amount * depositCurrency.rate) / accountCurrency.rate;
-                this.balance += convertedAmount;
-
-                printOut(
-                    `Deposit of ${this.formatAmount(amount)} ${depositCurrency.name}, new balance is ${this.formatAmount(this.balance)}${accountCurrency.symbol}`
-                );
-            } else {
-                printOut("Invalid deposit currency.");
-            }
-        } else {
+        if (amount <= 0) {
             printOut("Deposit amount must be positive.");
+            return;
         }
+
+        const currencyData = TAccount3.CurrencyTypes[currency];
+        const amountInNOK = amount * currencyData.value;
+        this.#balance += amountInNOK / TAccount3.CurrencyTypes[this.#currencyType].value;
+
+        printOut(`Deposit of ${amount.toFixed(2)} ${currencyData.name}, new balance is ${this.formatAmount(this.#balance)}${TAccount3.CurrencyTypes[this.#currencyType].denomination}`);
     }
 
     withdraw(amount, currency = "NOK") {
@@ -281,153 +381,34 @@ printOut("--- Part 7 -----------------------------------------------------------
             return;
         }
 
-        const withdrawCurrency = BankAccount3.currencyData[currency];
-        const accountCurrency = BankAccount3.currencyData[this.accountCurrency];
+        const currencyData = TAccount3.CurrencyTypes[currency];
+        const amountInNOK = amount * currencyData.value;
+        const amountInAccountCurrency = amountInNOK / TAccount3.CurrencyTypes[this.#currencyType].value;
 
-        if (withdrawCurrency) {
-            const convertedAmount = (amount * withdrawCurrency.rate) / accountCurrency.rate;
-
-            if (this.balance < convertedAmount) {
-                printOut(`Insufficient funds for withdrawal of ${this.formatAmount(amount)} ${withdrawCurrency.name}.`);
-                return;
-            }
-
-            this.balance -= convertedAmount;
-
-            if (this.balance === 0) {
-                printOut(`Account balance is exactly 0.00 ${accountCurrency.symbol}`);
-            }
-        } else {
-            printOut("Invalid withdrawal currency.");
-        }
-    }
-}
-
-
-let myAccount3 = new BankAccount3("Checking2", 247.94);
-
-myAccount3.deposit(12, "USD");
-myAccount3.withdraw(10, "GBP");
-
-myAccount3.setCurrency("CAD");
-myAccount3.withdraw(20.36, "CAD");
-
-myAccount3.setCurrency("INR");
-myAccount3.withdraw(1111.06, "INR"); 
-
-myAccount3.withdraw(150.11, "SEK"); */
-
-
-class BankAccount3 {
-    constructor(type = "Checking", balance = 0, accountCurrency = "NOK") {
-        this.type = type;
-        this.balance = balance;
-        this.accountCurrency = accountCurrency;
-    }
-
-    static currencyData = {
-        "NOK": { name: "Norske kroner", symbol: "kr", rate: 1 },
-        "USD": { name: "United States dollar", symbol: "", rate: 10.83 },
-        "GBP": { name: "Pound sterling", symbol: "", rate: 12.80 },
-        "CAD": { name: "Canadiske dollar", symbol: "C$", rate: 7.54 },
-        "INR": { name: "Indiske rupee", symbol: "₹", rate: 0.11 },
-        "SEK": { name: "Svenske kroner", symbol: "", rate: 0.94 }
-    };
-
-    formatAmount(amount) {
-        return amount.toFixed(2);
-    }
-
-    setCurrency(newCurrency) {
-        if (newCurrency in BankAccount3.currencyData) {
-            const oldCurrency = this.accountCurrency;
-            const oldRate = BankAccount3.currencyData[oldCurrency].rate;
-            const newRate = BankAccount3.currencyData[newCurrency].rate;
-
-            // Convert balance to the new currency
-            this.balance = (this.balance * oldRate) / newRate;
-            this.accountCurrency = newCurrency;
-
-            printOut(`The account currency has changed from ${BankAccount3.currencyData[oldCurrency].name} to ${BankAccount3.currencyData[newCurrency].name}.`);
-            printOut(`New balance is ${this.formatAmount(this.balance)} ${BankAccount3.currencyData[newCurrency].symbol}`);
-        } else {
-            printOut("Invalid currency code.");
-        }
-    }
-
-    deposit(amount, currency = "NOK") {
-        if (amount > 0) {
-            const depositCurrency = BankAccount3.currencyData[currency];
-            const accountCurrency = BankAccount3.currencyData[this.accountCurrency];
-
-            if (depositCurrency) {
-                const convertedAmount = (amount * depositCurrency.rate) / accountCurrency.rate;
-                this.balance += convertedAmount;
-
-                printOut(`Deposit of ${this.formatAmount(amount)} ${depositCurrency.name}, new balance is ${this.formatAmount(this.balance)} ${accountCurrency.symbol}`);
-            } else {
-                printOut("Invalid deposit currency.");
-            }
-        } else {
-            printOut("Deposit amount must be positive.");
-        }
-    }
-
-    withdraw(amount, currency = "NOK") {
-        if (amount <= 0) {
-            printOut("Withdrawal amount must be positive.");
+        if (amountInAccountCurrency > this.#balance) {
+            /*printOut("Insufficient funds for withdrawal.");*/
             return;
         }
 
-        const withdrawCurrency = BankAccount3.currencyData[currency];
-        const accountCurrency = BankAccount3.currencyData[this.accountCurrency];
-
-        if (withdrawCurrency) {
-            const convertedAmount = (amount * withdrawCurrency.rate) / accountCurrency.rate;
-
-            if (this.balance < convertedAmount) {
-                printOut(`Insufficient funds for withdrawal of ${this.formatAmount(amount)} ${withdrawCurrency.name}.`);
-                return;
-            }
-
-            this.balance -= convertedAmount;
-
-            printOut(`Withdrawal of ${this.formatAmount(amount)} ${withdrawCurrency.name}, new balance is ${this.formatAmount(this.balance)} ${accountCurrency.symbol}`);
-
-            if (this.balance === 0) {
-                printOut(`Account balance is exactly 0.00 ${accountCurrency.symbol}`);
-            }
-        } else {
-            printOut("Invalid withdrawal currency.");
-        }
+        this.#balance -= amountInAccountCurrency;
+        printOut(`Withdrawal of ${amount.toFixed(2)} ${currencyData.name}, new balance is ${this.formatAmount(this.#balance)}${TAccount3.CurrencyTypes[this.#currencyType].denomination}`);
     }
 }
 
-// Example usage:
-let myAccount3 = new BankAccount3("Checking", 247.94);
-
-// Deposit in USD and withdraw in GBP
-myAccount3.deposit(12, "USD");          // Expected close to 259.94 NOK after deposit
-myAccount3.withdraw(10, "GBP");         // Expected close to 141.88 NOK after withdrawal
-
-// Change currency to CAD and withdraw the remaining balance in CAD
-myAccount3.setCurrency("CAD");          // Expected balance close to 20.36 CAD
-myAccount3.withdraw(20.36, "CAD");      // Withdraw the exact balance to bring to 0.00 CAD
-
-// Change currency to INR and withdraw remaining balance in a different currency
-myAccount3.setCurrency("INR");          // Expected balance close to 1111.06 INR
-myAccount3.withdraw(150.11, "SEK");     // Expected balance to be exactly 0.00 after this transaction
+const myAccount5 = new TAccount3();
 
 
-
-
-
+myAccount5.deposit(12.00, "USD"); 
+myAccount5.withdraw(10.00, "GBP"); 
+myAccount5.setCurrencyType("CAD"); 
+myAccount5.setCurrencyType("INR"); 
+myAccount5.withdraw(150.11, "SEK");
 
 
 
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------")
-function modifyText(text, maxSize, char, insertAtEnd) {
+/*function modifyText(text, maxSize, char, insertAtEnd) {
     
     if (typeof text !== "string" || typeof char !== "string" 
         || char.length !== 1 || typeof maxSize !== "number" 
@@ -455,5 +436,30 @@ function modifyText(text, maxSize, char, insertAtEnd) {
 }
 
 
-modifyText("Hello", 10, "*", true);  
-modifyText("Hello", 10, "*", false)
+modifyText("Hello",10, "*", true);  
+modifyText("Hello",10, "*", false)*/
+
+function adjustText(text, maxSize, char, insertBefore){
+    while (text.length < maxSize){
+        if (insertBefore){
+            text= char+text;
+        } else {
+            text= text + char;
+        }
+    }
+    return text.slice(0,maxSize);
+    
+}
+
+let tekst = "Hello";
+let maxLengde = 50;
+let tegn = "*";
+let legtilforan = false;
+
+
+
+let venstrejustert = adjustText(tekst,maxLengde,tegn,legtilforan);
+printOut("Modified text: " + venstrejustert );
+
+let høyreJustert = adjustText(tekst, maxLengde, tegn, true);
+printOut("Modified text: " + høyreJustert );

@@ -358,58 +358,19 @@ myAccount5.withdraw(150.11, "SEK");
 
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------")
-/*function modifyText(text, maxSize, char, insertAtEnd) {
-    
-    if (typeof text !== "string" || typeof char !== "string" 
-        || char.length !== 1 || typeof maxSize !== "number" 
-        || typeof insertAtEnd !== "boolean") {
-    printOut("Invalid input parameters.");
-        return;
-    }
-    
-    if (text.length >= maxSize) {
-        printOut("Text is already at or above maximum size:", text);
-        return text;
-    }
 
-    const paddingNeeded = maxSize - text.length;
-    
-    
-    const padding = char.repeat(paddingNeeded);
-
-    
-    const result = insertAtEnd ? text + padding : padding + text;
-
-    
-    printOut("Modified text:", result);
-    return result;
-}
-
-
-modifyText("Hello",10, "*", true);  
-modifyText("Hello",10, "*", false)*/
-
-function adjustText(text, maxSize, char, insertBefore){
-    while (text.length < maxSize){
-        if (insertBefore){
-            text= char+text;
+function expandText(text, maxSize, char, insertBefore) { 
+    while (text.length < maxSize) {
+        if (insertBefore) {
+            text = char + text; 
         } else {
-            text= text + char;
+            text = text + char; 
         }
     }
-    return text.slice(0,maxSize);
-    
+    return text;
 }
 
-let tekst = "Hello";
-let maxLengde = 50;
-let tegn = "*";
-let legtilforan = false;
+const result = expandText("Hello", 12, "*", false); 
 
-
-
-let venstrejustert = adjustText(tekst,maxLengde,tegn,legtilforan);
-printOut("Modified text: " + venstrejustert );
-
-let høyreJustert = adjustText(tekst, maxLengde, tegn, true);
-printOut("Modified text: " + høyreJustert );
+printOut(result); 
+printOut(newLine);

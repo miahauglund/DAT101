@@ -17,7 +17,11 @@ printOut(newLine);
 
 printOut("--- Part 3 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+const text = "Hello there, how are you?";
+const words = text.split(/\s+/);
+for (let i = 0; i < words.length; i++){
+    printOut(`Word: ${words[i]}`);
+}
 printOut(newLine);
 
 printOut("--- Part 4 ----------------------------------------------------------------------------------------------");

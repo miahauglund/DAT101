@@ -41,12 +41,21 @@ function removeName(array, nameToRemove) {
 }
 removeName(names, "Marit");
 removeName(names, "John");
-printOut("Replace this with you answer!");
+
 printOut(newLine);
 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+ const girlNames =["Anne", "Inger", "Kari", "Marit", "Ingrid", "Liv", "Eva", "Berit", "Astrid", 
+    "Bjørg", "Hilde", "Anna", "Solveig", "Marianne", "Randi", "Ida", "Nina", "Maria", "Elisabeth", "Kristin"];
+
+const boyNames = ["Jakob", "Lucas", "Emil", "Oskar", "Oliver", "William", "Filip", "Noah", 
+    "Elias", "Isak", "Henrik", "Aksel", "Kasper", "Mathias", "Jonas", "Tobias", "Liam", "Håkon", "Theodor", "Magnus"];
+   
+const allNames = [...girlNames, ...boyNames];
+printOut(allNames.slice(0, allNames.length / 2). toString());
+printOut(allNames.slice(allNames.length / 2). toString());
+
 printOut(newLine);
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");

@@ -131,7 +131,39 @@ printOut(newLine);
 
 printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+
+const randomNumbers2 = [];
+for (let i = 0; i < 35; i++){
+randomNumbers2.push(Math.floor(Math.random() * 20) + 1);
+}
+console.log("Original array: ");
+console.log(randomNumbers2);
+
+printOut("");
+const frequencyMap = {};
+for (let i = 0; i < randomNumbers2.length; i++){
+    const num = randomNumbers2[i];
+    frequencyMap[num] = (frequencyMap[num] || 0)+ 1;
+    }
+    printOut("Number frequencies: ");
+    for (let number in frequencyMap){
+        printOut("Number: " + number + ", Frequency: " + frequencyMap[number]);
+    }
+printOut("");
+
+    const sortedByFrequency = Object.entries(frequencyMap)
+    .sort((a, b) => {
+        if (b[1] === a[1]){
+            return a[0] - b[0];
+        }
+        return b[1] - a[1];
+    });
+
+    printOut("Sorted by frequency (most frequent first): ");
+    for (let i = 0; i < sortedByFrequency.length; i++){
+        printOut("Number: " + sortedByFrequency[i][0] + ", Frequency: " + sortedByFrequency[i][1]);
+    }
+
 printOut(newLine);
 
 /* Task 10*/

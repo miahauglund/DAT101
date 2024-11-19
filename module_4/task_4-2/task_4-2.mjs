@@ -60,7 +60,23 @@ printOut(newLine);
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+class TBook {
+    constructor( title, author, isbn){
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+    toString(){
+        return "Title: " + this.title + ", Author: " + this.author  + ", ISBN: " + this.isbn;
+    }
+}
+const books = [
+    new TBook ("It ends with Us", "Colleen Hoover", "9781501110368" )
+    
+];
+for (let i = 0; i < books.length; i++) {
+    printOut(books[i].toString());
+}
 printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");

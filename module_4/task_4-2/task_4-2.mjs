@@ -81,7 +81,26 @@ printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+const EWeekDays = {
+    WeekDay1: {value: 0x01, name: "Mandag"},
+    WeekDay2: {value: 0x02, name: "Tirsdag"},
+    WeekDay3: {value: 0x04, name: "Onsdag"},
+    WeekDay4: {value: 0x08, name: "Torsdag"},
+    WeekDay5: {value: 0x10, name: "Fredag"},
+    WeekDay6: {value: 0x20, name: "Lørdag"},
+    WeekDay7: {value: 0x40, name: "Søndag"},
+    Workdays: {value: 0x01 + 0x02 + 0x04 + 0x08 + 0x10, name: "Arbeidsdager"},
+    Weekends: {value: 0x20 + 0x40, name: "Helg"},
+};
+
+const weekDaysKeys = Object.keys(EWeekDays);
+
+for (let i = 0; i < weekDaysKeys.length; i++){
+    const key = weekDaysKeys[i];
+    const day = EWeekDays[key];
+    printOut ("Name: " + day.name + ", Value = " + day.value);
+}
+
 printOut(newLine);
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");

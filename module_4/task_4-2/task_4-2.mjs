@@ -113,7 +113,7 @@ randomNumbers1.push(Math.floor(Math.random() * 20) + 1);
 printOut("Original array:");
 printOut(randomNumbers1.toString());
 
-printOut("");
+printOut(""); 
 const ascendingOrder = [...randomNumbers1];
 ascendingOrder.sort((a, b) => a - b);
 

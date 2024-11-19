@@ -20,12 +20,27 @@ printOut("--- Part 3 -----------------------------------------------------------
 const text = "Hello there, how are you?";
 const words = text.split(/\s+/);
 for (let i = 0; i < words.length; i++){
-    printOut(`Word: ${words[i]}`);
+    printOut("Word: " + words[i]);
 }
 printOut(newLine);
 
 printOut("--- Part 4 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
+const names = ["Anne", "Inger", "Kari", "Marit", "Ingrid", "Liv", "Eva", "Berit", "Astrid", 
+    "Bjørg", "Hilde", "Anna", "Solveig", "Marianne", "Randi", "Ida", "Nina", "Maria", "Elisabeth", "Kristin"];
+
+function removeName(array, nameToRemove) {
+    const index = array.indexOf(nameToRemove);
+
+    if(index !== -1){
+        array.splice(index, 1);
+        printOut(nameToRemove + " has been removed.");
+    } else {
+        printOut(nameToRemove + " does not exsist in the array");
+    }
+}
+removeName(names, "Marit");
+removeName(names, "John");
 printOut("Replace this with you answer!");
 printOut(newLine);
 

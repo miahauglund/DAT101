@@ -105,7 +105,28 @@ printOut(newLine);
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+const randomNumbers1 = [];
+for (let i = 0; i < 35; i++){
+randomNumbers1.push(Math.floor(Math.random() * 20) + 1);
+}
+
+printOut("Original array:");
+printOut(randomNumbers1.toString());
+
+printOut("");
+const ascendingOrder = [...randomNumbers1];
+ascendingOrder.sort((a, b) => a - b);
+
+printOut("Sorted in ascending order: ");
+printOut(ascendingOrder.toString());
+
+printOut("");
+const descendingOrder = [...randomNumbers1];
+descendingOrder.sort((a, b) => b - a);
+
+printOut("Sorted in descending order: ");
+printOut(descendingOrder.toString());
+
 printOut(newLine);
 
 printOut("--- Part 9 ----------------------------------------------------------------------------------------------");

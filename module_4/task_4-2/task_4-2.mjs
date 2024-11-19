@@ -169,5 +169,26 @@ printOut(newLine);
 /* Task 10*/
 printOut("--- Part 10 ---------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+const array2D = [];
+
+for(let row = 0; row < 5; row++){
+    const currentRow = [];
+    for (let col = 0; col < 9; col++){
+        currentRow.push("Row: " + row + ", col "+ col);
+    }
+    array2D.push(currentRow);
+    printOut( "2D Array: ");
+    for( let row = 0; row < array2D.length; row++){
+        let rowOutput = "";
+        for(let col = 0; col < array2D[row].length; col++){
+            rowOutput += array2D[row][col]+ "";
+        }
+        printOut(rowOutput);
+    }
+    printOut("Individual cel outputs: ");
+    for(let row = 0; row < array2D.length; row++)
+    for(let col = 0; col <array2D[row].length; col++) {
+        printOut("Cell at ["+row+"][" + col + "]: " + array2D[row][col]);
+    }
+}
 printOut(newLine);

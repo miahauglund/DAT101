@@ -180,7 +180,7 @@ for (let row = 0; row < 5; row++) {
     }
     array2D.push(currentRow);
 } 
-
+printOut("");
 printOut("2D Array:");
 for (let row = 0; row < array2D.length; row++) {
     let rowOutput = "";
@@ -189,7 +189,7 @@ for (let row = 0; row < array2D.length; row++) {
     }
     printOut(rowOutput);
 }
-
+printOut("");
 printOut("Individual cell outputs:");
 for (let row = 0; row < array2D.length; row++) {
     for (let col = 0; col < array2D[row].length; col++) {

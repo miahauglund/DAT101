@@ -6,7 +6,7 @@ initPrintOut(document.getElementById("txtOut"));
 
 /*const GirlsNames = ["Anne", "Inger", "Kari", "Marit", "Ingrid", "Liv", "Eva", "Berit", "Astrid", "Bjørg", "Hilde", "Anna", "Solveig", "Marianne", "Randi", "Ida", "Nina", "Maria", "Elisabeth", "Kristin"];*/
 
-const MovieGenre = [
+/*const MovieGenre = [
   "Action",
   "Adventure",
   "Animation",
@@ -31,7 +31,7 @@ const MovieGenre = [
   "Thriller",
   "War",
   "Western",
-];
+];*/
 
 //--- Part 1 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/
@@ -237,3 +237,29 @@ populateSelect();
 
 //--- Part 7 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/
+const MovieGenre = [
+  "Action",
+  "Adventure",
+  "Animation",
+  "Biography",
+  "Comedy",
+  "Crime",
+  "Documentary",
+  "Drama",
+  "Family",
+  "Fantasy",
+  "Film Noir",
+  "History",
+  "Horror",
+  "Music",
+  "Musical",
+  "Mystery",
+  "Romance",
+  "Sci-Fi",
+  "Short",
+  "Sport",
+  "Superhero",
+  "Thriller",
+  "War",
+  "Western",
+];

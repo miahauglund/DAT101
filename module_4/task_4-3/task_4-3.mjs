@@ -4,7 +4,7 @@ initPrintOut(document.getElementById("txtOut"));
 
 
 
-const GirlsNames = ["Anne", "Inger", "Kari", "Marit", "Ingrid", "Liv", "Eva", "Berit", "Astrid", "Bjørg", "Hilde", "Anna", "Solveig", "Marianne", "Randi", "Ida", "Nina", "Maria", "Elisabeth", "Kristin"];
+/*const GirlsNames = ["Anne", "Inger", "Kari", "Marit", "Ingrid", "Liv", "Eva", "Berit", "Astrid", "Bjørg", "Hilde", "Anna", "Solveig", "Marianne", "Randi", "Ida", "Nina", "Maria", "Elisabeth", "Kristin"];*/
 
 const MovieGenre = [
   "Action",
@@ -200,11 +200,40 @@ selectTask5Animals.addEventListener("change", function() {
 
 //--- Part 6 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/
+// Array of girls' names
+const GirlsNames = [
+  "Anne", "Inger", "Kari", "Marit", "Ingrid", "Liv", "Eva", "Berit", 
+  "Astrid", "Bjørg", "Hilde", "Anna", "Solveig", "Marianne", "Randi", 
+  "Ida", "Nina", "Maria", "Elisabeth", "Kristin"
+];
 
-const newGirlsName = GirlsNames.splice(1,4);
-printOut(GirlsNames.join(", "));
-printOut("");
-printOut(newGirlsName.join(", "));
+
+const selectTask6Girls = document.getElementById("selectTask6Girls");
+const txtTask6Output = document.getElementById("txtTask6Output");
+
+
+function populateSelect() {
+
+  selectTask6Girls.innerHTML = '';
+
+ 
+  GirlsNames.forEach(name => {
+    const option = document.createElement("option");
+    option.value = name.toLowerCase();  
+    option.textContent = name;  
+    selectTask6Girls.appendChild(option); 
+  });
+}
+
+selectTask6Girls.addEventListener("change", function() {
+  const selectedName = selectTask6Girls.value;
+
+
+  txtTask6Output.textContent = `You selected: ${selectedName.charAt(0).toUpperCase() + selectedName.slice(1)}`;
+});
+
+
+populateSelect();
 
 //--- Part 7 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/

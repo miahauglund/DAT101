@@ -70,9 +70,32 @@ document.getElementById("cmbTask1Calculate").addEventListener("click", function 
       `Circumference = ${perimeter}, Area = ${area}`;
 });
 
-
 //--- Part 2 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/
+
+const task2Words = [];
+
+document.getElementById("txtTask2Word").addEventListener("keypress", function (event) {
+
+    if (event.key === "Enter" || event.key === "Return") {
+        event.preventDefault(); 
+
+        const word = event.target.value.trim();
+
+
+        if (word !== "") {
+            task2Words.push(word); 
+
+            document.getElementById("txtTask2Output").innerHTML = `
+                <p>Total words: ${task2Words.length}</p>
+                <p>Words: ${task2Words.join(", ")}</p>
+            `;
+
+
+            event.target.value = "";
+        }
+    }
+});
 
 //--- Part 3 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/

@@ -183,12 +183,20 @@ createRadioButtons();
 
 divTask4Cars.addEventListener("change", displaySelectedCar);
 
-
-
-
-
 //--- Part 5 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/
+
+const selectTask5Animals = document.getElementById("selectTask5Animals");
+const txtTask5Output = document.getElementById("txtTask5Output");
+
+
+selectTask5Animals.addEventListener("change", function() {
+
+  const selectedAnimal = selectTask5Animals.value;
+
+  txtTask5Output.textContent = `You selected: ${selectedAnimal.charAt(0).toUpperCase() + selectedAnimal.slice(1)}`;
+});
+
 
 //--- Part 6 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/

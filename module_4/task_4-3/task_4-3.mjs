@@ -2,21 +2,7 @@
 import { initPrintOut, printOut, newLine } from "../../common/script/utils.mjs";
 initPrintOut(document.getElementById("txtOut"));
 
-const CarTypes = [
-  { value: 1, caption: "Aston Martin" },
-  { value: 2, caption: "Bentley" },
-  { value: 3, caption: "Alfa Romeo" },
-  { value: 4, caption: "Ferrari" },
-  { value: 5, caption: "Subaru" },
-  { value: 6, caption: "Porsche" },
-  { value: 7, caption: "Tesla" },
-  { value: 8, caption: "Toyota" },
-  { value: 9, caption: "Renault" },
-  { value: 10, caption: "Peugeot" },
-  { value: 11, caption: "Suzuki" },
-  { value: 12, caption: "Mitsubishi" },
-  { value: 13, caption: "Nissan" },
-];
+
 
 const GirlsNames = ["Anne", "Inger", "Kari", "Marit", "Ingrid", "Liv", "Eva", "Berit", "Astrid", "Bjørg", "Hilde", "Anna", "Solveig", "Marianne", "Randi", "Ida", "Nina", "Maria", "Elisabeth", "Kristin"];
 
@@ -127,6 +113,79 @@ document.getElementById("cmbTask3CheckAnswer").addEventListener("click", functio
 
 //--- Part 4 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/
+
+
+const CarTypes = [
+  { value: 1, caption: "Aston Martin" },
+  { value: 2, caption: "Bentley" },
+  { value: 3, caption: "Alfa Romeo" },
+  { value: 4, caption: "Ferrari" },
+  { value: 5, caption: "Subaru" },
+  { value: 6, caption: "Porsche" },
+  { value: 7, caption: "Tesla" },
+  { value: 8, caption: "Toyota" },
+  { value: 9, caption: "Renault" },
+  { value: 10, caption: "Peugeot" },
+  { value: 11, caption: "Suzuki" },
+  { value: 12, caption: "Mitsubishi" },
+  { value: 13, caption: "Nissan" },
+];
+
+
+const divTask4Cars = document.getElementById("divTask4Cars");
+
+
+function createRadioButtons() {
+  divTask4Cars.innerHTML = '';
+
+
+  for (let i = 0; i < CarTypes.length; i++) {
+    const car = CarTypes[i];
+
+
+    const label = document.createElement("label");
+
+
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "car";  
+    radio.value = car.value; 
+    radio.id = `car${car.value}`; 
+
+    label.appendChild(radio);
+    label.appendChild(document.createTextNode(` ${car.caption}`));
+
+
+    divTask4Cars.appendChild(label);
+    divTask4Cars.appendChild(document.createElement("br"));
+  }
+}
+
+
+function displaySelectedCar() {
+  const selectedRadio = document.querySelector("input[name='car']:checked");
+
+
+  const outputElement = document.getElementById("txtTask4Output");
+
+  if (selectedRadio) {
+
+    outputElement.textContent = `You selected: ${selectedRadio.nextSibling.nodeValue.trim()}`;
+  } else {
+
+    outputElement.textContent = "No car selected.";
+  }
+}
+
+
+createRadioButtons();
+
+
+divTask4Cars.addEventListener("change", displaySelectedCar);
+
+
+
+
 
 //--- Part 5 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/

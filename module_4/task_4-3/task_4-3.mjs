@@ -100,6 +100,31 @@ document.getElementById("txtTask2Word").addEventListener("keypress", function (e
 //--- Part 3 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/
 
+document.getElementById("cmbTask3CheckAnswer").addEventListener("click", function () {
+  // Get all checkboxes with the name "chkTask3"
+  const checkboxes = document.querySelectorAll("input[name='chkTask3']:checked");
+  
+
+  const selectedValues = [];
+
+
+  checkboxes.forEach(checkbox => {
+      selectedValues.push(checkbox.value);
+  });
+
+
+  const outputElement = document.getElementById("txtTask3Output");
+
+
+  if (selectedValues.length > 0) {
+      outputElement.textContent = `You selected: ${selectedValues.join(", ")}`;
+  } else {
+      outputElement.textContent = "No checkboxes are selected.";
+  }
+});
+
+
+
 //--- Part 4 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/
 

@@ -233,7 +233,6 @@ function populateMovieGenres() {
   });
 }
 
-
 let movieCount = 0;
 
 function addMovie() {

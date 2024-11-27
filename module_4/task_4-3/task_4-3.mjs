@@ -3,36 +3,6 @@ import { initPrintOut, printOut, newLine } from "../../common/script/utils.mjs";
 initPrintOut(document.getElementById("txtOut"));
 
 
-
-/*const GirlsNames = ["Anne", "Inger", "Kari", "Marit", "Ingrid", "Liv", "Eva", "Berit", "Astrid", "Bjørg", "Hilde", "Anna", "Solveig", "Marianne", "Randi", "Ida", "Nina", "Maria", "Elisabeth", "Kristin"];*/
-
-/*const MovieGenre = [
-  "Action",
-  "Adventure",
-  "Animation",
-  "Biography",
-  "Comedy",
-  "Crime",
-  "Documentary",
-  "Drama",
-  "Family",
-  "Fantasy",
-  "Film Noir",
-  "History",
-  "Horror",
-  "Music",
-  "Musical",
-  "Mystery",
-  "Romance",
-  "Sci-Fi",
-  "Short",
-  "Sport",
-  "Superhero",
-  "Thriller",
-  "War",
-  "Western",
-];*/
-
 //--- Part 1 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/
 
@@ -237,29 +207,75 @@ populateSelect();
 
 //--- Part 7 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/
-const MovieGenre = [
-  "Action",
-  "Adventure",
-  "Animation",
-  "Biography",
-  "Comedy",
-  "Crime",
-  "Documentary",
-  "Drama",
-  "Family",
-  "Fantasy",
-  "Film Noir",
-  "History",
-  "Horror",
-  "Music",
-  "Musical",
-  "Mystery",
-  "Romance",
-  "Sci-Fi",
-  "Short",
-  "Sport",
-  "Superhero",
-  "Thriller",
-  "War",
-  "Western",
+
+const MovieGenres = [
+  "Action", "Adventure", "Animation", "Biography", "Comedy", "Crime",
+  "Documentary", "Drama", "Family", "Fantasy", "Film Noir", "History",
+  "Horror", "Music", "Musical", "Mystery", "Romance", "Sci-Fi", "Short",
+  "Sport", "Superhero", "Thriller", "War", "Western"
 ];
+
+
+const txtMovieTitle = document.getElementById("txtMovieTitle");
+const selectMovieGenre = document.getElementById("selectMovieGenre");
+const txtMovieDirector = document.getElementById("txtMovieDirector");
+const txtMovieRate = document.getElementById("txtMovieRate");
+const cmbAddMovie = document.getElementById("cmbAddMovie");
+const tblMovies = document.getElementById("tblMovies");
+
+
+function populateMovieGenres() {
+  MovieGenres.forEach(genre => {
+    const option = document.createElement("option");
+    option.value = genre;
+    option.textContent = genre;
+    selectMovieGenre.appendChild(option);
+  });
+}
+
+
+let movieCount = 0;
+
+function addMovie() {
+  const title = txtMovieTitle.value.trim();
+  const genre = selectMovieGenre.value;
+  const director = txtMovieDirector.value.trim();
+  const rate = txtMovieRate.value.trim();
+
+ 
+  if (!title || !genre || !director || !rate || isNaN(rate) || rate < 1 || rate > 10) {
+    alert("Please fill in all fields correctly. Rating must be between 1 and 10.");
+    return;
+  }
+
+ 
+  movieCount++;
+
+ 
+  const row = tblMovies.insertRow();
+  const cellNr = row.insertCell(0);
+  const cellTitle = row.insertCell(1);
+  const cellGenre = row.insertCell(2);
+  const cellDirector = row.insertCell(3);
+  const cellRate = row.insertCell(4);
+
+
+  cellNr.textContent = movieCount;
+  cellTitle.textContent = title;
+  cellGenre.textContent = genre;
+  cellDirector.textContent = director;
+  cellRate.textContent = rate;
+
+
+  txtMovieTitle.value = "";
+  selectMovieGenre.value = "";
+  txtMovieDirector.value = "";
+  txtMovieRate.value = "5";
+}
+
+
+cmbAddMovie.addEventListener("click", addMovie);
+
+
+populateMovieGenres();
+

@@ -12,5 +12,5 @@ export function printOut(aText) {
   if (DOMTextOut.innerHTML.length !== 0) {
     DOMTextOut.innerHTML += newLine;
   }
-  DOMTextOut.innerHTML += aText;
+  DOMTextOut.innerHTML += aText; 
 }

@@ -1,0 +1,5 @@
+
+miahauglund@Mias-MacBook-Pro-2 DAT101 % git config --global user.name
+> miahauglund
+miahauglund@Mia-macbook-pro-2 DAT101 % git confing --global user.name "miahauglund"
+

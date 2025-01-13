@@ -16,7 +16,7 @@ document.getElementById("cmbTask1Calculate").addEventListener("click", function 
       document.getElementById("txtTask1Output").textContent = 
           "Please enter valid positive numbers for both width and height.";
       return;
-  }
+  } 
 
 
   const perimeter = 2 * (width + height);

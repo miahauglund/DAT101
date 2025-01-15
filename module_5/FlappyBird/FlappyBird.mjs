@@ -37,7 +37,8 @@ export const GameProps = {
   speed: 1,
   background: null,
   ground: null,
-  hero: null
+  hero: null,
+  obstacles: [], 
 };
 
 //--------------- Functions ----------------------------------------------//
@@ -61,8 +62,9 @@ function loadGame(){
   GameProps.ground = new libSprite.TSprite(spcvs, SpriteInfoList.ground, pos);
   pos.x = 100;
   pos.y = 100;
-  GameProps.hero = new libSprite.TSprite(spcvs, SpriteInfoList.hero1, pos);
-  GameProps.hero.animateSpeed = 10;
+  GameProps.hero = new THero(spcvs, SpriteInfoList.hero1, pos);
+
+  spawnObstacle();
   
   requestAnimationFrame(drawGame);
   setInterval(animateGame, 10);
@@ -76,12 +78,39 @@ function drawGame(){
   requestAnimationFrame(drawGame);
 }
 
+function drawObstacles(){
+  for(let i = 0; i < GameProps.obstacles.length; i++){
+    const obstacle = GameProps.obstacles[i];
+    obstacle.draw();
+  }
+
 function animateGame(){
   GameProps.ground.translate(-GameProps.speed, 0);
   if(GameProps.ground.posX <= -SpriteInfoList.background.width){
     GameProps.ground.posX = 0;
   }
+  GameProps.hero.update();
+  let delObstacleIndex = -1;
+  for(let i = 0; i < GameProps.obstacles.length; i++){
+    const obstacle = GameProps.obstacles[i];
+    obstacle.update();
+    if(obstacle.posX < -100){
+      delObstacleIndex = i;
+    }
+  }
+  if(delObstacleIndex >= 0){
+    GameProps.obstacles.splice(delObstacleIndex, 1);
+  }
+}
 
+function spawnObstacle(){
+  const obstacle = new TObstacle(spcvs, SpriteInfoList.obstacle);
+  GameProps.obstacles.push(obstacle);
+  //Spawn a new obstacle in 2-7 seconds
+  const seconds = Math.ceil(Math.random() * 5) + 2;
+  setTimeout(spawnObstacle, seconds * 1000);
+  console.log("Obstacle spawned in " + seconds + " seconds");
+}
 }
 
 //--------------- Event Handlers -----------------------------------------//
@@ -106,6 +135,14 @@ function setDayNight() {
   }
 } // end of setDayNight
 
+function onKeyDown(aEvent){
+  switch(aEvent.code){
+    case "Space":
+      GameProps.hero.flap();
+      break;
+  }
+}
+
 //--------------- Main Code ----------------------------------------------//
 chkMuteSound.addEventListener("change", setSoundOnOff);
 rbDayNight[0].addEventListener("change", setDayNight);
@@ -113,3 +150,4 @@ rbDayNight[1].addEventListener("change", setDayNight);
 
 // Load the sprite sheet
 spcvs.loadSpriteSheet("./Media/FlappyBirdSprites.png", loadGame)
+document.addEventListener("keydown", onKeyDown); 

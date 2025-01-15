@@ -2,6 +2,9 @@
 import lib2d from "../../common/libs/lib2d.mjs";
 import libSound from "../../common/libs/libSound.mjs";
 import libSprite from "../../common/libs/libSprite.mjs";
+import THero from "./hero.mjs";
+import TObstacle from "./obstacle.mjs";
+
 
 
 //--------------- Objects and Variables ----------------------------------//
@@ -60,6 +63,7 @@ function loadGame(){
   pos.y = 100;
   GameProps.hero = new libSprite.TSprite(spcvs, SpriteInfoList.hero1, pos);
   GameProps.hero.animateSpeed = 10;
+  
   requestAnimationFrame(drawGame);
   setInterval(animateGame, 10);
 }

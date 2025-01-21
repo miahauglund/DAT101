@@ -97,4 +97,12 @@ export default {
    * @property {number} bottom - The bottom side of the rectangle.
    */
   TRectangle
+   /**
+   * @class TSineWave
+   * @description A class representation for a sine wave.
+   * @param {number} aAmplitude - The amplitude of the wave.
+   * @param {number} aFrequency - The frequency of the wave.
+   * @property {number} value - The next value of the wave.
+   */
+   TSineWave
 }

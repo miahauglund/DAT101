@@ -32,10 +32,19 @@ class TObstacle {
   update(){
     this.#upper.translate(-1, 0);
     this.#lower.translate(-1, 0);
+    const HasCollided =
+    GameProps.hero.HasCollided(this.#upper)||
+    GameProps.hero.HasCollided(this.#lower);
+
+    if (HasCollided){
+      GameProps.hero.flap();
+      GameProps.hero.isDead = true;
+    }
   }
 
   get posX(){
     return this.#upper.posX;
+
   }
 }
 

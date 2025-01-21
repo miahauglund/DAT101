@@ -50,8 +50,7 @@ function playSound(aSound) {
     aSound.pause();
   }
 }
-
-function loadGame(){
+function loadGame() {
   console.log("Game ready to load");
   cvs.width = SpriteInfoList.background.width;
   cvs.height = SpriteInfoList.background.height;
@@ -63,6 +62,7 @@ function loadGame(){
   pos.x = 100;
   pos.y = 100;
   GameProps.hero = new THero(spcvs, SpriteInfoList.hero1, pos);
+
 
   spawnObstacle();
   
@@ -85,6 +85,13 @@ function drawObstacles(){
   }
 
 function animateGame(){
+  switch (GameProps.status){
+    case EGameStatus.playing:
+      if (GameProps.hero.isDead){
+        GameProps.hero.animateSpeed = 0;
+        GameProps.hero.update();
+      }
+
   GameProps.ground.translate(-GameProps.speed, 0);
   if(GameProps.ground.posX <= -SpriteInfoList.background.width){
     GameProps.ground.posX = 0;
@@ -101,6 +108,8 @@ function animateGame(){
   if(delObstacleIndex >= 0){
     GameProps.obstacles.splice(delObstacleIndex, 1);
   }
+  break;
+}
 }
 
 function spawnObstacle(){
@@ -111,7 +120,7 @@ function spawnObstacle(){
   setTimeout(spawnObstacle, seconds * 1000);
   console.log("Obstacle spawned in " + seconds + " seconds");
 }
-}
+
 
 //--------------- Event Handlers -----------------------------------------//
 
@@ -138,7 +147,9 @@ function setDayNight() {
 function onKeyDown(aEvent){
   switch(aEvent.code){
     case "Space":
-      GameProps.hero.flap();
+      if (!GameProps.hero.isDead){
+        GameProps.hero.flap();
+    }
       break;
   }
 }
@@ -150,4 +161,5 @@ rbDayNight[1].addEventListener("change", setDayNight);
 
 // Load the sprite sheet
 spcvs.loadSpriteSheet("./Media/FlappyBirdSprites.png", loadGame)
-document.addEventListener("keydown", onKeyDown); 
+document.addEventListener("keydown", onKeyDown);
+}

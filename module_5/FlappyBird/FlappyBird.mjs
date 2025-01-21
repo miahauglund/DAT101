@@ -5,8 +5,6 @@ import libSprite from "../../common/libs/libSprite.mjs";
 import THero from "./hero.mjs";
 import TObstacle from "./obstacle.mjs";
 
-
-
 //--------------- Objects and Variables ----------------------------------//
 const chkMuteSound = document.getElementById("chkMuteSound");
 const rbDayNight = document.getElementsByName("rbDayNight");
@@ -31,14 +29,17 @@ export const SpriteInfoList = {
   medal:        { x:  985, y: 635, width:   44, height:  44, count:  4 },
 };
 
+export const EGameStatus = { idle: 0, getReady: 1, playing: 2, gameOver: 3 };
+
 export const GameProps = {
   soundMuted: false,
   dayTime: true,
   speed: 1,
+  status: EGameStatus.playing, //For testing, normalt EGameStatus.idle
   background: null,
   ground: null,
   hero: null,
-  obstacles: [], 
+  obstacles: [],
 };
 
 //--------------- Functions ----------------------------------------------//
@@ -50,6 +51,7 @@ function playSound(aSound) {
     aSound.pause();
   }
 }
+
 function loadGame() {
   console.log("Game ready to load");
   cvs.width = SpriteInfoList.background.width;
@@ -63,64 +65,63 @@ function loadGame() {
   pos.y = 100;
   GameProps.hero = new THero(spcvs, SpriteInfoList.hero1, pos);
 
-
   spawnObstacle();
-  
+
   requestAnimationFrame(drawGame);
   setInterval(animateGame, 10);
 }
 
-function drawGame(){
+function drawGame() {
   spcvs.clearCanvas();
   GameProps.background.draw();
+  drawObstacles();
   GameProps.ground.draw();
   GameProps.hero.draw();
   requestAnimationFrame(drawGame);
 }
 
-function drawObstacles(){
-  for(let i = 0; i < GameProps.obstacles.length; i++){
+function drawObstacles() {
+  for (let i = 0; i < GameProps.obstacles.length; i++) {
     const obstacle = GameProps.obstacles[i];
     obstacle.draw();
   }
+}
 
-function animateGame(){
-  switch (GameProps.status){
+function animateGame() {
+  switch (GameProps.status) {
     case EGameStatus.playing:
-      if (GameProps.hero.isDead){
+      if (GameProps.hero.isDead) {
         GameProps.hero.animateSpeed = 0;
         GameProps.hero.update();
+        return;
       }
-
-  GameProps.ground.translate(-GameProps.speed, 0);
-  if(GameProps.ground.posX <= -SpriteInfoList.background.width){
-    GameProps.ground.posX = 0;
+      GameProps.ground.translate(-GameProps.speed, 0);
+      if (GameProps.ground.posX <= -SpriteInfoList.background.width) {
+        GameProps.ground.posX = 0;
+      }
+      GameProps.hero.update();
+      let delObstacleIndex = -1;
+      for (let i = 0; i < GameProps.obstacles.length; i++) {
+        const obstacle = GameProps.obstacles[i];
+        obstacle.update();
+        if (obstacle.posX < -100) {
+          delObstacleIndex = i;
+        }
+      }
+      if (delObstacleIndex >= 0) {
+        GameProps.obstacles.splice(delObstacleIndex, 1);
+      }
+      break;
   }
-  GameProps.hero.update();
-  let delObstacleIndex = -1;
-  for(let i = 0; i < GameProps.obstacles.length; i++){
-    const obstacle = GameProps.obstacles[i];
-    obstacle.update();
-    if(obstacle.posX < -100){
-      delObstacleIndex = i;
-    }
-  }
-  if(delObstacleIndex >= 0){
-    GameProps.obstacles.splice(delObstacleIndex, 1);
-  }
-  break;
 }
-}
 
-function spawnObstacle(){
+function spawnObstacle() {
   const obstacle = new TObstacle(spcvs, SpriteInfoList.obstacle);
   GameProps.obstacles.push(obstacle);
   //Spawn a new obstacle in 2-7 seconds
   const seconds = Math.ceil(Math.random() * 5) + 2;
   setTimeout(spawnObstacle, seconds * 1000);
-  console.log("Obstacle spawned in " + seconds + " seconds");
 }
-
 
 //--------------- Event Handlers -----------------------------------------//
 
@@ -144,12 +145,12 @@ function setDayNight() {
   }
 } // end of setDayNight
 
-function onKeyDown(aEvent){
-  switch(aEvent.code){
+function onKeyDown(aEvent) {
+  switch (aEvent.code) {
     case "Space":
-      if (!GameProps.hero.isDead){
+      if (!GameProps.hero.isDead) {
         GameProps.hero.flap();
-    }
+      }
       break;
   }
 }
@@ -160,6 +161,5 @@ rbDayNight[0].addEventListener("change", setDayNight);
 rbDayNight[1].addEventListener("change", setDayNight);
 
 // Load the sprite sheet
-spcvs.loadSpriteSheet("./Media/FlappyBirdSprites.png", loadGame)
-document.addEventListener("keydown", onKeyDown);
-}
+spcvs.loadSpriteSheet("./Media/FlappyBirdSprites.png", loadGame);
+document.addEventListener("keydown", onKeyDown); 

@@ -106,7 +106,7 @@ export class TMenu {
     }else{ //Ingen plassering
       this.#spMedal.index = 0;
     }
-  }
+  } 
 
   reset(){
     GameProps.score = 0;

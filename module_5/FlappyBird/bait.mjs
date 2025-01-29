@@ -24,4 +24,4 @@ export class TBait extends libSprite.TSprite {
       this.translate(this.#speed / 2, this.#sineWave.value);
     }
   }
-}
+} 

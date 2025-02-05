@@ -1,5 +1,16 @@
 {
+    "liveServer.settings.port": 5501,
+    "editor.tabSize": 2,
+    "typescript.validate.enable": false,
     "cSpell.words": [
-        "Eksempel"
-    ]
-}
+      "importmap",
+      "millisekunder",
+      "spbl",
+      "splm",
+      "sprb",
+      "sprm",
+      "sptl",
+      "sptm",
+      "sptr"
+    ],
+  }

@@ -42,7 +42,7 @@ class TSpriteCanvas {
 
     this.#sprites.every((aSprite) => {
       //Continue to next button if this button is not visible
-      if (aSprite.visible === false) return true;
+      if (aSprite.visible === false || aSprite.disable) return true;
       const isInside = aSprite.isMouseInside(pos);
       if (isInside) {
         newButton = aSprite;
@@ -58,7 +58,7 @@ class TSpriteCanvas {
       }
     } else if (newButton === null && this.activeSprite !== null) {
       if (this.activeSprite.onLeave) {
-        this.activeSprite.onLeave();
+        this.activeSprite.onLeave(aEvent);
       }
       this.activeSprite = null;
     }
@@ -148,10 +148,12 @@ class TSpriteCanvas {
   clearCanvas() {
     this.#ctx.clearRect(0, 0, this.#cvs.width, this.#cvs.height);
     //add shadow to canvas
+    /*
     this.#ctx.shadowColor = "black";
     this.#ctx.shadowBlur = 10;
     this.#ctx.shadowOffsetX = 5;
     this.#ctx.shadowOffsetY = 5;
+    */
   }
 
   addSpriteButton(aButton) {
@@ -191,6 +193,7 @@ class TSprite {
     this.rotation = 0;
     this.visible = true;
     this.lastCollision = null;
+    this.debug = false;
   }
 
   draw() {
@@ -448,6 +451,103 @@ class TSpriteDraggable extends TSpriteButton {
   }
 } //End of TSpriteDraggable class
 
+const ESpriteNumberJustifyType = {Left: 0, Center: 1, Right: 2};
+
+class TSpriteNumber {
+  #spcvs;
+  #spi;
+  #position;
+  #shapeClass;
+  #value;
+  #spNumbers;
+  #justify;
+  constructor(aSpriteCanvas, aSpriteInfo, aPosition, aShapeClass) {
+    this.#spcvs = aSpriteCanvas;
+    this.#spi = aSpriteInfo;
+    this.#position = aPosition;
+    this.#shapeClass = aShapeClass;
+    this.#value = 0;
+    this.#spNumbers = [new TSprite(aSpriteCanvas, aSpriteInfo, aPosition, aShapeClass)];
+    this.#justify = ESpriteNumberJustifyType.Left;
+  }
+
+  get value() {
+    return this.#value;
+  }
+
+  set value(aValue) {
+    //Convert value to string, check number of digits, each digit is a sprite.
+    //If the list of sprite is less than the number of digits, then add more sprites, or remove sprites.
+    this.#value = aValue;
+    const strValue = this.#value.toString();
+    let needToRealign = strValue.length !== this.#spNumbers.length && this.#justify !== ESpriteNumberJustifyType.Left;
+    while (strValue.length !== this.#spNumbers.length) {
+      const addDigit = strValue.length > this.#spNumbers.length;
+      if (addDigit) {
+        //assume the number is left justified, so add new digit sprite to the right    
+        const nextPosition = {x: this.#position.x + this.#spNumbers.length * this.#spi.width, y: this.#position.y};
+        this.#spNumbers.push(new TSprite(this.#spcvs, this.#spi, nextPosition, this.#shapeClass));
+      }else{
+        this.#spNumbers.pop();
+      }
+    }
+
+    if (needToRealign) {
+      this.#UpdatePosition();
+    }
+
+    //Set the sprite index of each digit sprite
+    this.#spNumbers.forEach((aSprite, aIndex) => {
+      aSprite.index = parseInt(strValue.charAt(aIndex));
+    });
+  }
+
+  draw() {
+    //Draw each digit sprite
+    this.#spNumbers.forEach((aSprite) => {
+      aSprite.draw();
+    });
+  }
+
+  #UpdatePosition = () => {
+    //move the sprite according to the new justify
+    switch(this.#justify){
+      case ESpriteNumberJustifyType.Left:
+        this.#spNumbers.forEach((aSprite, aIndex) => {
+          aSprite.x = this.#position.x + aIndex * this.#spi.width;
+          aSprite.y = this.#position.y;
+        });
+        break;
+      case ESpriteNumberJustifyType.Center:
+        const center = this.#spNumbers.length * this.#spi.width / 2;
+        this.#spNumbers.forEach((aSprite, aIndex) => {
+          aSprite.x = this.#position.x - center + aIndex * this.#spi.width;
+          aSprite.y = this.#position.y;
+        });
+        break;
+      case ESpriteNumberJustifyType.Right:
+        //If right justify, then move all sprites to the right
+        this.#spNumbers.forEach((aSprite, aIndex) => {
+          aSprite.x = this.#position.x - (this.#spNumbers.length - aIndex - 1) * this.#spi.width;
+          aSprite.y = this.#position.y;
+        });
+        break;
+      }
+  };
+
+
+  get justify(){
+    return this.#justify;
+  }
+
+  set justify(aJustify){
+    if (this.#justify === aJustify) return;
+    this.#justify = aJustify;
+    this.#UpdatePosition();
+  }
+}
+
+
 export default {
   /**
    * @class TSpriteCanvas
@@ -498,4 +598,25 @@ export default {
    * @param {lib2D.TShape} aShape - The shape of the sprite.
    */
   TSpriteDraggable,
+
+  /**
+   * @class TSpriteNumber
+   * @description A class that manage sprite numbers.
+   * @param {TSpriteCanvas} aSpriteCanvas - The sprite canvas to use.
+   * @param {object} aSpriteInfo - The sprite information.
+   * @param {lib2D.TPosition} aPosition - The position of the sprite.
+   * @param {lib2D.TShape} aShape - The shape of the sprite. Use the class name of the shape, not the instance. Example: lib2D.TRectangle, lib2D.TCircle, etc.
+   * @function draw - Draws the number sprite on the canvas.
+   * @property {number} value - The value of the number sprite.
+   */
+  TSpriteNumber,
+
+  /**
+   * @enum {ESpriteNumberJustifyType}
+   * @description An enumeration for sprite number justify type.
+   * @property {number} Left - The left justify type.
+   * @property {number} Center - The center justify type.
+   * @property {number} Right - The right justify type.
+   */
+  ESpriteNumberJustifyType,
 };

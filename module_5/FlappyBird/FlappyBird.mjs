@@ -177,10 +177,11 @@ function animateGame() {
 function spawnObstacle() {
   const obstacle = new TObstacle(spcvs, SpriteInfoList.obstacle);
   GameProps.obstacles.push(obstacle);
-  //Spawn a new obstacle in 2-7 seconds
+
+  // Spawn a new obstacle in 1-3 seconds (justert tidsintervall for å få rørene nærmere)
   if (GameProps.status === EGameStatus.playing) {
-    const seconds = Math.ceil(Math.random() * 5) + 2;
-    setTimeout(spawnObstacle, seconds * 1000);
+    const seconds = Math.ceil(Math.random() * 3) + 1;  // Redusert ventetid mellom 1-3 sekunder
+    setTimeout(spawnObstacle, seconds * 1000);  // Nytt sett med hindringer spawns etter den nye tidsperioden
   }
 }
 

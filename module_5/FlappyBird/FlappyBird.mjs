@@ -28,7 +28,7 @@ export const SpriteInfoList = {
   gameOver:     { x:    0, y: 384, width:  226, height: 114, count:  1 },
   infoText:     { x:    0, y: 630, width:  200, height:  55, count:  2 },
   food:         { x:    0, y: 696, width:   70, height:  65, count: 34 },
-  medal:        { x:  985, y: 635, width:   44, height:  44, count:  4 },
+  medal:        { x:  985, y: 635, width:   44, height:   44, count:  4 },
 };
 
 export const EGameStatus = { idle: 0, getReady: 1, playing: 2, gameOver: 3 };
@@ -37,7 +37,7 @@ export const GameProps = {
   soundMuted: false,
   dayTime: true,
   speed: 1,
-  status: EGameStatus.idle, //For testing, normalt EGameStatus.idle
+  status: EGameStatus.idle, //For testing, normally EGameStatus.idle
   background: null,
   ground: null,
   hero: null,
@@ -46,15 +46,15 @@ export const GameProps = {
   menu: null,
   score: 0,
   bestScore: 0,
-  sounds: {countDown: null, food: null, gameOver: null, dead: null, running: null, heroIsDead: null},
+  sounds: { countDown: null, food: null, gameOver: null, dead: null, running: null, flap: null },
 };
 
 //--------------- Functions ----------------------------------------------//
 
-function playSound(aSound) {
-  if (!GameProps.soundMuted) {
-    aSound.stop(); // Stopper lyden hvis den allerede spiller
-    aSound.play(); // Starter lyden på nytt
+function playSound(sound) {
+  if (!GameProps.soundMuted && sound) {
+    sound.stop();  // Ensure sound is stopped before playing again
+    sound.play();  // Then play the sound
   }
 }
 
@@ -73,14 +73,39 @@ function loadGame() {
 
   GameProps.menu = new TMenu(spcvs);
 
-  // Load sounds
   GameProps.sounds.running = new libSound.TSoundFile("./Media/running.mp3");
   GameProps.sounds.flap = new libSound.TSoundFile("./Media/flap.mp3");
   GameProps.sounds.gameOver = new libSound.TSoundFile("./Media/gameOver.mp3");
-  GameProps.sounds.heroIsDead = new libSound.TSoundFile("./Media/heroIsDead.mp3"); // Hero dead sound
-  
+  GameProps.sounds.heroIsDead = new libSound.TSoundFile("./Media/heroIsDead.mp3");
+  GameProps.sounds.countDown = new libSound.TSoundFile("./Media/countDown.mp3");
+
   requestAnimationFrame(drawGame);
   setInterval(animateGame, 10);
+}
+
+let countdownPlayed = false;  
+
+function startCountdown() {
+  if (countdownPlayed) return;  
+
+  countdownPlayed = true;
+
+  // Spill nedtellingslyden umiddelbart
+  playSound(GameProps.sounds.countDown);
+
+  // Sett spillstatus til "getReady" før nedtellingen begynner
+  GameProps.status = EGameStatus.getReady;
+
+  // Etter 3 sekunder, sett spillet til å starte
+  setTimeout(() => {
+    // Etter nedtellingen, endre status til "playing" og spill begynner
+    GameProps.status = EGameStatus.playing;
+
+    // Start spillet ved å sette opp eventuelle nødvendige funksjoner eller elementer
+    spawnObstacle(); // Spawn første hindring
+    spawnBait();     // Spawn første mat
+    playSound(GameProps.sounds.running);  // Spill lyden som indikerer at spillet er i gang
+  }, 3000);  // Tid før spillet starter (3 sekunder)
 }
 
 function drawGame() {
@@ -116,44 +141,28 @@ function animateGame() {
       if (GameProps.hero.isDead) {
         GameProps.hero.animateSpeed = 0;
         GameProps.hero.update();
-        if (!gameOverSoundPlayed) {
-          playSound(GameProps.sounds.heroIsDead); // Spill HeroIsDead-lyden når helten dør
-          gameOverSoundPlayed = true; // Sørg for at lyden bare spilles én gang
-        }
         return;
       }
-      
       GameProps.ground.translate(-GameProps.speed, 0);
       if (GameProps.ground.posX <= -SpriteInfoList.background.width) {
         GameProps.ground.posX = 0;
       }
       GameProps.hero.update();
-      
       let delObstacleIndex = -1;
       
       for (let i = 0; i < GameProps.obstacles.length; i++) {
         const obstacle = GameProps.obstacles[i];
         obstacle.update();
-        
-        // KOLLISJONSSJEKK: Sjekk om helten treffer et rør
-        if (obstacle.collidesWith(GameProps.hero)) {
-          // Hvis helten kolliderer med røret, sett helten som død
-          GameProps.hero.isDead = true;
-          break;
-        }
-
-        // Hvis helten har passert hindringen
         if (obstacle.right < GameProps.hero.left && !obstacle.hasPassed) {
+          // Congratulations, you have passed the obstacle
           GameProps.menu.incScore(20);
           console.log("Score: " + GameProps.score);
           obstacle.hasPassed = true;
         }
-
         if (obstacle.posX < -100) {
           delObstacleIndex = i;
         }
       }
-      
       if (delObstacleIndex >= 0) {
         GameProps.obstacles.splice(delObstacleIndex, 1);
       }
@@ -161,8 +170,9 @@ function animateGame() {
       
     case EGameStatus.gameOver:
       if (!gameOverSoundPlayed) {
-        playSound(GameProps.sounds.gameOver); // Spill Game Over-lyd
-        gameOverSoundPlayed = true; // Sørg for at lyden spilles kun én gang
+        playSound(GameProps.sounds.gameOver); // Play game over sound
+        playSound(GameProps.sounds.heroIsDead); // Play hero's death sound
+        gameOverSoundPlayed = true; // Ensure the sound plays only once
       }
 
       let delBaitIndex = -1;
@@ -189,13 +199,15 @@ function animateGame() {
 }
 
 function spawnObstacle() {
+  if (GameProps.status !== EGameStatus.playing) return;  // Only spawn obstacles when the game is playing
+  
   const obstacle = new TObstacle(spcvs, SpriteInfoList.obstacle);
   GameProps.obstacles.push(obstacle);
 
-  // Spawn a new obstacle in 1-3 seconds (justert tidsintervall for å få rørene nærmere)
-  if (GameProps.status === EGameStatus.playing) {
-    const seconds = Math.ceil(Math.random() * 3) + 1;  // Redusert ventetid mellom 1-3 sekunder
-    setTimeout(spawnObstacle, seconds * 1000);  // Nytt sett med hindringer spawns etter den nye tidsperioden
+  // Spawn a new obstacle in 1-3 seconds
+  if (GameProps.status === EGameStatus.playing && GameProps.obstacles.length < 5) {
+    const seconds = Math.ceil(Math.random() * 3) + 1;
+    setTimeout(spawnObstacle, seconds * 1000);
   }
 }
 
@@ -203,7 +215,8 @@ function spawnBait() {
   const pos = new lib2d.TPosition(SpriteInfoList.background.width, 100);
   const bait = new TBait(spcvs, SpriteInfoList.food, pos);
   GameProps.baits.push(bait);
-  //Generer nye baits hvert 0.5 til 1 sekund med step på 0.1
+
+  // Generate new baits every 0.5 to 1 second
   if (GameProps.status === EGameStatus.playing) {
     const sec = Math.ceil(Math.random() * 5) / 10 + 0.5;
     setTimeout(spawnBait, sec * 1000);
@@ -211,33 +224,34 @@ function spawnBait() {
 }
 
 export function startGame() {
-  GameProps.status = EGameStatus.playing;
-  // Helten er død, vi må lage en ny helt!
+  console.log("Game is starting...");
+  GameProps.status = EGameStatus.getReady;
+  
+  // Start nedtelling
+  startCountdown();  // Her starter nedtellingen og lyden
+
+  // Tilbakestill helten, hindringer og mat
   GameProps.hero = new THero(spcvs, SpriteInfoList.hero1, new lib2d.TPosition(100, 100));
-  // Vi må slette alle hindringer og baits
   GameProps.obstacles = [];
   GameProps.baits = [];
   GameProps.menu.reset();
+  
   spawnObstacle();
   spawnBait();
-  // Spill av lyd
-  GameProps.sounds.running.play();
+  
+  // Start bakgrunnslyden
+  playSound(GameProps.sounds.running);
 
-  // Sett tilbake gameOverSoundPlayed til false for å tillate at lyden kan spilles på nytt
+  // Tilbakestill flagget for game over
   gameOverSoundPlayed = false;
 }
 
 //--------------- Event Handlers -----------------------------------------//
 
 function setSoundOnOff() {
-  if (chkMuteSound.checked) {
-    GameProps.soundMuted = true;
-    console.log("Sound muted");
-  } else {
-    GameProps.soundMuted = false;
-    console.log("Sound on");
-  }
-} // end of setSoundOnOff
+  GameProps.soundMuted = chkMuteSound.checked;
+  console.log(GameProps.soundMuted ? "Sound muted" : "Sound on");
+}
 
 function setDayNight() {
   if (rbDayNight[0].checked) {
@@ -247,14 +261,14 @@ function setDayNight() {
     GameProps.dayTime = false;
     console.log("Night time");
   }
-} // end of setDayNight
+}
 
 function onKeyDown(aEvent) {
   switch (aEvent.code) {
     case "Space":
       if (!GameProps.hero.isDead) {
         GameProps.hero.flap();
-        playSound(GameProps.sounds.flap); // 🎵 Spill av hoppelyden
+        playSound(GameProps.sounds.flap); // 🎵 Play flap sound
       }
       break;
   }

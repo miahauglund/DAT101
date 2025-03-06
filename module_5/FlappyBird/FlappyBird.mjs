@@ -4,7 +4,7 @@ import libSound from "../../common/libs/libSound.mjs";
 import libSprite from "../../common/libs/libSprite.mjs";
 import THero from "./hero.mjs";
 import TObstacle from "./obstacle.mjs";
-import { TBait } from "./bait.mjs";
+import { TBait } from "./bait.mjs";  // Sørg for at Bait er riktig importert
 import { TMenu } from "./menu.mjs";
 
 //--------------- Objects and Variables ----------------------------------//
@@ -28,7 +28,7 @@ export const SpriteInfoList = {
   gameOver:     { x:    0, y: 384, width:  226, height: 114, count:  1 },
   infoText:     { x:    0, y: 630, width:  200, height:  55, count:  2 },
   food:         { x:    0, y: 696, width:   70, height:  65, count: 34 },
-  medal:        { x:  985, y: 635, width:   44, height:   44, count:  4 },
+  medal:        { x:  985, y: 635, width:   44, height:  44, count:  4 },
 };
 
 export const EGameStatus = { idle: 0, getReady: 1, playing: 2, gameOver: 3 };
@@ -37,24 +37,31 @@ export const GameProps = {
   soundMuted: false,
   dayTime: true,
   speed: 1,
-  status: EGameStatus.idle, //For testing, normally EGameStatus.idle
+  status: EGameStatus.idle,
   background: null,
   ground: null,
   hero: null,
   obstacles: [],
-  baits: [],
+  baits: [],  // Liste for å holde på Bait-objektene
   menu: null,
   score: 0,
   bestScore: 0,
-  sounds: { countDown: null, food: null, gameOver: null, dead: null, running: null, flap: null },
+  sounds: {
+    food: null,
+    gameOver: null,
+    dead: null,
+    running: null,
+    flap: null,
+    heroIsDead: null,
+  },
 };
 
 //--------------- Functions ----------------------------------------------//
 
-function playSound(sound) {
-  if (!GameProps.soundMuted && sound) {
-    sound.stop();  // Ensure sound is stopped before playing again
-    sound.play();  // Then play the sound
+function playSound(aSound) {
+  if (!GameProps.soundMuted && aSound) {
+    aSound.stop();
+    aSound.play();
   }
 }
 
@@ -77,41 +84,17 @@ function loadGame() {
   GameProps.sounds.flap = new libSound.TSoundFile("./Media/flap.mp3");
   GameProps.sounds.gameOver = new libSound.TSoundFile("./Media/gameOver.mp3");
   GameProps.sounds.heroIsDead = new libSound.TSoundFile("./Media/heroIsDead.mp3");
-  GameProps.sounds.countDown = new libSound.TSoundFile("./Media/countDown.mp3");
 
   requestAnimationFrame(drawGame);
   setInterval(animateGame, 10);
 }
 
-let countdownPlayed = false;  
 
-function startCountdown() {
-  if (countdownPlayed) return;  
-
-  countdownPlayed = true;
-
-  // Spill nedtellingslyden umiddelbart
-  playSound(GameProps.sounds.countDown);
-
-  // Sett spillstatus til "getReady" før nedtellingen begynner
-  GameProps.status = EGameStatus.getReady;
-
-  // Etter 3 sekunder, sett spillet til å starte
-  setTimeout(() => {
-    // Etter nedtellingen, endre status til "playing" og spill begynner
-    GameProps.status = EGameStatus.playing;
-
-    // Start spillet ved å sette opp eventuelle nødvendige funksjoner eller elementer
-    spawnObstacle(); // Spawn første hindring
-    spawnBait();     // Spawn første mat
-    playSound(GameProps.sounds.running);  // Spill lyden som indikerer at spillet er i gang
-  }, 3000);  // Tid før spillet starter (3 sekunder)
-}
 
 function drawGame() {
   spcvs.clearCanvas();
   GameProps.background.draw();
-  drawBait();
+  drawBait();  // Tegn bait (mat)
   drawObstacles();
   GameProps.ground.draw();
   GameProps.hero.draw();
@@ -129,7 +112,7 @@ function drawObstacles() {
 function drawBait() {
   for (let i = 0; i < GameProps.baits.length; i++) {
     const bait = GameProps.baits[i];
-    bait.draw();
+    bait.draw(); // Tegn hver bait
   }
 }
 
@@ -149,7 +132,7 @@ function animateGame() {
       }
       GameProps.hero.update();
       let delObstacleIndex = -1;
-      
+
       for (let i = 0; i < GameProps.obstacles.length; i++) {
         const obstacle = GameProps.obstacles[i];
         obstacle.update();
@@ -166,15 +149,7 @@ function animateGame() {
       if (delObstacleIndex >= 0) {
         GameProps.obstacles.splice(delObstacleIndex, 1);
       }
-      break;
       
-    case EGameStatus.gameOver:
-      if (!gameOverSoundPlayed) {
-        playSound(GameProps.sounds.gameOver); // Play game over sound
-        playSound(GameProps.sounds.heroIsDead); // Play hero's death sound
-        gameOverSoundPlayed = true; // Ensure the sound plays only once
-      }
-
       let delBaitIndex = -1;
       const posHero = GameProps.hero.getCenter();
       for (let i = 0; i < GameProps.baits.length; i++) {
@@ -182,13 +157,21 @@ function animateGame() {
         bait.update();
         const posBait = bait.getCenter();
         const dist = posHero.distanceToPoint(posBait);
-        if (dist < 15) {
+        if (dist < 15) {  // Hvis helten er nær bait, fjern bait og legg til poeng
           delBaitIndex = i;
         }
       }
       if (delBaitIndex >= 0) {
         GameProps.baits.splice(delBaitIndex, 1);
         GameProps.menu.incScore(10);
+      }
+      break;
+
+    case EGameStatus.gameOver:
+      if (!gameOverSoundPlayed) {
+        playSound(GameProps.sounds.gameOver); // Play game over sound
+        playSound(GameProps.sounds.heroIsDead); // Play hero's death sound
+        gameOverSoundPlayed = true; // Ensure the sound plays only once
       }
       break;
 
@@ -199,14 +182,11 @@ function animateGame() {
 }
 
 function spawnObstacle() {
-  if (GameProps.status !== EGameStatus.playing) return;  // Only spawn obstacles when the game is playing
-  
   const obstacle = new TObstacle(spcvs, SpriteInfoList.obstacle);
   GameProps.obstacles.push(obstacle);
-
-  // Spawn a new obstacle in 1-3 seconds
-  if (GameProps.status === EGameStatus.playing && GameProps.obstacles.length < 5) {
-    const seconds = Math.ceil(Math.random() * 3) + 1;
+  //Spawn a new obstacle in 2-7 seconds
+  if (GameProps.status === EGameStatus.playing) {
+    const seconds = Math.ceil(Math.random() * 5) + 2;
     setTimeout(spawnObstacle, seconds * 1000);
   }
 }
@@ -215,35 +195,26 @@ function spawnBait() {
   const pos = new lib2d.TPosition(SpriteInfoList.background.width, 100);
   const bait = new TBait(spcvs, SpriteInfoList.food, pos);
   GameProps.baits.push(bait);
-
-  // Generate new baits every 0.5 to 1 second
+  //Generate a new bait in 0.5-1.5 seconds
   if (GameProps.status === EGameStatus.playing) {
     const sec = Math.ceil(Math.random() * 5) / 10 + 0.5;
     setTimeout(spawnBait, sec * 1000);
   }
 }
 
-export function startGame() {
-  console.log("Game is starting...");
-  GameProps.status = EGameStatus.getReady;
-  
-  // Start nedtelling
-  startCountdown();  // Her starter nedtellingen og lyden
 
-  // Tilbakestill helten, hindringer og mat
+export function startGame() {
+  GameProps.status = EGameStatus.playing;
+  //The hero is dead, so we must create a new hero
   GameProps.hero = new THero(spcvs, SpriteInfoList.hero1, new lib2d.TPosition(100, 100));
+  //We must reset the obstacles and baits
   GameProps.obstacles = [];
   GameProps.baits = [];
   GameProps.menu.reset();
-  
   spawnObstacle();
   spawnBait();
-  
-  // Start bakgrunnslyden
-  playSound(GameProps.sounds.running);
-
-  // Tilbakestill flagget for game over
-  gameOverSoundPlayed = false;
+  //Play the running sound
+  GameProps.sounds.running.play();
 }
 
 //--------------- Event Handlers -----------------------------------------//
@@ -277,8 +248,9 @@ function onKeyDown(aEvent) {
 //--------------- Main Code ----------------------------------------------//
 chkMuteSound.addEventListener("change", setSoundOnOff);
 rbDayNight[0].addEventListener("change", setDayNight);
-rbDayNight[1].addEventListener("change", setDayNight);
+rbDayNight[0].addEventListener("change", setDayNight);
 
 // Load the sprite sheet
 spcvs.loadSpriteSheet("./Media/FlappyBirdSprites.png", loadGame);
 document.addEventListener("keydown", onKeyDown);
+

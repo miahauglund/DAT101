@@ -33,7 +33,7 @@ export class TMenu {
     const pos = new lib2d.TPosition(210, 180);
     this.#spFlappyBird = new libSprite.TSprite(aSpriteCanvas, SpriteInfoList.flappyBird, pos);
 
-    pos.y = 260;
+    pos.y = 300;
     pos.x = 245;
     this.#spButtonPlay = new libSprite.TSprite(aSpriteCanvas, SpriteInfoList.buttonPlay, pos);
 

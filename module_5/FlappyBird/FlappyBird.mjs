@@ -253,4 +253,3 @@ rbDayNight[0].addEventListener("change", setDayNight);
 // Load the sprite sheet
 spcvs.loadSpriteSheet("./Media/FlappyBirdSprites.png", loadGame);
 document.addEventListener("keydown", onKeyDown);
-

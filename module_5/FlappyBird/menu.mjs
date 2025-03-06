@@ -147,4 +147,5 @@ export class TMenu {
       startGame();
     }
   };
+  
 } // End of TMenu class

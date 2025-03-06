@@ -46,18 +46,17 @@ export const GameProps = {
   menu: null,
   score: 0,
   bestScore: 0,
-  sounds: {countDown: null, food: null, gameOver: null, dead: null, running: null},
+  sounds: {countDown: null, food: null, gameOver: null, dead: null, running: null, heroIsDead: null},
 };
 
 //--------------- Functions ----------------------------------------------//
 
 function playSound(aSound) {
   if (!GameProps.soundMuted) {
-    aSound.stop();// Stopper lyden hvis den allerede spiller
-    aSound.play();// Starter lyden på nytt
+    aSound.stop(); // Stopper lyden hvis den allerede spiller
+    aSound.play(); // Starter lyden på nytt
   }
 }
-
 
 function loadGame() {
   console.log("Game ready to load");
@@ -74,16 +73,15 @@ function loadGame() {
 
   GameProps.menu = new TMenu(spcvs);
 
-  //Load sounds
+  // Load sounds
   GameProps.sounds.running = new libSound.TSoundFile("./Media/running.mp3");
   GameProps.sounds.flap = new libSound.TSoundFile("./Media/flap.mp3");
-  GameProps.sounds.gameOver=new libSound.TSoundFile("./Media/gameOver.mp3");
+  GameProps.sounds.gameOver = new libSound.TSoundFile("./Media/gameOver.mp3");
+  GameProps.sounds.heroIsDead = new libSound.TSoundFile("./Media/heroIsDead.mp3"); // Hero dead sound
   
- 
-
   requestAnimationFrame(drawGame);
   setInterval(animateGame, 10);
-}// end of loadGame
+}
 
 function drawGame() {
   spcvs.clearCanvas();
@@ -118,28 +116,44 @@ function animateGame() {
       if (GameProps.hero.isDead) {
         GameProps.hero.animateSpeed = 0;
         GameProps.hero.update();
+        if (!gameOverSoundPlayed) {
+          playSound(GameProps.sounds.heroIsDead); // Spill HeroIsDead-lyden når helten dør
+          gameOverSoundPlayed = true; // Sørg for at lyden bare spilles én gang
+        }
         return;
       }
+      
       GameProps.ground.translate(-GameProps.speed, 0);
       if (GameProps.ground.posX <= -SpriteInfoList.background.width) {
         GameProps.ground.posX = 0;
       }
       GameProps.hero.update();
+      
       let delObstacleIndex = -1;
       
       for (let i = 0; i < GameProps.obstacles.length; i++) {
         const obstacle = GameProps.obstacles[i];
         obstacle.update();
+        
+        // KOLLISJONSSJEKK: Sjekk om helten treffer et rør
+        if (obstacle.collidesWith(GameProps.hero)) {
+          // Hvis helten kolliderer med røret, sett helten som død
+          GameProps.hero.isDead = true;
+          break;
+        }
+
+        // Hvis helten har passert hindringen
         if (obstacle.right < GameProps.hero.left && !obstacle.hasPassed) {
-          // Congratulations, you have passed the obstacle
           GameProps.menu.incScore(20);
           console.log("Score: " + GameProps.score);
           obstacle.hasPassed = true;
         }
+
         if (obstacle.posX < -100) {
           delObstacleIndex = i;
         }
       }
+      
       if (delObstacleIndex >= 0) {
         GameProps.obstacles.splice(delObstacleIndex, 1);
       }
@@ -147,8 +161,8 @@ function animateGame() {
       
     case EGameStatus.gameOver:
       if (!gameOverSoundPlayed) {
-        playSound(GameProps.sounds.gameOver); // Spille Game Over-lyd
-        gameOverSoundPlayed = true; // Sørger for at lyden spilles kun én gang
+        playSound(GameProps.sounds.gameOver); // Spill Game Over-lyd
+        gameOverSoundPlayed = true; // Sørg for at lyden spilles kun én gang
       }
 
       let delBaitIndex = -1;

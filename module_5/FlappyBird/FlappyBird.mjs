@@ -4,7 +4,7 @@ import libSound from "../../common/libs/libSound.mjs";
 import libSprite from "../../common/libs/libSprite.mjs";
 import THero from "./hero.mjs";
 import TObstacle from "./obstacle.mjs";
-import { TBait } from "./bait.mjs";  // Sørg for at Bait er riktig importert
+import { TBait } from "./bait.mjs";
 import { TMenu } from "./menu.mjs";
 
 //--------------- Objects and Variables ----------------------------------//
@@ -28,7 +28,7 @@ export const SpriteInfoList = {
   gameOver:     { x:    0, y: 384, width:  226, height: 114, count:  1 },
   infoText:     { x:    0, y: 630, width:  200, height:  55, count:  2 },
   food:         { x:    0, y: 696, width:   70, height:  65, count: 34 },
-  medal:        { x:  985, y: 635, width:   44, height:   44, count:  4 },
+  medal:        { x:  985, y: 635, width:   44, height:  44, count:  4 },
 };
 
 export const EGameStatus = { idle: 0, getReady: 1, playing: 2, gameOver: 3 };
@@ -37,7 +37,7 @@ export const GameProps = {
   soundMuted: false,
   dayTime: true,
   speed: 1,
-  status: EGameStatus.idle,
+  status: EGameStatus.idle, //For testing, normally EGameStatus.idle
   background: null,
   ground: null,
   hero: null,
@@ -46,23 +46,17 @@ export const GameProps = {
   menu: null,
   score: 0,
   bestScore: 0,
-  gameOverSoundPlayed: false, // Ny variabel for å hindre gjentatt lyd
-  sounds: {
-    food: null,
-    gameOver: null,
-    dead: null,
-    running: null,
-    flap: null,
-    heroIsDead: null,
-  },
+  sounds: {countDown: null, food: null, gameOver: null, dead: null, running: null},
 };
 
 //--------------- Functions ----------------------------------------------//
 
 function playSound(aSound) {
-  if (!GameProps.soundMuted && aSound) {
-    aSound.stop();
-    aSound.play();
+  if (!GameProps.soundMuted) {
+    aSound.stop(); // Stop any sound that's currently playing
+    aSound.play(); // Play the sound again
+  } else {
+    aSound.pause();
   }
 }
 
@@ -81,19 +75,20 @@ function loadGame() {
 
   GameProps.menu = new TMenu(spcvs);
 
+  // Load sounds
   GameProps.sounds.running = new libSound.TSoundFile("./Media/running.mp3");
-  GameProps.sounds.flap = new libSound.TSoundFile("./Media/flap.mp3");
-  GameProps.sounds.gameOver = new libSound.TSoundFile("./Media/gameOver.mp3");
   GameProps.sounds.heroIsDead = new libSound.TSoundFile("./Media/heroIsDead.mp3");
+  GameProps.sounds.gameOver = new libSound.TSoundFile("./Media/gameOver.mp3");
+  GameProps.sounds.flap = new libSound.TSoundFile("./Media/flap.mp3");
 
   requestAnimationFrame(drawGame);
   setInterval(animateGame, 10);
-}
+} // end of loadGame
 
 function drawGame() {
   spcvs.clearCanvas();
   GameProps.background.draw();
-  drawBait();  // Tegn bait (mat)
+  drawBait();
   drawObstacles();
   GameProps.ground.draw();
   GameProps.hero.draw();
@@ -111,55 +106,95 @@ function drawObstacles() {
 function drawBait() {
   for (let i = 0; i < GameProps.baits.length; i++) {
     const bait = GameProps.baits[i];
-    bait.draw(); // Tegn hver bait (sommerfugl)
+    bait.draw();
   }
 }
+
+let gameOverSoundPlayed = false; // Flag to ensure the sound only plays once
+let fallingAfterDeath = false; // Flag to handle the falling animation after death
+let heroDeathSoundPlayed = false; // Flag to ensure the hero death sound plays once
 
 function animateGame() {
   switch (GameProps.status) {
     case EGameStatus.playing:
+      // Check if the hero is dead during the game
       if (GameProps.hero.isDead) {
-        GameProps.hero.animateSpeed = 0;
-        GameProps.hero.update();
+        // Debugging: Check if hero death condition is true
+        console.log("Hero is dead, playing death sound...");
 
-        if (!GameProps.gameOverSoundPlayed) {
-          playSound(GameProps.sounds.gameOver);
-          playSound(GameProps.sounds.heroIsDead);
-          GameProps.gameOverSoundPlayed = true;
+        // Ensure the hero death sound plays only once before transitioning to game over
+        if (!heroDeathSoundPlayed) {
+          console.log("Playing hero death sound");
+          playSound(GameProps.sounds.heroIsDead); // Play hero death sound
+          heroDeathSoundPlayed = true; // Mark that the sound has played
         }
-        return;
+
+        // If not falling already, start the falling animation after death
+        if (!fallingAfterDeath) {
+          fallingAfterDeath = true; // Start falling animation
+          GameProps.hero.animateSpeed = 0; // Stop normal animation
+        }
+
+        // Simulate the bird falling to the ground
+        if (GameProps.hero.posY < GameProps.ground.posY) {
+          GameProps.hero.posY += 2; // Move the bird downwards, adjust the value to control the fall speed
+          GameProps.hero.update();
+        } else {
+          // Once the bird reaches the ground, stop moving and set its position at the ground level
+          GameProps.hero.posY = GameProps.ground.posY;
+          GameProps.hero.update();
+          setTimeout(() => {
+            // After the bird has fallen and reached the ground, transition to the game over state
+            GameProps.status = EGameStatus.gameOver;
+          }, 200); // Delay a bit before transitioning to game over
+        }
+
+        // Update baits while falling, so the bird can still collect them
+        updateBaits();
+
+        return; // Exit the function after death to prevent further updates in this state
       }
 
-      // Beveg bakgrunn og andre objekter
+      // Update ground, hero, and obstacles in the playing state
       GameProps.ground.translate(-GameProps.speed, 0);
       if (GameProps.ground.posX <= -SpriteInfoList.background.width) {
         GameProps.ground.posX = 0;
       }
-      
-      // Oppdater og tegn helten
       GameProps.hero.update();
 
-      // Oppdater og tegn hindringene
+      let delObstacleIndex = -1;
+
+      // Update obstacles
       for (let i = 0; i < GameProps.obstacles.length; i++) {
         const obstacle = GameProps.obstacles[i];
         obstacle.update();
+        if (obstacle.right < GameProps.hero.left && !obstacle.hasPassed) {
+          // You passed the obstacle, add points
+          GameProps.menu.incScore(20);
+          console.log("Score: " + GameProps.score);
+          obstacle.hasPassed = true;
+        }
+        if (obstacle.posX < -100) {
+          delObstacleIndex = i;
+        }
+      }
+      if (delObstacleIndex >= 0) {
+        GameProps.obstacles.splice(delObstacleIndex, 1);
       }
 
-      // Oppdater og tegn sommerfuglene (baits)
-      for (let i = 0; i < GameProps.baits.length; i++) {
-        const bait = GameProps.baits[i];
-        bait.update();  // Hvis du har en update-metode på bait for å flytte det
-      }
-
+      // Update baits while playing
+      updateBaits();
       break;
 
-    // Andre spilltilstander
     case EGameStatus.gameOver:
-      if (!GameProps.gameOverSoundPlayed) {
-        playSound(GameProps.sounds.gameOver);
-        playSound(GameProps.sounds.heroIsDead);
-        GameProps.gameOverSoundPlayed = true;
+      // Play the game over sound only once
+      if (!gameOverSoundPlayed) {
+        playSound(GameProps.sounds.gameOver); // Play game over sound
+        gameOverSoundPlayed = true; // Ensure it only plays once
       }
+
+      // Update baits in the game over state
+      updateBaits();
       break;
 
     case EGameStatus.idle:
@@ -168,18 +203,32 @@ function animateGame() {
   }
 }
 
-// Start bevegelsen til sommerfuglene etter at helten dør
-function startMovingBaits() {
+// Function to update baits
+function updateBaits() {
+  let delBaitIndex = -1;
+  const posHero = GameProps.hero.getCenter();
   for (let i = 0; i < GameProps.baits.length; i++) {
     const bait = GameProps.baits[i];
-    bait.speed = 2; // Sett fart på sommerfuglene
+    bait.update();
+    const posBait = bait.getCenter();
+    const dist = posHero.distanceToPoint(posBait);
+    if (dist < 15) {
+      delBaitIndex = i;
+    }
+  }
+  if (delBaitIndex >= 0) {
+    GameProps.baits.splice(delBaitIndex, 1);
+    GameProps.menu.incScore(10);
   }
 }
+
+
+
 
 function spawnObstacle() {
   const obstacle = new TObstacle(spcvs, SpriteInfoList.obstacle);
   GameProps.obstacles.push(obstacle);
-  // Spawn a new obstacle in 2-7 seconds
+  //Spawn a new obstacle in 2-7 seconds
   if (GameProps.status === EGameStatus.playing) {
     const seconds = Math.ceil(Math.random() * 5) + 2;
     setTimeout(spawnObstacle, seconds * 1000);
@@ -187,38 +236,41 @@ function spawnObstacle() {
 }
 
 function spawnBait() {
-  const pos = new lib2d.TPosition(SpriteInfoList.background.width, Math.random() * (cvs.height - SpriteInfoList.food.height));  // Random Y-posisjon
+  const pos = new lib2d.TPosition(SpriteInfoList.background.width, 100);
   const bait = new TBait(spcvs, SpriteInfoList.food, pos);
   GameProps.baits.push(bait);
-  console.log("New bait spawned at position:", pos);
-
-  // Spawn a new bait in 0.5-1.5 seconds
+  //Generate a new bait in 0.5-1.5 seconds
   if (GameProps.status === EGameStatus.playing) {
     const sec = Math.ceil(Math.random() * 5) / 10 + 0.5;
     setTimeout(spawnBait, sec * 1000);
   }
 }
 
-
 export function startGame() {
   GameProps.status = EGameStatus.playing;
+  //The hero is dead, so we must create a new hero
   GameProps.hero = new THero(spcvs, SpriteInfoList.hero1, new lib2d.TPosition(100, 100));
+  //We must reset the obstacles and baits
   GameProps.obstacles = [];
-  GameProps.baits = []; // Nullstiller baits slik at nye kan spawnes
+  GameProps.baits = [];
   GameProps.menu.reset();
-  GameProps.gameOverSoundPlayed = false; // Nullstiller lydstatus
-
   spawnObstacle();
-  spawnBait(); // ✅ Sørger for at nye sommerfugler dukker opp
+  spawnBait();
+  //Play the running sound
   GameProps.sounds.running.play();
 }
 
 //--------------- Event Handlers -----------------------------------------//
 
 function setSoundOnOff() {
-  GameProps.soundMuted = chkMuteSound.checked;
-  console.log(GameProps.soundMuted ? "Sound muted" : "Sound on");
-}
+  if (chkMuteSound.checked) {
+    GameProps.soundMuted = true;
+    console.log("Sound muted");
+  } else {
+    GameProps.soundMuted = false;
+    console.log("Sound on");
+  }
+} // end of setSoundOnOff
 
 function setDayNight() {
   if (rbDayNight[0].checked) {
@@ -228,14 +280,14 @@ function setDayNight() {
     GameProps.dayTime = false;
     console.log("Night time");
   }
-}
+} // end of setDayNight
 
 function onKeyDown(aEvent) {
   switch (aEvent.code) {
     case "Space":
       if (!GameProps.hero.isDead) {
-        GameProps.hero.flap();
-        playSound(GameProps.sounds.flap); // 🎵 Play flap sound
+        GameProps.hero.flap(); // Flap the hero
+        playSound(GameProps.sounds.flap); // Play the flap sound repeatedly
       }
       break;
   }
@@ -244,7 +296,7 @@ function onKeyDown(aEvent) {
 //--------------- Main Code ----------------------------------------------//
 chkMuteSound.addEventListener("change", setSoundOnOff);
 rbDayNight[0].addEventListener("change", setDayNight);
-rbDayNight[0].addEventListener("change", setDayNight);
+rbDayNight[1].addEventListener("change", setDayNight);
 
 // Load the sprite sheet
 spcvs.loadSpriteSheet("./Media/FlappyBirdSprites.png", loadGame);

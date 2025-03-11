@@ -125,7 +125,7 @@ export class TMenu {
           this.#activeSprite = this.#spButtonPlay;
         } else {
           this.#spcvs.style.cursor = "default";
-          this.#activeSprite = null; //Ingen sprite er aktiv
+          this.#activeSprite = null; 
         }
         break;
     }

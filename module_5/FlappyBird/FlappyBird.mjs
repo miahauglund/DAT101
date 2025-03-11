@@ -110,52 +110,49 @@ function drawBait() {
   }
 }
 
-let gameOverSoundPlayed = false; // Flag to ensure the sound only plays once
-let fallingAfterDeath = false; // Flag to handle the falling animation after death
-let heroDeathSoundPlayed = false; // Flag to ensure the hero death sound plays once
+let gameOverSoundPlayed = false; 
+let fallingAfterDeath = false; 
+let heroDeathSoundPlayed = false; 
 
 function animateGame() {
   switch (GameProps.status) {
     case EGameStatus.playing:
-      // Check if the hero is dead during the game
+     
       if (GameProps.hero.isDead) {
-        // Debugging: Check if hero death condition is true
-        console.log("Hero is dead, playing death sound...");
-
-        // Ensure the hero death sound plays only once before transitioning to game over
+        
         if (!heroDeathSoundPlayed) {
           console.log("Playing hero death sound");
-          playSound(GameProps.sounds.heroIsDead); // Play hero death sound
-          heroDeathSoundPlayed = true; // Mark that the sound has played
+          playSound(GameProps.sounds.heroIsDead); 
+          heroDeathSoundPlayed = true; 
         }
 
         // If not falling already, start the falling animation after death
         if (!fallingAfterDeath) {
-          fallingAfterDeath = true; // Start falling animation
-          GameProps.hero.animateSpeed = 0; // Stop normal animation
+          fallingAfterDeath = true; 
+          GameProps.hero.animateSpeed = 0; 
         }
 
         // Simulate the bird falling to the ground
         if (GameProps.hero.posY < GameProps.ground.posY) {
-          GameProps.hero.posY += 2; // Move the bird downwards, adjust the value to control the fall speed
+          GameProps.hero.posY += 2; 
           GameProps.hero.update();
         } else {
-          // Once the bird reaches the ground, stop moving and set its position at the ground level
+          
           GameProps.hero.posY = GameProps.ground.posY;
           GameProps.hero.update();
           setTimeout(() => {
-            // After the bird has fallen and reached the ground, transition to the game over state
+            
             GameProps.status = EGameStatus.gameOver;
-          }, 200); // Delay a bit before transitioning to game over
+          }, 200); 
         }
 
-        // Update baits while falling, so the bird can still collect them
+        
         updateBaits();
 
-        return; // Exit the function after death to prevent further updates in this state
+        return; 
       }
 
-      // Update ground, hero, and obstacles in the playing state
+      
       GameProps.ground.translate(-GameProps.speed, 0);
       if (GameProps.ground.posX <= -SpriteInfoList.background.width) {
         GameProps.ground.posX = 0;
@@ -187,17 +184,19 @@ function animateGame() {
       break;
 
     case EGameStatus.gameOver:
-      // Play the game over sound only once
+      // Stop background music and other things when game over
       if (!gameOverSoundPlayed) {
         playSound(GameProps.sounds.gameOver); // Play game over sound
         gameOverSoundPlayed = true; // Ensure it only plays once
       }
 
-      // Update baits in the game over state
+      
       updateBaits();
       break;
 
     case EGameStatus.idle:
+      
+      heroDeathSoundPlayed = false; 
       GameProps.hero.updateIdle();
       break;
   }

@@ -49,6 +49,7 @@ export const GameProps = {
   sounds: {countDown: null, food: null, gameOver: null, dead: null, running: null},
 };
 
+let countdownSoundPlayed = false;
 //--------------- Functions ----------------------------------------------//
 
 function playSound(aSound) {
@@ -62,6 +63,8 @@ function playSound(aSound) {
 
 function loadGame() {
   console.log("Game ready to load");
+
+  // Last sprite-sheet og andre nødvendigheter
   cvs.width = SpriteInfoList.background.width;
   cvs.height = SpriteInfoList.background.height;
 
@@ -75,15 +78,17 @@ function loadGame() {
 
   GameProps.menu = new TMenu(spcvs);
 
-  // Load sounds
+  // Laster lyder
   GameProps.sounds.running = new libSound.TSoundFile("./Media/running.mp3");
   GameProps.sounds.heroIsDead = new libSound.TSoundFile("./Media/heroIsDead.mp3");
   GameProps.sounds.gameOver = new libSound.TSoundFile("./Media/gameOver.mp3");
   GameProps.sounds.flap = new libSound.TSoundFile("./Media/flap.mp3");
+  GameProps.sounds.countDown = new libSound.TSoundFile("./Media/countDown.mp3"); // Sørg for at lyden er lastet
 
   requestAnimationFrame(drawGame);
   setInterval(animateGame, 10);
-} // end of loadGame
+}
+
 
 function drawGame() {
   spcvs.clearCanvas();
@@ -116,47 +121,56 @@ let heroDeathSoundPlayed = false;
 
 function animateGame() {
   switch (GameProps.status) {
+    case EGameStatus.getReady:
+      // Spill av nedtellingslyd hvis den ikke allerede er spilt
+      if (!countdownSoundPlayed) {
+        console.log("Spiller nedtellingslyd");
+        playSound(GameProps.sounds.countDown); // Spiller nedtellingslyden
+        countdownSoundPlayed = true; // Sørger for at lyden bare spilles en gang
+      }
+
+      // Etter nedtellingen, endre status til å starte spillet
+      setTimeout(() => {
+        GameProps.status = EGameStatus.playing; // Endre spillstatus til 'playing'
+        countdownSoundPlayed = false; // Nullstill flagget for neste gang
+      }, 3000); // Nedtelling på 3 sekunder
+      break;
+
     case EGameStatus.playing:
-     
+      // Spill logikk for 'playing' her
       if (GameProps.hero.isDead) {
-        
         if (!heroDeathSoundPlayed) {
           console.log("Playing hero death sound");
-          playSound(GameProps.sounds.heroIsDead); 
-          heroDeathSoundPlayed = true; 
+          playSound(GameProps.sounds.heroIsDead);
+          heroDeathSoundPlayed = true;
         }
 
-        // If not falling already, start the falling animation after death
+        // Start falling animation after hero's death
         if (!fallingAfterDeath) {
-          fallingAfterDeath = true; 
-          GameProps.hero.animateSpeed = 0; 
+          fallingAfterDeath = true;
+          GameProps.hero.animateSpeed = 0;
         }
 
-        // Simulate the bird falling to the ground
         if (GameProps.hero.posY < GameProps.ground.posY) {
-          GameProps.hero.posY += 2; 
+          GameProps.hero.posY += 2;
           GameProps.hero.update();
         } else {
-          
           GameProps.hero.posY = GameProps.ground.posY;
           GameProps.hero.update();
           setTimeout(() => {
-            
             GameProps.status = EGameStatus.gameOver;
-          }, 200); 
+          }, 200);
         }
 
-        
         updateBaits();
-
-        return; 
+        return;
       }
 
-      
       GameProps.ground.translate(-GameProps.speed, 0);
       if (GameProps.ground.posX <= -SpriteInfoList.background.width) {
         GameProps.ground.posX = 0;
       }
+
       GameProps.hero.update();
 
       let delObstacleIndex = -1;
@@ -166,7 +180,6 @@ function animateGame() {
         const obstacle = GameProps.obstacles[i];
         obstacle.update();
         if (obstacle.right < GameProps.hero.left && !obstacle.hasPassed) {
-          // You passed the obstacle, add points
           GameProps.menu.incScore(20);
           console.log("Score: " + GameProps.score);
           obstacle.hasPassed = true;
@@ -175,32 +188,29 @@ function animateGame() {
           delObstacleIndex = i;
         }
       }
+
       if (delObstacleIndex >= 0) {
         GameProps.obstacles.splice(delObstacleIndex, 1);
       }
 
-      // Update baits while playing
       updateBaits();
       break;
 
     case EGameStatus.gameOver:
-      // Stop background music and other things when game over
       if (!gameOverSoundPlayed) {
-        playSound(GameProps.sounds.gameOver); // Play game over sound
-        gameOverSoundPlayed = true; // Ensure it only plays once
+        playSound(GameProps.sounds.gameOver);
+        gameOverSoundPlayed = true;
       }
-
-      
       updateBaits();
       break;
 
     case EGameStatus.idle:
-      
-      heroDeathSoundPlayed = false; 
+      heroDeathSoundPlayed = false;
       GameProps.hero.updateIdle();
       break;
   }
 }
+
 
 // Function to update baits
 function updateBaits() {
@@ -220,8 +230,6 @@ function updateBaits() {
     GameProps.menu.incScore(10);
   }
 }
-
-
 
 
 function spawnObstacle() {
@@ -246,16 +254,17 @@ function spawnBait() {
 }
 
 export function startGame() {
-  GameProps.status = EGameStatus.playing;
-  //The hero is dead, so we must create a new hero
+  GameProps.status = EGameStatus.getReady; // Sett status til 'getReady' for å starte nedtellingen
+  countdownSoundPlayed = false; // Nullstill nedtelling flagget
+  // Start spillet og resett nødvendige variabler
   GameProps.hero = new THero(spcvs, SpriteInfoList.hero1, new lib2d.TPosition(100, 100));
-  //We must reset the obstacles and baits
   GameProps.obstacles = [];
   GameProps.baits = [];
   GameProps.menu.reset();
+  // Start opp nedtellingslyden
   spawnObstacle();
   spawnBait();
-  //Play the running sound
+  // Eventuelt spill lyder for spillet som begynner (running lyden)
   GameProps.sounds.running.play();
 }
 

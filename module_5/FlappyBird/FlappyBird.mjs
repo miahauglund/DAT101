@@ -124,7 +124,6 @@ function animateGame() {
     case EGameStatus.getReady:
       // Spill av nedtellingslyd hvis den ikke allerede er spilt
       if (!countdownSoundPlayed) {
-        console.log("Spiller nedtellingslyd");
         playSound(GameProps.sounds.countDown); // Spiller nedtellingslyden
         countdownSoundPlayed = true; // Sørger for at lyden bare spilles en gang
       }
@@ -255,7 +254,9 @@ function spawnBait() {
 
 export function startGame() {
   GameProps.status = EGameStatus.getReady; // Sett status til 'getReady' for å starte nedtellingen
-  countdownSoundPlayed = false; // Nullstill nedtelling flagget
+  if (GameProps.status !== EGameStatus.getReady) {
+    countdownSoundPlayed = false; // Nullstill nedtelling flagget
+  }
   // Start spillet og resett nødvendige variabler
   GameProps.hero = new THero(spcvs, SpriteInfoList.hero1, new lib2d.TPosition(100, 100));
   GameProps.obstacles = [];

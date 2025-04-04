@@ -84,6 +84,7 @@ function loadGame() {
   GameProps.sounds.gameOver = new libSound.TSoundFile("./Media/gameOver.mp3");
   GameProps.sounds.flap = new libSound.TSoundFile("./Media/flap.mp3");
   GameProps.sounds.countDown = new libSound.TSoundFile("./Media/countDown.mp3"); // Sørg for at lyden er lastet
+  GameProps.sounds.food = new libSound.TSoundFile("./Media/food.mp3");
 
   requestAnimationFrame(drawGame);
   setInterval(animateGame, 10);
@@ -210,8 +211,6 @@ function animateGame() {
   }
 }
 
-
-// Function to update baits
 function updateBaits() {
   let delBaitIndex = -1;
   const posHero = GameProps.hero.getCenter();
@@ -227,8 +226,11 @@ function updateBaits() {
   if (delBaitIndex >= 0) {
     GameProps.baits.splice(delBaitIndex, 1);
     GameProps.menu.incScore(10);
+    playSound(GameProps.sounds.food); // Spill svelgelyden
   }
-}
+} 
+
+
 
 
 function spawnObstacle() {
@@ -282,14 +284,14 @@ function setSoundOnOff() {
 } // end of setSoundOnOff
 
 function setDayNight() {
-  if (rbDayNight[0].checked) {
-    GameProps.dayTime = true;
-    console.log("Day time");
+  GameProps.dayTime = rbDayNight[0].checked;
+  if (GameProps.dayTime) {
+    GameProps.background.changeSprite(SpriteInfoList.background.day);
   } else {
-    GameProps.dayTime = false;
-    console.log("Night time");
+    GameProps.background.changeSprite(SpriteInfoList.background.night);
   }
-} // end of setDayNight
+  console.log(GameProps.dayTime ? "Day time" : "Night time");
+}
 
 function onKeyDown(aEvent) {
   switch (aEvent.code) {

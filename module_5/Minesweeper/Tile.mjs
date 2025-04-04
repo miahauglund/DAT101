@@ -1,7 +1,7 @@
 "use strict";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
 import lib2d from "../../common/libs/lib2d_v2.mjs";
-import { gameProps, gameLevel } from "./Minesweeper.mjs";
+import { gameProps, gameLevel, setGameOver} from "./Minesweeper.mjs";
 
 //Farger kan definers med enten tekst "black" eller kode "#000000"
 const MineInfoColors = ["blue", "green", "red", "darkblue", "brown", "cyan", "black", "grey"];
@@ -66,15 +66,42 @@ export class TTile extends libSprite.TSpriteButton {
   }
 
   onMouseDown(aEvent) {
+    if(aEvent.buttons === 2){
+      return
+    }else if(this.index === 3){
+      return;
+    }
+
     this.index = 1;
+    gameProps.ScoreBoard.spSmiley.index = 1;
   }
 
   onMouseUp(aEvent) {
+    if(aEvent.button === 2){ 
+      if(this.index === 3){
+        this.index = 0;
+        //Her må dere øke mine telleren
+        gameProps.ScoreBoard.mineCounter++;
+      }else{
+        //Her må dere redusere mine telleren
+        if(gameProps.ScoreBoard.mineCounter > 0){
+          this.index = 3;
+          gameProps.ScoreBoard.mineCounter--;
+        }
+      }
+      return;
+    }else if(this.index === 3){
+      return;
+    }
+
     if (this.#isMine) {
       this.index = 4;
-      //Game over :(
+      gameProps.ScoreBoard.spSmiley.index = 2;
+      setGameOver();
     } else {
       this.index = 2;
+      this.disable = true;
+      gameProps.ScoreBoard.spSmiley.index = 0;
       if (this.#mineInfo === 0) {
         const neighbors = this.#cell.neighbors;
         for (let i = 0; i < neighbors.length; i++) {
@@ -84,6 +111,19 @@ export class TTile extends libSprite.TSpriteButton {
       }
     }
     this.disable = true;
+    //TODO: Sjekk om spillet er slutt!, Hint bruke forEachTile
+    gameProps.openTiles = 0;//Vi må resette denne, later som om vi ikke har noen åpnet enda
+    forEachTile(this.#countOpenTiles);
+    //Her er openTiles oppdatert med antall åpne miner
+    //Lag en if test, sjekk om det er flere tiles å åpne, hvis ikke så er spillet slutt!
+    const totalTiles = gameLevel.Tiles.Row * gameLevel.Tiles.Col;
+    const tilesLeft = totalTiles - gameProps.openTiles;
+    console.log(tilesLeft);
+    if(tilesLeft === gameLevel.Mines){
+      gameProps.ScoreBoard.spSmiley.index = 4;
+      setGameOver();
+    }
+
   }
 
   onLeave(aEvent) {
@@ -131,17 +171,18 @@ export class TTile extends libSprite.TSpriteButton {
   }
 
   get isOpen() {
-    if (this.index !== 0 && this.index !== 1) {
+    if (this.index !== 0 && this.index !== 1 && this.index !== 3) {
       return true;
     }
     return false;
   }
 
   OpenUp(){
-    if(this.isOpen){
+    if(this.isOpen || this.index === 3){
       return;
     }
     this.index = 2;
+    this.disable = true;
     if(this.#mineInfo === 0){
       const neighbors = this.#cell.neighbors;
       for(let i = 0; i < neighbors.length; i++){
@@ -149,6 +190,23 @@ export class TTile extends libSprite.TSpriteButton {
         neighbor.OpenUp();
       }
     }
+  }
+
+  reveal(){
+    if(this.isOpen){
+      return;
+    }
+    this.index = 2;
+    if(this.#isMine){
+      this.index = 5;
+    }
+  }
+
+  #countOpenTiles(aTile){
+    if(!aTile.isOpen){
+      return;
+    }
+    gameProps.openTiles++;
   }
 
 } // End of class TTile

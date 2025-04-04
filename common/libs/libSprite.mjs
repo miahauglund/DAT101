@@ -193,4 +193,4 @@ export default {
    * @function draw - Draws the sprite on the canvas.
    */
   TSprite: TSprite,
-}; 
+};

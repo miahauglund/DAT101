@@ -8,12 +8,11 @@
     <title>Flappy Bird</title>
     <style>
       .prevent-select {
-        -webkit-user-select: chrome; /* Safari */
+        -webkit-user-select: none; /* Safari */
         -ms-user-select: none; /* IE 10 and IE 11 */
         user-select: none; /* Standard syntax */
       }
     </style>
-    <script type="module" src="./FlappyBird.mjs" defer></script>
   </head>
   <body class="prevent-select">
     <canvas id="cvs" style="background-color: antiquewhite"></canvas>
@@ -21,9 +20,15 @@
       <legend>Game Settings</legend>
       <fieldset style="margin-top: 5px">
         <legend>Day or Night</legend>
-        <span><input type="radio" name="rbDayNight" checked="checked" value="1" style="margin-right: 10px" />Day</span>
+        <span>
+          <input type="radio" name="rbDayNight" checked="checked" value="1" id="dayMode" />
+          <label for="dayMode">Day</label>
+        </span>
         <br />
-        <span><input type="radio" name="rbDayNight" value="0" style="margin-right: 10px" />Night</span>
+        <span>
+          <input type="radio" name="rbDayNight" value="0" id="nightMode" />
+          <label for="nightMode">Night</label>
+        </span>
       </fieldset>
       <p>
         <input id="chkMuteSound" type="checkbox" />
@@ -32,5 +37,7 @@
     </fieldset>
     <button id="btnPlay">Start Game</button>
 
+    <!-- Last inn scriptet til slutt for å sikre at elementene er klare -->
+    <script type="module" src="./FlappyBird.mjs"></script>
   </body>
 </html>

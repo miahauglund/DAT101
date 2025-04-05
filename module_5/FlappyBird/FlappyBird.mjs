@@ -214,21 +214,29 @@ function animateGame() {
 function updateBaits() {
   let delBaitIndex = -1;
   const posHero = GameProps.hero.getCenter();
+
   for (let i = 0; i < GameProps.baits.length; i++) {
     const bait = GameProps.baits[i];
     bait.update();
+
     const posBait = bait.getCenter();
     const dist = posHero.distanceToPoint(posBait);
+
+    console.log(`Bait ${i}: distanse til helt = ${dist}`); // 👈 Debug
+
     if (dist < 15) {
       delBaitIndex = i;
     }
   }
+
   if (delBaitIndex >= 0) {
+    console.log("Bait spist! 🎯");
     GameProps.baits.splice(delBaitIndex, 1);
     GameProps.menu.incScore(10);
-    playSound(GameProps.sounds.food); // Spill svelgelyden
+    playSound(GameProps.sounds.food);
   }
-} 
+}
+
 
 
 

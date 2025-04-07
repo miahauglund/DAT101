@@ -37,11 +37,12 @@ export const GameProps = {
   soundMuted: false,
   dayTime: true,
   speed: 1,
-  status: EGameStatus.idle, //For testing, normally EGameStatus.idle
+  status: EGameStatus.idle, 
   background: null,
   ground: null,
   hero: null,
   obstacles: [],
+  obstacleSpawnerStarted: false,
   baits: [],
   menu: null,
   score: 0,
@@ -131,9 +132,14 @@ function animateGame() {
 
       // Etter nedtellingen, endre status til å starte spillet
       setTimeout(() => {
-        GameProps.status = EGameStatus.playing; // Endre spillstatus til 'playing'
-        countdownSoundPlayed = false; // Nullstill flagget for neste gang
-      }, 3000); // Nedtelling på 3 sekunder
+        GameProps.status = EGameStatus.playing; 
+        if (!GameProps.obstacleSpawnerStarted) {
+          spawnObstacle();
+          GameProps.obstacleSpawnerStarted = true;
+        }
+        
+        countdownSoundPlayed = false; 
+      }, 3000);
       break;
 
     case EGameStatus.playing:
@@ -230,15 +236,12 @@ function updateBaits() {
   }
 
   if (delBaitIndex >= 0) {
-    console.log("Bait spist! 🎯");
+    console.log("Bait spist");
     GameProps.baits.splice(delBaitIndex, 1);
     GameProps.menu.incScore(10);
     playSound(GameProps.sounds.food);
   }
 }
-
-
-
 
 
 function spawnObstacle() {
@@ -272,8 +275,9 @@ export function startGame() {
   GameProps.obstacles = [];
   GameProps.baits = [];
   GameProps.menu.reset();
+  GameProps.obstacleSpawnerStarted = false;
+
   // Start opp nedtellingslyden
-  spawnObstacle();
   spawnBait();
   // Eventuelt spill lyder for spillet som begynner (running lyden)
   GameProps.sounds.running.play();

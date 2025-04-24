@@ -17,7 +17,8 @@ export const SpriteInfoList = {
   hero1: { x: 0, y: 545, width: 34, height: 24, count: 4 },
   hero2: { x: 0, y: 569, width: 34, height: 24, count: 4 },
   hero3: { x: 0, y: 593, width: 34, height: 24, count: 4 },
-  obstacle: { x: 0, y: 0, width: 52, height: 320, count: 4 },
+  obstacleDay: { x: 0, y: 0, width: 52, height: 320, count: 4 },  // Hindringer for dag
+  obstacleNight: { x: 0, y: 320, width: 52, height: 320, count: 4 },
   background: { x: 246, y: 0, width: 576, height: 512, count: 2 },
   flappyBird: { x: 0, y: 330, width: 178, height: 50, count: 1 },
   ground: { x: 246, y: 512, width: 1152, height: 114, count: 1 },
@@ -213,14 +214,16 @@ function updateBaits() {
 }
 
 function spawnObstacle() {
-  const obstacle = new TObstacle(spcvs, SpriteInfoList.obstacle);
-  obstacle.spriteIndex = GameProps.dayTime ? 0 : 1; 
+  // Opprett en ny hindring basert på om det er dag eller natt
+  const obstacle = new TObstacle(spcvs, GameProps.dayTime ? SpriteInfoList.obstacleDay : SpriteInfoList.obstacleNight);
   GameProps.obstacles.push(obstacle);
+
   if (GameProps.status === EGameStatus.playing) {
     const seconds = Math.ceil(Math.random() * 5) + 2;
     setTimeout(spawnObstacle, seconds * 1000);
   }
 }
+
 
 function spawnBait() {
   const pos = new lib2d.TPosition(SpriteInfoList.background.width, 100);
@@ -259,12 +262,20 @@ function setSoundOnOff() {
 }
 
 function setDayNight() {
-  GameProps.dayTime = rbDayNight[0].checked;
-  const mode = GameProps.dayTime ? 0 : 1;
-  console.log("Bytter til mode:", mode); // 👈 Denne skal logge 0 eller 1
+  GameProps.dayTime = rbDayNight[0].checked; // Justere basert på om det er dag eller natt
+  const mode = GameProps.dayTime ? 0 : 1; // Hvis dag, bruk spriteIndex 0, hvis natt, bruk spriteIndex 1
+
+  // Oppdater bakgrunnens spriteIndex
   GameProps.background.spriteIndex = mode;
-  GameProps.obstacles.forEach((obs) => (obs.spriteIndex = mode));
+
+  // Oppdater hindringene sine spriteIndex
+  GameProps.obstacles.forEach((obs) => {
+    obs.spriteIndex = mode;  // Sett spriteIndex til riktig verdi for dag/natt
+  });
+
+  console.log("Bytter til mode:", mode); // For debugging, sjekk at mode blir satt riktig
 }
+
 
 function onKeyDown(aEvent) {
   if (aEvent.code === "Space" && !GameProps.hero.isDead) {

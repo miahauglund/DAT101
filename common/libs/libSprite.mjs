@@ -154,7 +154,17 @@ class TSprite {
   getPos(){
     return this.#pos;
   }
-
+  set spriteIndex(i) {
+    this.#index = i;
+  }
+  
+  get spriteIndex() {
+    return this.#index;
+  }
+  
+  get index() {
+    return this.#index;
+  }
   get index() {
     return this.#index;
   }
@@ -162,7 +172,15 @@ class TSprite {
   set index(aIndex){
     this.#index = aIndex;
   }
-
+  
+  set spriteIndex(i) {
+    this.#index = i;
+  }
+  
+  get spriteIndex() {
+    return this.#index;
+  }
+  
   hasCollided(aSprite){
     return this.boundingBox.isInsideRect(aSprite.boundingBox);
   }

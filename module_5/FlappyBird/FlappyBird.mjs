@@ -28,6 +28,9 @@ export const SpriteInfoList = {
   infoText: { x: 0, y: 630, width: 200, height: 55, count: 2 },
   food: { x: 0, y: 696, width: 70, height: 65, count: 34 },
   medal: { x: 985, y: 635, width: 44, height: 44, count: 4 },
+  background: { x: 246, y: 0, width: 576, height: 512, count: 2 }, 
+  obstacle: { x: 0, y: 0, width: 52, height: 320, count: 4 }, 
+
 };
 
 export const EGameStatus = { idle: 0, getReady: 1, playing: 2, gameOver: 3 };
@@ -211,6 +214,7 @@ function updateBaits() {
 
 function spawnObstacle() {
   const obstacle = new TObstacle(spcvs, SpriteInfoList.obstacle);
+  obstacle.spriteIndex = GameProps.dayTime ? 0 : 1; 
   GameProps.obstacles.push(obstacle);
   if (GameProps.status === EGameStatus.playing) {
     const seconds = Math.ceil(Math.random() * 5) + 2;
@@ -231,7 +235,12 @@ function spawnBait() {
 export function startGame() {
   GameProps.status = EGameStatus.getReady;
   if (GameProps.status !== EGameStatus.getReady) {
+    
     countdownSoundPlayed = false;
+    gameOverSoundPlayed = false;
+    heroDeathSoundPlayed = false;
+    fallingAfterDeath = false;
+
   }
   GameProps.hero = new THero(spcvs, SpriteInfoList.hero1, new lib2d.TPosition(100, 100));
   GameProps.obstacles = [];
@@ -240,6 +249,9 @@ export function startGame() {
   GameProps.obstacleSpawnerStarted = false;
   spawnBait();
   GameProps.sounds.running.play();
+  
+  
+
 }
 //--------------- Event Handlers -----------------------------------------//
 function setSoundOnOff() {
@@ -249,6 +261,7 @@ function setSoundOnOff() {
 function setDayNight() {
   GameProps.dayTime = rbDayNight[0].checked;
   const mode = GameProps.dayTime ? 0 : 1;
+  console.log("Bytter til mode:", mode); // 👈 Denne skal logge 0 eller 1
   GameProps.background.spriteIndex = mode;
   GameProps.obstacles.forEach((obs) => (obs.spriteIndex = mode));
 }
@@ -263,6 +276,7 @@ function onKeyDown(aEvent) {
 chkMuteSound.addEventListener("change", setSoundOnOff);
 rbDayNight[0].addEventListener("change", setDayNight);
 rbDayNight[1].addEventListener("change", setDayNight);
+
 
 document.addEventListener("keydown", onKeyDown);
 spcvs.loadSpriteSheet("./Media/FlappyBirdSprites.png", loadGame);

@@ -276,8 +276,6 @@ function setDayNight() {
  
 }
 
-
-
 function onKeyDown(aEvent) {
   if (aEvent.code === "Space" && !GameProps.hero.isDead) {
     GameProps.hero.flap();

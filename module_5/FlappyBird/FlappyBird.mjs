@@ -17,8 +17,8 @@ export const SpriteInfoList = {
   hero1: { x: 0, y: 545, width: 34, height: 24, count: 4 },
   hero2: { x: 0, y: 569, width: 34, height: 24, count: 4 },
   hero3: { x: 0, y: 593, width: 34, height: 24, count: 4 },
-  obstacleDay: { x: 0, y: 0, width: 52, height: 320, count: 4 },  // Hindringer for dag
-  obstacleNight: { x: 0, y: 320, width: 52, height: 320, count: 4 },
+  obstacleDay: { x: 0, y: 0, width: 52, height: 320, count: 4 },  
+  obstacleNight: { x: -105 , y: 0, width: 52, height: 320, count: 4 },
   background: { x: 246, y: 0, width: 576, height: 512, count: 2 },
   flappyBird: { x: 0, y: 330, width: 178, height: 50, count: 1 },
   ground: { x: 246, y: 512, width: 1152, height: 114, count: 1 },
@@ -273,8 +273,9 @@ function setDayNight() {
     obs.spriteIndex = mode;  // Sett spriteIndex til riktig verdi for dag/natt
   });
 
-  console.log("Bytter til mode:", mode); // For debugging, sjekk at mode blir satt riktig
+ 
 }
+
 
 
 function onKeyDown(aEvent) {

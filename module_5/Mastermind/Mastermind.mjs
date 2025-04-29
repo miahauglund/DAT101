@@ -41,6 +41,8 @@ export const GameProps = {
   menu: null,
   playerAnswers: [null, null, null, null],
   answerHintRow: MastermindBoard.AnswerHint.Row1,
+  panelHideAnswer: null,
+
 }
 
 
@@ -65,14 +67,21 @@ export function newGame() {
     const colorPicker = new TColorPicker(spcvs, SpriteInfoList.ColorPicker, colorName, i);
     GameProps.colorPickers.push(colorPicker);
   }
+  GameProps.computerAnswers = [];
 
   generateComputerAnswer();
+  GameProps.panelHideAnswer.draw();
+
 }
 
 function drawGame(){
   spcvs.clearCanvas();
   //Draw all game objects here, remember to think about the draw order (layers in PhotoShop for example!)
   GameProps.board.draw();
+  if (GameProps.panelHideAnswer.visible) {
+    GameProps.panelHideAnswer.draw();
+  }
+  
 
   for(let i = 0; i < GameProps.computerAnswers.length; i++){
     const computerAnswer = GameProps.computerAnswers[i];
@@ -110,6 +119,9 @@ export function moveRoundIndicator(){
   GameProps.roundIndicator.x = pos.x - 84;
   GameProps.roundIndicator.y = pos.y + 7;
 }
+export function toggleCheat() {
+  GameProps.panelHideAnswer.visible = !GameProps.panelHideAnswer.visible;
+}
 
 //--------------------------------------------------------------------------------------------------------------------
 //------ Event Handlers
@@ -128,11 +140,97 @@ function loadGame() {
   GameProps.roundIndicator = new libSprite.TSprite(spcvs, SpriteInfoList.ColorHint, pos);
   GameProps.roundIndicator.index = 2;
   moveRoundIndicator();
+  GameProps.panelHideAnswer = new libSprite.TSprite(spcvs, SpriteInfoList.PanelHideAnswer, new lib2D.TPoint(127, 7));
+GameProps.panelHideAnswer.visible = true;
+
 
   GameProps.menu = new TMenu(spcvs);
 
   newGame();
   requestAnimationFrame(drawGame); // Start the animation loop
+}
+function checkAnswer() {
+  const guess = GameProps.playerAnswers.map(p => p.index);
+  const solution = GameProps.computerAnswers.map(p => p.index);
+
+  const usedGuess = [false, false, false, false];
+  const usedSolution = [false, false, false, false];
+  let black = 0, white = 0;
+
+  // Først: svarte hint (riktig farge og plass)
+  for (let i = 0; i < 4; i++) {
+    if (guess[i] === solution[i]) {
+      black++;
+      usedGuess[i] = usedSolution[i] = true;
+    }
+  }
+
+  // Deretter: hvite hint (riktig farge, feil plass)
+  for (let i = 0; i < 4; i++) {
+    if (!usedGuess[i]) {
+      for (let j = 0; j < 4; j++) {
+        if (!usedSolution[j] && guess[i] === solution[j]) {
+          white++;
+          usedSolution[j] = true;
+          break;
+        }
+      }
+    }
+  }
+
+  // Vis hintpinner
+  const posList = GameProps.answerHintRow;
+  const hintPins = [];
+  for (let i = 0; i < black; i++) {
+    const pin = new libSprite.TSprite(spcvs, SpriteInfoList.ColorHint, posList[i]);
+    pin.index = 1; // black
+    hintPins.push(pin);
+  }
+  for (let i = 0; i < white; i++) {
+    const pin = new libSprite.TSprite(spcvs, SpriteInfoList.ColorHint, posList[black + i]);
+    pin.index = 0; // white
+    hintPins.push(pin);
+  }
+
+  hintPins.forEach(pin => pin.draw());
+
+  // Vinn?
+  if (black === 4) {
+    GameProps.panelHideAnswer.visible = false;
+    // Vis "You win" melding evt. via en egen sprite
+    disableGame();
+    if (GameProps.playerAnswers.includes(null)) {
+      console.warn("Du må velge 4 farger før du kan sjekke svaret.");
+      return;
+    }
+    
+   
+  }
+
+  // Neste runde
+  advanceRound();
+}
+let currentRound = 1;
+
+function advanceRound() {
+  currentRound++;
+  if (currentRound > 10) {
+    GameProps.panelHideAnswer.visible = false;
+    // Tap
+    disableGame();
+    return;
+  }
+
+  // Flytt til neste rad
+  GameProps.snapTo.positions = MastermindBoard.ColorAnswer["Row" + currentRound];
+  GameProps.answerHintRow = MastermindBoard.AnswerHint["Row" + currentRound];
+  GameProps.playerAnswers = [null, null, null, null];
+  moveRoundIndicator();
+}
+
+function disableGame() {
+  // Deaktiver interaksjon, evt. ved å sette en flag
+  GameProps.gameOver = true;
 }
 
 

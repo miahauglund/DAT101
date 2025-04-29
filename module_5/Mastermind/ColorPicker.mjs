@@ -39,16 +39,25 @@ export class TColorPicker extends libSprite.TSpriteDraggable {
     )
   }
 
-  onDrop(aDropPosition){
+  onDrop(aDropPosition) {
+    const index = GameProps.snapTo.positions.indexOf(aDropPosition);
+    if (index === -1 || GameProps.snapTo.positions[index] === null) return;
+  
+    // Lag en ny klone tilbake på fargekilden
     GameProps.colorPickers.push(this.clone());
-    this.#snapIndex = GameProps.snapTo.positions.indexOf(aDropPosition);
+  
+    this.#snapIndex = index;
     this.#snapPos = new lib2D.TPoint();
-    this.#snapPos.x = GameProps.snapTo.positions[this.#snapIndex].x;
-    this.#snapPos.y = GameProps.snapTo.positions[this.#snapIndex].y;
-    GameProps.snapTo.positions[this.#snapIndex] = null;
+    this.#snapPos.x = aDropPosition.x;
+    this.#snapPos.y = aDropPosition.y;
+  
+    // Fjern snap-posisjon
+    GameProps.snapTo.positions[index] = null;
     this.#hasMoved = true;
-    GameProps.playerAnswers[this.#snapIndex] = this;
+    GameProps.playerAnswers[index] = this;
   }
+  
+  
 
   onMouseDown(){
     super.onMouseDown();
@@ -65,13 +74,12 @@ export class TColorPicker extends libSprite.TSpriteDraggable {
   }
 
   onCancelDrop(){
-    //Fjern denne knappen fra listen over knapper.
-    //Først finn indeksen til denne knappen
-    //Deretter fjern knappen fra listen
+   
     if(this.#hasMoved){
       const index = GameProps.colorPickers.indexOf(this);
       GameProps.colorPickers.splice(index, 1);
-      this.spcvs.removeSpriteButton(this); 
+      this.#spcvs.removeSpriteButton(this);
+
     }
   }
 

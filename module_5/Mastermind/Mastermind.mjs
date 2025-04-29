@@ -101,9 +101,6 @@ function drawGame(){
 }
 
 function generateComputerAnswer(){
-  //Først må vi genere 4 tilfeldige farger
-  //Deretter må vi plassere disse fargene i computerAnswers
-  //Vi må bruke libSprite.TSprite for å lage en sprite for hver farge
   for(let i = 0; i < 4 ; i++){
     const colorIndex = Math.floor(Math.random() * SpriteInfoList.ColorPicker.count);
     const pos = MastermindBoard.ComputerAnswer[i];

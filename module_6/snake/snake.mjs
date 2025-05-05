@@ -235,6 +235,12 @@ export class TSnake {
     this.#tail.draw();
   } // draw
 
+  grow() {
+    const lastBody = this.#body.length>0 ? this.#body[this.#body.length - 1] : null;
+    const newBody = lastBody ? lastBody.clone() : this.Tail.clone(); 
+    this.#body.push(newBody);
+  }
+  
   //Returns true if the snake is alive
   update(){
     if (this.#isDead) {

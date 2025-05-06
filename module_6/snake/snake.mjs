@@ -78,7 +78,7 @@ class TSnakeHead extends TSnakePart {
     if(boardCellInfo.infoType === EBoardCellInfoType.Bait) {
       bateIsEaten();
     }else{
-      /* Decrease the score if the snake head is not on a bait cell */
+      
     }
     boardCellInfo.infoType = EBoardCellInfoType.Snake; // Set the cell to Snake
     return true; // No collision, continue
@@ -95,120 +95,156 @@ class TSnakeHead extends TSnakePart {
 }
 
 class TSnakeBody extends TSnakePart {
-  constructor(aSpriteCanvas, aBoardCell ) {
+  constructor(aSpriteCanvas, aBoardCell) {
     super(aSpriteCanvas, SheetData.Body, aBoardCell);
-    this.index = ESpriteIndex.RL;    
+    this.index = ESpriteIndex.UD; // Standard sprite for vertikal bevegelse
   }
 
-  update(){
-    let spriteIndex = ESpriteIndex.RL;
-    let boardCellInfo;
+  update() {
+    const boardCellInfo = GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col);
+    if (!boardCellInfo) return; // Sjekk om posisjonen er gyldig
+  
+    // ✅ Legg inn kroppens retning i cellen for bruk av halen
+    boardCellInfo.direction = this.direction;
+  
+    // Oppdater sprite basert på retning
+    let spriteIndex = ESpriteIndex.UD; // Standard for vertikal bevegelse
     switch (this.direction) {
       case EDirection.Up:
-        this.boardCell.row--;
-        boardCellInfo = GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col);
-        if (boardCellInfo.direction !== this.direction) {
-          switch (boardCellInfo.direction) {
-            case EDirection.Left:
-              spriteIndex = ESpriteIndex.UL;
-              break;
-            case EDirection.Right:
-              spriteIndex = ESpriteIndex.UR;
-              break;
-          }
-        } else {
-          spriteIndex = ESpriteIndex.UD;
-        }
-        break;
-      case EDirection.Right:
-        this.boardCell.col++;
-        boardCellInfo = GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col);
-        if (boardCellInfo.direction !== this.direction) {
-          switch (boardCellInfo.direction) {
-            case EDirection.Up:
-              spriteIndex = ESpriteIndex.RU;
-              break;
-            case EDirection.Down:
-              spriteIndex = ESpriteIndex.RD;
-              break;
-          }
-        } else {
-          spriteIndex = ESpriteIndex.RL;
-        }
+      case EDirection.Down:
+        spriteIndex = ESpriteIndex.UD;
         break;
       case EDirection.Left:
-        this.boardCell.col--;
-        boardCellInfo = GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col);
-        if (boardCellInfo.direction !== this.direction) {
-          switch (boardCellInfo.direction) {
-            case EDirection.Up:
-              spriteIndex = ESpriteIndex.LU;
-              break;
-            case EDirection.Down:
-              spriteIndex = ESpriteIndex.LD;
-              break;
-          }
-        } else {
-          spriteIndex = ESpriteIndex.RL;
-        }
-        break;
-      case EDirection.Down:
-        this.boardCell.row++;
-        boardCellInfo = GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col);
-        if (boardCellInfo.direction !== this.direction) {
-          switch (boardCellInfo.direction) {
-            case EDirection.Left:
-              spriteIndex = ESpriteIndex.DR;
-              break;
-            case EDirection.Right:
-              spriteIndex = ESpriteIndex.DL;
-              break;
-          }
-        } else {
-          spriteIndex = ESpriteIndex.UD;
-        }
+      case EDirection.Right:
+        spriteIndex = ESpriteIndex.RL;
         break;
     }
-    this.direction = boardCellInfo.direction;
+  
+    // Hvis kroppsdelen svinger, oppdater sprite for sving
+    if (boardCellInfo.direction !== this.direction) {
+      switch (this.direction) {
+        case EDirection.Up:
+          spriteIndex =
+            boardCellInfo.direction === EDirection.Left
+              ? ESpriteIndex.UL
+              : ESpriteIndex.UR;
+          break;
+        case EDirection.Down:
+          spriteIndex =
+            boardCellInfo.direction === EDirection.Left
+              ? ESpriteIndex.DL
+              : ESpriteIndex.DR;
+          break;
+        case EDirection.Left:
+          spriteIndex =
+            boardCellInfo.direction === EDirection.Up
+              ? ESpriteIndex.LU
+              : ESpriteIndex.LD;
+          break;
+        case EDirection.Right:
+          spriteIndex =
+            boardCellInfo.direction === EDirection.Up
+              ? ESpriteIndex.RU
+              : ESpriteIndex.RD;
+          break;
+      }
+    }
+  
     this.index = spriteIndex;
     super.update();
   }
+  
 
-  clone(){
+  clone() {
     const newBody = new TSnakeBody(this.spcvs, new TBoardCell(this.boardCell.col, this.boardCell.row));
     newBody.index = this.index;
     newBody.direction = this.direction;
     return newBody;
   }
-
 } // class TSnakeBody
 
 
 class TSnakeTail extends TSnakePart {
-  constructor(aSpriteCanvas, aCol, aRow) {
-    super(aSpriteCanvas, SheetData.Tail, aCol, aRow);
+  constructor(aSpriteCanvas, aBoardCell) {
+    super(aSpriteCanvas, SheetData.Tail, aBoardCell);
   }
 
-  update(){
-    switch (this.direction) {
+  update(lastBodyPart) {
+    if (!lastBodyPart) return;
+  
+    // Beregn ny posisjon for halen (én celle bak siste kroppsdelen)
+    const newTailCell = { ...lastBodyPart.boardCell };
+  
+    // Flytt halen en celle bak i forhold til den siste kroppsdelen
+    switch (lastBodyPart.direction) {
       case EDirection.Up:
-        this.boardCell.row--;
-        break;
-      case EDirection.Right:
-        this.boardCell.col++;
-        break;
-      case EDirection.Left:
-        this.boardCell.col--;
+        newTailCell.row++;  // Halen går en rad ned
         break;
       case EDirection.Down:
-        this.boardCell.row++;
+        newTailCell.row--;  // Halen går en rad opp
+        break;
+      case EDirection.Left:
+        newTailCell.col++;  // Halen går en kolonne til høyre
+        break;
+      case EDirection.Right:
+        newTailCell.col--;  // Halen går en kolonne til venstre
         break;
     }
-    const boardCellInfo = GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col);
-    boardCellInfo.infoType = EBoardCellInfoType.Empty; // Clear the cell, when the tail moves
-    this.direction = boardCellInfo.direction;
-    this.index = this.direction;
+  
+    // Hent retningen i cellen halen skal inn i (fra tidligere kropp)
+    const boardCellInfo = GameProps.gameBoard.getCell(newTailCell.row, newTailCell.col);
+    const cellDirection = boardCellInfo?.direction ?? lastBodyPart.direction;
+    
+    // Bestem sprite-indeks basert på retning og om halen er i vertikal eller horisontal bevegelse
+    let spriteIndex;
+    if (this.direction !== cellDirection) {
+      // Hvis retningen har endret seg, bestem hvilken sving-hale sprite vi skal bruke
+      switch (cellDirection) {
+        case EDirection.Up:
+          spriteIndex = this.direction === EDirection.Left ? ESpriteIndex.UL : ESpriteIndex.UR;
+          break;
+        case EDirection.Down:
+          spriteIndex = this.direction === EDirection.Left ? ESpriteIndex.DL : ESpriteIndex.DR;
+          break;
+        case EDirection.Left:
+          spriteIndex = this.direction === EDirection.Up ? ESpriteIndex.LU : ESpriteIndex.LD;
+          break;
+        case EDirection.Right:
+          spriteIndex = this.direction === EDirection.Up ? ESpriteIndex.RU : ESpriteIndex.RD;
+          break;
+      }
+    } else {
+      // Ingen sving, så halen følger kroppen i samme retning
+      switch (cellDirection) {
+        case EDirection.Up:
+        case EDirection.Down:
+          spriteIndex = ESpriteIndex.UD;  // Vertikal bevegelse (opp/ned)
+          break;
+        case EDirection.Left:
+        case EDirection.Right:
+          spriteIndex = ESpriteIndex.RL;  // Horisontal bevegelse (venstre/høyre)
+          break;
+      }
+    }
+  
+    // Oppdater til ny posisjon og retning for halen
+    this.boardCell = newTailCell;
+    this.direction = cellDirection;
+    this.index = spriteIndex;
+  
+    // Oppdater brettet med at halen er her
+    if (boardCellInfo) {
+      boardCellInfo.direction = this.direction;
+      boardCellInfo.infoType = EBoardCellInfoType.Snake;
+    }
+  
     super.update();
+  }
+  
+  
+
+  clone() {
+    return new TSnakeTail(this.spcvs, new TBoardCell(this.boardCell.col, this.boardCell.row));
   }
 
 } // class TSnakeTail
@@ -219,13 +255,14 @@ export class TSnake {
   #head = null;
   #body = null;
   #tail = null;
+
   constructor(aSpriteCanvas, aBoardCell) {
     this.#head = new TSnakeHead(aSpriteCanvas, aBoardCell);
     let col = aBoardCell.col - 1;
     this.#body = [new TSnakeBody(aSpriteCanvas, new TBoardCell(col, aBoardCell.row))];
     col--;
     this.#tail = new TSnakeTail(aSpriteCanvas, new TBoardCell(col, aBoardCell.row));
-  } // constructor
+  }
 
   draw() {
     this.#head.draw();
@@ -233,32 +270,72 @@ export class TSnake {
       this.#body[i].draw();
     }
     this.#tail.draw();
-  } // draw
+  }
 
   grow() {
-    const lastBody = this.#body.length>0 ? this.#body[this.#body.length - 1] : null;
-    const newBody = lastBody ? lastBody.clone() : this.Tail.clone(); 
-    this.#body.push(newBody);
-  }
-  
-  //Returns true if the snake is alive
-  update(){
-    if (this.#isDead) {
-      return false; // Snake is dead, do not continue
-    }
-    if(this.#head.update()) {
-      for (let i = 0; i < this.#body.length; i++) {
-        this.#body[i].update();
-      }
-      this.#tail.update();  
-    }else if(!this.#isDead){
-      this.#isDead = true;
-      return false; // Collision detected, do not continue
-    }
-    return true; // No collision, continue
+    // Kopier den siste kroppsdelen eller halen
+    const lastPart = this.#body.length > 0 ? this.#body[this.#body.length - 1] : this.#tail;
+    const newBodyPart = lastPart.clone();
+
+    // Sett posisjonen og retningen til den nye kroppsdelen
+    newBodyPart.boardCell = { ...lastPart.boardCell };
+    newBodyPart.direction = lastPart.direction;
+
+    // Legg til den nye kroppsdelen i kroppen
+    this.#body.push(newBodyPart);
   }
 
+  update() {
+    if (this.#isDead) {
+      return false; // Slangen er død, fortsett ikke
+    }
+  
+    // 🔧 Rydd halen sin nåværende posisjon FØR hodet flytter seg
+    const tailCell = this.#tail.boardCell;
+    const tailBoardCell = GameProps.gameBoard.getCell(tailCell.row, tailCell.col);
+    if (tailBoardCell) {
+      tailBoardCell.infoType = EBoardCellInfoType.Empty;
+    }
+  
+    // Lagre posisjonen til hodet før det flyttes
+    const previousHeadPosition = { ...this.#head.boardCell };
+    const previousHeadDirection = this.#head.direction;
+  
+    // Oppdater hodet
+    if (!this.#head.update()) {
+      this.#isDead = true;
+      return false; // Kollisjon oppdaget, fortsett ikke
+    }
+  
+    // Flytt kroppen bakover
+    let previousPosition = previousHeadPosition;
+    let previousDirection = previousHeadDirection;
+    for (let i = 0; i < this.#body.length; i++) {
+      const currentPosition = { ...this.#body[i].boardCell };
+      const currentDirection = this.#body[i].direction;
+  
+      this.#body[i].boardCell = previousPosition;
+      this.#body[i].direction = previousDirection;
+  
+      previousPosition = currentPosition;
+      previousDirection = currentDirection;
+    }
+  
+    // Flytt halen til den siste kroppsdelen
+    if (this.#body.length > 0) {
+      const lastBodyPart = this.#body[this.#body.length - 1];
+      this.#tail.update(lastBodyPart);
+    }
+  
+    // Oppdater alle kroppsdeler
+    for (let i = 0; i < this.#body.length; i++) {
+      this.#body[i].update();
+    }
+  
+    return true; // Ingen kollisjon, fortsett
+  }
+  
   setDirection(aDirection) {
     this.#head.setDirection(aDirection);
-  } // setDirection
+  }
 }

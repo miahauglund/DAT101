@@ -686,8 +686,10 @@ class TSpriteNumber {
       aSprite.scale = aScale;
     });
   }
+  
 
 }
+
 
 export default {
   /**

@@ -6,7 +6,7 @@
 import libSprite from "../../common/libs/libSprite_v2.mjs";
 import { TGameBoard, GameBoardSize, TBoardCell } from "./gameBoard.mjs";
 import { TBait } from "./bait.mjs";
-import menu from "./menu.mjs";
+
 import { TSnake, EDirection } from "./snake.mjs"; // Importer TSnake fra snake.mjs
 
 //-----------------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ function loadGame() {
 
   newGame(); // Sørg for at newGame kalles før spillet starter
 
-  menu.showMenu(); // Vis menyen ved start
+
 
   requestAnimationFrame(drawGame);
   console.log("Game canvas is rendering!");
@@ -155,8 +155,8 @@ function updateGame() {
       }
       break;
   }
-  scoreDisplay.value += 10;
-  scoreDisplay.visible = true;
+  
+
   
 }
 
@@ -167,16 +167,7 @@ function increaseGameSpeed() {
     hndUpdateGame = setInterval(updateGame, 1000 / gameSpeed); 
     console.log("Increased speed to", gameSpeed); 
   }
-  let bateScoreNumber;
-  
-  function initBait() {
-    const pos = new lib2D.TPoint(baitX, baitY);  // Bruk posisjonen til baitet
-    bateScoreNumber = new libSprite.TSpriteNumber(spcvs, SheetData.Number, pos);
-    bateScoreNumber.scale = 0.5;
-    bateScoreNumber.alpha = 0.5;
-    bateScoreNumber.visible = false;  // Start skjult, vis når nødvendig
-    bateScoreNumber.value = 50;
-  }
+ 
 }
 
 

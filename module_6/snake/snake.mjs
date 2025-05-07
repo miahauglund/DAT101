@@ -168,24 +168,22 @@ class TSnakeTail extends TSnakePart {
     super(aSpriteCanvas, SheetData.Tail, aBoardCell);
   }
 
-  update(lastBodyPart) {
-    if (!lastBodyPart) return;
-  
-    // Beregn ny posisjon for halen (én celle bak siste kroppsdelen)
-    const newTailCell = { ...lastBodyPart.boardCell };
-  
-    // Flytt halen en celle bak i forhold til den siste kroppsdelen
-    
-  
-    // Hent retningen i cellen halen skal inn i (fra tidligere kropp)
-    const boardCellInfo = GameProps.gameBoard.getCell(newTailCell.row, newTailCell.col);
-    const cellDirection = boardCellInfo?.direction ?? lastBodyPart.direction;
-    
-    // Bestem sprite-indeks basert på retning og om halen er i vertikal eller horisontal bevegelse
-    let spriteIndex;
-    if (this.direction !== cellDirection) {
-      // Hvis retningen har endret seg, bestem hvilken sving-hale sprite vi skal bruke
-      switch (cellDirection) {
+ update(lastBodyPart) {
+  if (!lastBodyPart) return;
+
+  // Beregn ny posisjon for halen (én celle bak den siste kroppsdelen)
+  const newTailCell = { ...lastBodyPart.boardCell };
+
+  // Finn retningen til den siste kroppsdelen
+  const lastBodyCell = GameProps.gameBoard.getCell(newTailCell.row, newTailCell.col);
+  const tailDirection = lastBodyCell?.direction ?? lastBodyPart.direction;
+
+
+  // Hvis retningen mellom halen og kroppsdelen er forskjellig, håndter svinglogikken
+  let spriteIndex;
+    // Hvis retningen mellom halen og kroppsdelen er forskjellig, håndter svinglogikken
+    if (this.direction !== tailDirection) {
+      switch (tailDirection) {
         case EDirection.Up:
           spriteIndex = this.direction === EDirection.Left ? ESpriteIndex.UL : ESpriteIndex.UR;
           break;
@@ -199,34 +197,39 @@ class TSnakeTail extends TSnakePart {
           spriteIndex = this.direction === EDirection.Up ? ESpriteIndex.RU : ESpriteIndex.RD;
           break;
       }
-    } else {
-      // Ingen sving, så halen følger kroppen i samme retning
-      switch (cellDirection) {
-        case EDirection.Up:
-        case EDirection.Down:
-          spriteIndex = ESpriteIndex.UD;  // Vertikal bevegelse (opp/ned)
-          break;
-        case EDirection.Left:
-        case EDirection.Right:
-          spriteIndex = ESpriteIndex.RL;  // Horisontal bevegelse (venstre/høyre)
-          break;
-      }
+    
+  
+  } else {
+    // Ingen sving, så halen følger kroppen i samme retning
+    switch (tailDirection) {
+      case EDirection.Up:
+      case EDirection.Down:
+        spriteIndex = ESpriteIndex.UD;  // Vertikal bevegelse (opp/ned)
+        break;
+      case EDirection.Left:
+      case EDirection.Right:
+        spriteIndex = ESpriteIndex.RL;  // Horisontal bevegelse (venstre/høyre)
+        break;
     }
-  
-    // Oppdater til ny posisjon og retning for halen
-    this.boardCell = newTailCell;
-    this.direction = cellDirection;
-    this.index = spriteIndex;
-  
-    // Oppdater brettet med at halen er her
-    if (boardCellInfo) {
-      boardCellInfo.direction = this.direction;
-      boardCellInfo.infoType = EBoardCellInfoType.Snake;
-    }
-  
-    super.update();
   }
   
+
+  // Oppdater posisjonen og retningen til halen
+  this.boardCell = newTailCell;
+  this.direction = tailDirection;
+  this.index = spriteIndex;
+
+  // Oppdater brettet med at halen er her
+  const boardCellInfo = GameProps.gameBoard.getCell(newTailCell.row, newTailCell.col);
+  if (boardCellInfo) {
+    boardCellInfo.direction = this.direction;
+    boardCellInfo.infoType = EBoardCellInfoType.Snake;
+  }
+
+  // Oppdater posisjonen til halen på skjermen
+  super.update();
+}
+
   
 
   clone() {

@@ -155,6 +155,9 @@ function updateGame() {
       }
       break;
   }
+  scoreDisplay.value += 10;
+  scoreDisplay.visible = true;
+  
 }
 
 function increaseGameSpeed() {
@@ -164,7 +167,20 @@ function increaseGameSpeed() {
     hndUpdateGame = setInterval(updateGame, 1000 / gameSpeed); 
     console.log("Increased speed to", gameSpeed); 
   }
+  let bateScoreNumber;
+  
+  function initBait() {
+    const pos = new lib2D.TPoint(baitX, baitY);  // Bruk posisjonen til baitet
+    bateScoreNumber = new libSprite.TSpriteNumber(spcvs, SheetData.Number, pos);
+    bateScoreNumber.scale = 0.5;
+    bateScoreNumber.alpha = 0.5;
+    bateScoreNumber.visible = false;  // Start skjult, vis når nødvendig
+    bateScoreNumber.value = 50;
+  }
 }
+
+
+
 
 //-----------------------------------------------------------------------------------------
 //----------- Event handlers --------------------------------------------------------------

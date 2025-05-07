@@ -52,4 +52,5 @@ export class TBait extends libSprite.TSprite {
     this.y = randomCell.row * this.spi.height; // Update y position
     GameProps.gameBoard.getCell(randomCell.row, randomCell.col).infoType = EBoardCellInfoType.Bait;
   } // End of generateNewBait
+  
 }

@@ -104,8 +104,7 @@ class TSnakeBody extends TSnakePart {
     const boardCellInfo = GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col);
     if (!boardCellInfo) return; // Sjekk om posisjonen er gyldig
   
-    // ✅ Legg inn kroppens retning i cellen for bruk av halen
-    boardCellInfo.direction = this.direction;
+   
   
     // Oppdater sprite basert på retning
     let spriteIndex = ESpriteIndex.UD; // Standard for vertikal bevegelse
@@ -176,20 +175,7 @@ class TSnakeTail extends TSnakePart {
     const newTailCell = { ...lastBodyPart.boardCell };
   
     // Flytt halen en celle bak i forhold til den siste kroppsdelen
-    switch (lastBodyPart.direction) {
-      case EDirection.Up:
-        newTailCell.row++;  // Halen går en rad ned
-        break;
-      case EDirection.Down:
-        newTailCell.row--;  // Halen går en rad opp
-        break;
-      case EDirection.Left:
-        newTailCell.col++;  // Halen går en kolonne til høyre
-        break;
-      case EDirection.Right:
-        newTailCell.col--;  // Halen går en kolonne til venstre
-        break;
-    }
+    
   
     // Hent retningen i cellen halen skal inn i (fra tidligere kropp)
     const boardCellInfo = GameProps.gameBoard.getCell(newTailCell.row, newTailCell.col);

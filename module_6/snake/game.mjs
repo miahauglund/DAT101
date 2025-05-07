@@ -62,7 +62,7 @@ export function baitIsEaten() {
   console.log("Bait eaten!");
   GameProps.snake.addSnakePart(); // Legg til en ny kroppsdel
   GameProps.bait.update(); // Flytt agnet til en ny posisjon
-  GameProps.totalScore += 10; // Øk total poeng med 10
+  GameProps.totalScore += 1; // Øk total poeng med 10
   GameProps.menu.updateTotalScore(GameProps.totalScore); // Oppdater poeng i menyen
   increaseGameSpeed(); // Øk spillhastigheten
 }

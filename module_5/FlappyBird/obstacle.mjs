@@ -56,4 +56,4 @@ class TObstacle {
   }
 }
 
-export default TObstacle;
+export default TObstacle; 

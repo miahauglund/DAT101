@@ -13,7 +13,7 @@ const rbDayNight = document.getElementsByName("rbDayNight");
 const cvs = document.getElementById("cvs");
 const spcvs = new libSprite.TSpriteCanvas(cvs);
 
-export const SpriteInfoList = {
+export const SpriteInfoList = { 
   hero1: { x: 0, y: 545, width: 34, height: 24, count: 4 },
   hero2: { x: 0, y: 569, width: 34, height: 24, count: 4 },
   hero3: { x: 0, y: 593, width: 34, height: 24, count: 4 },

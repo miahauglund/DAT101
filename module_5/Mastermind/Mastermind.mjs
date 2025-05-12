@@ -76,7 +76,8 @@ export function newGame() {
 
 function drawGame(){
   spcvs.clearCanvas();
-  //Draw all game objects here, remember to think about the draw order (layers in PhotoShop for example!)
+  
+  
   GameProps.board.draw();
   if (GameProps.panelHideAnswer.visible) {
     GameProps.panelHideAnswer.draw();

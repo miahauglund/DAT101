@@ -27,7 +27,7 @@ class THero extends libSprite.TSprite {
     if (bottomY < groundY) {
       if (this.posY < 0) {
         this.posY = 0;
-        this.#velocity = 0;
+        this.#velocity = 0; 
       }
       this.translate(0, this.#velocity);
       this.rotation = this.#velocity* 10;

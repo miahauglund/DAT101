@@ -14,7 +14,6 @@ export class TMenu {
   #spButtonPlay;
   #spNumber;
   #spInfoText;
-  //Hint spGameOver, spMedal, spScore osv.
   #spGameOver;
   #spMedal;
   #spcvs;

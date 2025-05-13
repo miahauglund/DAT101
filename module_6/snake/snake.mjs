@@ -1,6 +1,6 @@
 "use strict";
 //------------------------------------------------------------------------------------------
-//----------- Import modules, mjs files  ---------------------------------------------------
+//----------- Importer moduler og mjs-filer ------------------------------------------------
 //------------------------------------------------------------------------------------------
 import libSprite from "../../common/libs/libSprite_v2.mjs";
 import lib2D from "../../common/libs/lib2d_v2.mjs";
@@ -8,7 +8,8 @@ import { GameProps, SheetData, baitIsEaten } from "./game.mjs";
 import { TBoardCell, EBoardCellInfoType } from "./gameBoard.mjs";
 
 //------------------------------------------------------------------------------------------
-//----------- variables and object ---------------------------------------------------------
+//----------- Variabler og objekter --------------------------------------------------------
+//------------------------------------------------------------------------------------------
 const ESpriteIndex = {UR: 0, LD: 0, RU: 1, DR: 1, DL: 2, LU: 2, RD: 3, UL: 3, RL: 4, UD: 5};
 export const EDirection = { Up: 0, Right: 1, Left: 2, Down: 3 };
 export let baitEaten = false; // Eksporter baitEaten for bruk i andre moduler
@@ -18,7 +19,7 @@ export function setBaitEaten(value) {
 }
 
 //-----------------------------------------------------------------------------------------
-//----------- Classes ---------------------------------------------------------------------
+//----------- Klasser ---------------------------------------------------------------------
 class TSnakePart extends libSprite.TSprite {
   constructor(aSpriteCanvas, aSpriteInfo, aBoardCell) {
     const pos = new lib2D.TPoint(aBoardCell.col * aSpriteInfo.width, aBoardCell.row * aSpriteInfo.height);
@@ -30,13 +31,12 @@ class TSnakePart extends libSprite.TSprite {
     this.index = this.direction;
   }
 
-  update(){
+  update() {
     this.x = this.boardCell.col * this.spi.width;
     this.y = this.boardCell.row * this.spi.height;
   }
 
-} // class TSnakePart
-
+} // Klasse TSnakePart
 
 class TSnakeHead extends TSnakePart {
   constructor(aSpriteCanvas, aBoardCell) {
@@ -44,7 +44,8 @@ class TSnakeHead extends TSnakePart {
     this.newDirection = this.direction;
   }
 
- setDirection(aDirection) {
+  setDirection(aDirection) {
+    // Sjekk om retningen kan endres basert på nåværende retning
     if ((this.direction === EDirection.Right || this.direction === EDirection.Left) && (aDirection === EDirection.Up || aDirection === EDirection.Down)) {
       this.newDirection = aDirection;
     } else if ((this.direction === EDirection.Up || this.direction === EDirection.Down) && (aDirection === EDirection.Right || aDirection === EDirection.Left)) {
@@ -52,45 +53,51 @@ class TSnakeHead extends TSnakePart {
     }
   }
 
-  update(){
-    GameProps.gameBoard.getCell(this.boardCell.row,this.boardCell.col).direction = this.newDirection;
-    switch (this.newDirection) {
-      case EDirection.Up:
-        this.boardCell.row--;
-        break;
-      case EDirection.Right:
-        this.boardCell.col++;
-        break;
-      case EDirection.Left:
-        this.boardCell.col--;
-        break;
-      case EDirection.Down:
-        this.boardCell.row++;
-        break;
+  update() {
+    try {
+      GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col).direction = this.newDirection;
+      switch (this.newDirection) {
+        case EDirection.Up:
+          this.boardCell.row--;
+          break;
+        case EDirection.Right:
+          this.boardCell.col++;
+          break;
+        case EDirection.Left:
+          this.boardCell.col--;
+          break;
+        case EDirection.Down:
+          this.boardCell.row++;
+          break;
+      }
+      this.direction = this.newDirection;
+      this.index = this.direction;
+      if (this.checkCollision()) {
+        return false; // Kollisjon oppdaget, ikke fortsett
+      }
+      // Oppdater posisjonen til slangehodet
+      super.update();
+      // Sjekk om slangehodet er på en celle med agn
+      const boardCellInfo = GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col);
+      if (boardCellInfo.infoType === EBoardCellInfoType.Bait) {
+        baitIsEaten();
+      }
+      boardCellInfo.infoType = EBoardCellInfoType.Snake; // Sett cellen til Snake
+      return true; // Ingen kollisjon, fortsett
+    } catch (error) {
+      console.error("Feil i TSnakeHead.update:", error);
+      return false;
     }
-    this.direction = this.newDirection;
-    this.index = this.direction;
-    if (this.checkCollision()) {
-      return false; // Collision detected, do not continue
-    }
-    // Update the position of the snake element (subclass)
-    super.update();
-    //Check if the snake head is on a bait cell
-    const boardCellInfo = GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col);
-    if(boardCellInfo.infoType === EBoardCellInfoType.Bait) {
-      baitIsEaten(); // Rettet skrivefeilen her
-    }
-    boardCellInfo.infoType = EBoardCellInfoType.Snake; // Set the cell to Snake
-    return true; // No collision, continue
   }
 
   checkCollision() {
+    // Sjekk for kollisjon med vegger eller slangen selv
     let collision = this.boardCell.row < 0 || this.boardCell.row >= GameProps.gameBoard.rows || this.boardCell.col < 0 || this.boardCell.col >= GameProps.gameBoard.cols;
-    if(!collision) {
+    if (!collision) {
       const boardCellInfo = GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col);
       collision = boardCellInfo.infoType === EBoardCellInfoType.Snake;
     }
-    return collision; // Collision detected
+    return collision; // Kollisjon oppdaget
   }
 }
 
@@ -217,7 +224,7 @@ class TSnakeTail extends TSnakePart {
   clone() {
     return new TSnakeTail(this.spcvs, new TBoardCell(this.boardCell.col, this.boardCell.row));
   }
-} // class TSnakeTail
+} // Klasse TSnakeTail
 
 export class TSnake {
   #isDead = false;

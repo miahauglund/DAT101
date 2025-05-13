@@ -1,4 +1,4 @@
-"use strict";
+ "use strict";
 
 import lib2D from "../../common/libs/lib2d_v2.mjs";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
@@ -18,6 +18,7 @@ export class TMenu {
   #resumeTrigger = null;
   #totalScoreNumber;
   #timeScoreNumber;
+  #gameOverScoreNumber;
   #currentCountdown = false;
 
   constructor(aSpriteCanvas) {
@@ -32,7 +33,7 @@ export class TMenu {
     this.#spPlay.animateSpeed = 15; // Start blinkingen
     this.#spPlay.onClick = () => {
       if (this.#playTrigger) this.#playTrigger();
-      console.log("Play button clicked");
+      console.log("Play-knappen ble trykket");
     };
 
     // Resume-knapp
@@ -41,7 +42,7 @@ export class TMenu {
     this.#spResume.animateSpeed = 15; // Start blinkingen
     this.#spResume.onClick = () => {
       if (this.#resumeTrigger) this.#resumeTrigger();
-      console.log("Resume button clicked");
+      console.log("Resume-knappen ble trykket");
     };
 
     // Menybrett
@@ -56,7 +57,7 @@ export class TMenu {
     this.#buttonHome.shape.height = homeShapeSize.height;
     this.#buttonHome.onClick = () => {
       if (this.#homeTrigger) this.#homeTrigger();
-      console.log("Home button clicked");
+      console.log("Hjem-knappen ble trykket");
     };
 
     // Restart-knapp
@@ -67,60 +68,30 @@ export class TMenu {
     this.#buttonRestart.shape.height = restartShapeSize.height;
     this.#buttonRestart.onClick = () => {
       if (this.#restartTrigger) this.#restartTrigger();
-      console.log("Restart button clicked");
+      console.log("Restart-knappen ble trykket");
     };
 
-    // Total score
-    const totalScorePos = new lib2D.TPoint(10, 30); // Plasseringen på poeng på skjermen
+    // Total poengsum
+    const totalScorePos = new lib2D.TPoint(10, 80);
     this.#totalScoreNumber = new libSprite.TSpriteNumber(aSpriteCanvas, SheetData.Number, totalScorePos);
     this.#totalScoreNumber.scale = 0.9;
     this.#totalScoreNumber.visible = true;
     this.#totalScoreNumber.value = 0;
 
-    // Tidspoeng (hvis du ønsker å bruke tidspoeng i fremtiden)
+    // Tidspoeng
     const timeScorePos = new lib2D.TPoint(14, 10);
     this.#timeScoreNumber = new libSprite.TSpriteNumber(aSpriteCanvas, SheetData.Number, timeScorePos);
     this.#timeScoreNumber.scale = 0.6;
     this.#timeScoreNumber.visible = true;
     this.#timeScoreNumber.value = 0;
+
+    // Poengsum for Game Over
+    const gameOverScorePos = new lib2D.TPoint(530, 240); // Juster x til 530 og y til 240 for korrekt plassering
+    this.#gameOverScoreNumber = new libSprite.TSpriteNumber(aSpriteCanvas, SheetData.Number, gameOverScorePos);
+    this.#gameOverScoreNumber.scale = 0.9; // Juster skalaen hvis nødvendig
+    this.#gameOverScoreNumber.visible = false;
   }
 
-  updateScoreOnBaitEaten(points) {
-    GameProps.totalScore += points;  // Oppdater total poeng i GameProps
-    this.#totalScoreNumber.value = GameProps.totalScore;  // Oppdater poeng i menyen
-    console.log(`Poeng oppdatert: ${this.#totalScoreNumber.value}`);  // Debugging
-  }
-  
-
-  // Funksjon som håndterer kollisjon med eple (bait)
-  handleBaitCollision(bait) {
-    const pointsFromBait = 10;  // Poeng slangen får ved å spise et eple
-    this.updateScoreOnBaitEaten(pointsFromBait);  // Oppdater poeng i menyen
-    this.removeBait(bait);  // Fjern eplet fra skjermen
-  }
-
-  // Funksjon som sjekker kollisjon mellom slange og eple
-  checkSnakeAndBaitCollision(snakeHead, baitList) {
-    for (let bait of baitList) {
-      if (this.isSnakeCollidingWithBait(snakeHead, bait)) {
-        this.handleBaitCollision(bait);  // Håndter kollisjonen
-      }
-    }
-  }
-
-  // Funksjon for å sjekke kollisjon mellom slange og eple
-  isSnakeCollidingWithBait(snakeHead, bait) {
-    // Sjekk om slangen er på samme posisjon som eplet
-    return snakeHead.x === bait.x && snakeHead.y === bait.y;
-  }
-
-  // Funksjon for å fjerne eplet fra skjermen
-  removeBait(bait) {
-    // Logikk for å fjerne eplet fra skjermen eller merke det som spist
-    bait.visible = false;  // Eksempel på hvordan eplet kan fjernes
-  }
-
-  // Tegning av meny og score
   draw() {
     switch (GameProps.gameStatus) {
       case EGameStatus.Idle:
@@ -134,8 +105,9 @@ export class TMenu {
         this.#spPlay.visible = false;
         this.#spResume.visible = false;
         this.#totalScoreNumber.visible = true;
-        this.#totalScoreNumber.draw();  // Tegn totalpoeng
-        this.#timeScoreNumber.visible = false;  // Skjul tidspoeng, hvis de ikke brukes nå
+        this.#totalScoreNumber.draw();
+        this.#timeScoreNumber.visible = true;
+        this.#timeScoreNumber.draw();
         break;
       case EGameStatus.Pause:
         this.#spPlay.visible = false;
@@ -143,24 +115,27 @@ export class TMenu {
         this.#spResume.draw();
         this.#totalScoreNumber.visible = true;
         this.#totalScoreNumber.draw();
-        this.#timeScoreNumber.visible = false;  // Skjul tidspoeng under pause
+        this.#timeScoreNumber.visible = true;
+        this.#timeScoreNumber.draw();
         break;
-        case EGameStatus.GameOver:
-            this.#spPlay.visible = false;
-            this.#spResume.visible = false;
-            this.#totalScoreNumber.visible = true;  // Sørg for at poengsummen vises på Game Over-skjermen
-            this.#totalScoreNumber.value = GameProps.totalScore;  // Oppdater poengsummen med verdien fra GameProps
-            this.#totalScoreNumber.draw();  // Tegn poengsummen på skjermen
-            this.#spMenuBoard.draw();
-            this.#buttonHome.draw();
-            this.#buttonHome.visible = true;
-            this.#buttonRestart.visible = true;
-            this.#buttonRestart.draw();
-            break;
-    }          
-}
+      case EGameStatus.GameOver:
+        this.#spPlay.visible = false;
+        this.#spResume.visible = false;
+        this.#spMenuBoard.draw();
+        this.#buttonHome.draw();
+        this.#buttonHome.visible = true;
+        this.#buttonRestart.visible = true;
+        this.#buttonRestart.draw();
+
+        this.#gameOverScoreNumber.value = GameProps.totalScore;
+        this.#gameOverScoreNumber.visible = true;
+        this.#gameOverScoreNumber.draw();
+        break;
+    }
+  }
 
   showMenu() {
+    // Oppdater synligheten til menykomponenter basert på spillstatus
     switch (GameProps.gameStatus) {
       case EGameStatus.Idle:
         this.#spPlay.visible = true;
@@ -189,7 +164,6 @@ export class TMenu {
     }
   }
 
-  // Setter callbacks for knappene
   setPlayTrigger(callBack) {
     this.#playTrigger = callBack;
   }
@@ -206,14 +180,68 @@ export class TMenu {
     this.#resumeTrigger = callBack;
   }
 
-  // Oppdater totalpoeng
   updateTotalScore(value) {
-    this.#totalScoreNumber.value = value;
+    console.log("Oppdaterer total poengsum til:", value);
+    this.#totalScoreNumber.value = value; // Oppdater poengsummen som vises
   }
 
-  // Hent total poeng (både tid og samlet poeng)
-  getTotalPoints() {
-    return this.#totalScoreNumber.value;
+  updateAppleCount(count) {
+    console.log("Oppdaterer antall epler til:", count);
+    this.#timeScoreNumber.scale = 0.6; // Gjør tallene mindre
+    this.#timeScoreNumber.spacing = 10; // Øk mellomrommet mellom tallene
+    this.#timeScoreNumber.value = count; // Oppdater antall epler som vises
+  }
+
+  reduceTotalScore() {
+    if (this.#totalScoreNumber.value > 1) {
+      this.#totalScoreNumber.value--;
+      console.log("Reduserer total poengsum");
+    }
+  }
+
+  startBaitCountdown() {
+    this.#timeScoreNumber.value = 20;
+    if (this.#currentCountdown) return;
+
+    this.#currentCountdown = true;
+    let lastTick = Date.now();
+
+    const countdown = () => {
+      const now = Date.now();
+      const elapsed = now - lastTick;
+
+      /* if (elapsed >= 1000) {
+          lastTick = now;
+          if (this.#timeScoreNumber.value > 0) {
+            this.#timeScoreNumber.value--;
+          }
+        } */
+
+      if (this.#timeScoreNumber.value > 0 && GameProps.gameStatus === EGameStatus.Playing) {
+        requestAnimationFrame(countdown);
+      } else {
+        this.#currentCountdown = false;
+      }
+    };
+
+    requestAnimationFrame(countdown);
+  }
+
+  updateTimeScore(score) {
+    this.#timeScoreNumber.value += score;
+  }
+
+  addRemainingSeconds() {
+    return this.#timeScoreNumber.value;
+  }
+
+  showGameOverScore(score) {
+    // Plassering for scoren på "Game Over"-skjermen
+    const scorePos = new lib2D.TPoint(400, 300); // Juster posisjonen etter behov
+    const scoreDisplay = new libSprite.TSpriteNumber(this.#spcvs, SheetData.Number, scorePos);
+    scoreDisplay.scale = 1.5; // Gjør scoren større for bedre synlighet
+    scoreDisplay.value = score; // Sett scoren
+    scoreDisplay.draw(); // Tegn scoren på skjermen
   }
 }
 

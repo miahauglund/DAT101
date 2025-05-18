@@ -83,8 +83,8 @@ export class TMenu {
     this.#timeScoreNumber.value = 0;
 
     // Game Over score
-    this.#gameOverScoreNumber = new libSprite.TSpriteNumber(aSpriteCanvas, SheetData.Number, new lib2D.TPoint(530, 240));
-    this.#gameOverScoreNumber.scale = 0.9;
+    this.#gameOverScoreNumber = new libSprite.TSpriteNumber(aSpriteCanvas, SheetData.Number, new lib2D.TPoint(570, 255));
+    this.#gameOverScoreNumber.scale = 1.0;
     this.#gameOverScoreNumber.spacing = 10;
     this.#gameOverScoreNumber.visible = false;
   }

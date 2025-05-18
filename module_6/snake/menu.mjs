@@ -77,7 +77,7 @@ export class TMenu {
 
     // Eple-teller / tidspoeng
     this.#timeScoreNumber = new libSprite.TSpriteNumber(aSpriteCanvas, SheetData.Number, new lib2D.TPoint(14, 10));
-    this.#timeScoreNumber.scale = 0.6;
+    this.#timeScoreNumber.scale = 0.8;
     this.#timeScoreNumber.spacing = 10;
     this.#timeScoreNumber.visible = true;
     this.#timeScoreNumber.value = 0;

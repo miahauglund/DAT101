@@ -689,7 +689,7 @@ class TSpriteNumber {
   
 
 }
-
+   
 
 export default {
   /**

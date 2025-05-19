@@ -34,7 +34,7 @@ export class TMenu {
     this.#spPlay.animateSpeed = 15;
     this.#spPlay.onClick = () => {
       if (this.#playTrigger) this.#playTrigger();
-      console.log("Play-knappen ble trykket");
+      console.log("Play-knappen ble trykket");   
     };
 
     // Resume-knapp

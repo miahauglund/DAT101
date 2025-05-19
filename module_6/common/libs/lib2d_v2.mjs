@@ -18,7 +18,7 @@ class TPoint {
   constructor(aX, aY) {
     this.x = aX;
     this.y = aY;
-  }
+  }  
 } // End of TPoint class
 
 /* Example usages of the TPoint class */

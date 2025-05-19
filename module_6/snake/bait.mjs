@@ -80,4 +80,4 @@ export class TBait extends libSprite.TSprite {
     console.log("Score incremented by:", scoreIncrement, "New total score:", GameProps.totalScore);
     GameProps.menu.updateTotalScore(GameProps.totalScore); // Oppdater visningen av poengsummen
   } // End of baitIsEaten
-}
+}  

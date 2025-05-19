@@ -28,7 +28,7 @@ class TSnakePart extends libSprite.TSprite {
     let boardCellInfo = GameProps.gameBoard.getCell(aBoardCell.row, aBoardCell.col);
     this.direction = boardCellInfo.direction;
     boardCellInfo.infoType = EBoardCellInfoType.Snake;
-    this.index = this.direction;
+    this.index = this.direction;   
   }
 
   update() {

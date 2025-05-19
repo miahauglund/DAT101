@@ -180,4 +180,4 @@ function onKeyDown(event) {
 //----------- Hovedprogram ----------------------------------------------------------------
 
 spcvs.loadSpriteSheet("./Media/spriteSheet.png", loadGame);
-document.addEventListener("keydown", onKeyDown);
+document.addEventListener("keydown", onKeyDown);  
